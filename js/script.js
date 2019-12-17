@@ -15,6 +15,7 @@ $(document).ready(function () {
 	var draw_line = function (x, y, x2, y2, color) {
 
 		canvas_ref.drawLine({
+			layer: true,
 			strokeStyle: color,
 			strokeWidth: 1,
 			x1: x, y1: y,
