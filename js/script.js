@@ -12,9 +12,6 @@ $(document).ready(function () {
 	var canvas_ref = $("#board");
 	var active_shape = null;
 	var read_only = false
-	var downloadable = false;
-
-	$.jCanvas.defaults.fromCenter = false;
 
 	var draw_line = function (x, y, x2, y2, color) {
 
@@ -28,6 +25,14 @@ $(document).ready(function () {
 	}
 
 	var init_grid = function () {
+		canvas_ref.addLayer({
+			type: 'rectangle',
+			name: 'grid',
+			fillStyle: 'white',
+			x: grid_x, y: grid_y,
+			width: width, height: height
+		})
+
 		for (var i = 0; i <= rows; i++) {
 			draw_line(grid_x, grid_y + i * block_size, grid_x + width, grid_y + i * block_size, grid_color);
 		}
@@ -37,47 +42,49 @@ $(document).ready(function () {
 		}
 	}
 
-	var get_shapes = function(){
-		return []
+	var get_shapes = function () {
+		//return []
 		return [
-			{'shape_id': 1, type: 'F', width: block_size*3, height: block_size*3},
-			{'shape_id': 2, type: 'F', width: block_size*3, height: block_size*3}
+			{ 'shape_id': 1, type: 'F', color: 'red'},
+			{ 'shape_id': 1, type: 'F', color: 'red', mirror: true},
+			{ 'shape_id': 2, type: 'I', color: 'blue'}
 		]
 	}
 
-	var lock_shape_on_grid = function(layer){
-		console.log("Locking shape "+layer)
-		new_x = Math.floor((layer.x-grid_x)/block_size)*block_size
-		new_y = Math.floor((layer.y-grid_y)/block_size)*block_size
+	var lock_shape_on_grid = function (layer) {
+		console.log("Locking shape " + layer)
+		new_x = Math.floor((layer.x - grid_x) / block_size) * block_size
+		new_y = Math.floor((layer.y - grid_y) / block_size) * block_size
 		layer.x = new_x + grid_x
 		layer.y = new_y + grid_y
 		canvas_ref.drawLayers()
 	}
 
-	var rotate_shape = function(angle){
-		if (active_shape){
-			active_shape.rotate = angle
+	var rotate_shape = function (angle) {
+		if (active_shape) {
+			active_shape.rotate += angle
 			canvas_ref.drawLayers()
 		}
 	}
 
-	var is_over_grid = function(x, y){
+	var is_over_grid = function (x, y) {
 		return x >= grid_x && x <= grid_x + width && y >= grid_y && y <= grid_y + height
 	}
 
-	var place_randomly = function(shape){
+	var place_randomly = function (shape) {
 		var rand_x = grid_x + width + Math.floor((Math.random() * 300) + 1);
 		var rand_y = grid_y + height + Math.floor((Math.random() * 200) + 1);
-		
-		canvas_ref.drawImage({
-			source: './img/pento_'+shape.type+'.png',
+
+		canvas_ref.drawPentoShape({
+			layer: true,
+			type: shape.type,
+			mirror: shape.mirror,
+			color: '#c33',
+			block_size: block_size,
 			draggable: !read_only,
 			x: rand_x, y: rand_y,
-			width: shape.width, height: shape.height,
-			click: function(layer){
+			click: function (layer) {
 				active_shape = layer
-				layer.strokeStyle = '#333'
-				layer.strokeWidth = 2
 			},
 			dragstart: function () {
 				// code to run when dragging starts
@@ -85,41 +92,32 @@ $(document).ready(function () {
 			},
 			drag: function (layer) {
 				// code to run as layer is being dragged
-				
+
 			},
 			dragstop: function (layer) {
 				// code to run when dragging stops
-				var layer_x = layer.x + layer.width/2
-				var layer_y = layer.y + layer.height/2
+				var layer_x = layer.x + layer.width / 2
+				var layer_y = layer.y + layer.height / 2
 
-				if (is_over_grid(layer_x, layer_y)){
+				if (is_over_grid(layer_x, layer_y)) {
 					lock_shape_on_grid(layer)
 				}
-
-				active_shape = layer
 			}
 		});
 	}
 
 	// keys for rotation
-	$("body").keyup(function(event){
-		switch(event.key){
-			case "ArrowUp":
+	$("body").keyup(function (event) {
+		switch (event.key) {
+			case "ArrowRight":
 				rotate_shape(90)
 				break;
-			case "ArrowRight":
-				rotate_shape(180)
-				break;
-			case "ArrowDown":
-				rotate_shape(270)
-				break;
 			case "ArrowLeft":
-				rotate_shape(0)
+				rotate_shape(-90)
 				break;
 			default:
 				break;
 		}
-		console.log("Pressed "+event.key)
 	})
 
 	// main 
@@ -128,15 +126,7 @@ $(document).ready(function () {
 	init_grid();
 
 	var shapes = get_shapes();
-	for (var shape in shapes){
+	for (var shape in shapes) {
 		place_randomly(shapes[shape]);
 	}
-
-	// utility
-	this.download_img = function (el) {
-		if (downloadable){
-			var image_string = $('#board').getCanvasImage('png');
-			el.href = image_string;
-		}
-	};
 })
