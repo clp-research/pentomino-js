@@ -10,8 +10,8 @@ $(document).ready(function () {
 	var height = block_size * rows;
 
 	var canvas_ref = $("#board");
-	var active_shape = null;
 	var read_only = false
+	var active_shape = null;
 
 	var draw_line = function (x, y, x2, y2, color) {
 
@@ -45,9 +45,9 @@ $(document).ready(function () {
 	var get_shapes = function () {
 		//return []
 		return [
-			{ 'shape_id': 1, type: 'F', color: 'red'},
-			{ 'shape_id': 1, type: 'F', color: 'red', mirror: true},
-			{ 'shape_id': 2, type: 'I', color: 'blue'}
+			{ 'shape_id': 1, type: 'F', color: 'red' },
+			{ 'shape_id': 2, type: 'F', color: 'red'},
+			{ 'shape_id': 3, type: 'I', color: 'blue' }
 		]
 	}
 
@@ -60,15 +60,106 @@ $(document).ready(function () {
 		canvas_ref.drawLayers()
 	}
 
-	var rotate_shape = function (angle) {
-		if (active_shape) {
-			active_shape.rotate += angle
-			canvas_ref.drawLayers()
+	var is_over_grid = function (x, y) {
+		return x >= grid_x && x <= grid_x + width && y >= grid_y && y <= grid_y + height
+	}
+
+	var rotate_shape = function(angle){
+		console.log("Rotate by "+angle)
+		active_shape.rotate += angle
+		if (active_shape.rotate>360){
+			active_shape.rotate = 0
+		}
+
+		// correct position
+		// TODO
+		
+		canvas_ref.drawLayers()
+	}
+
+	var redraw_arrows = function (canvas_ref, layer) {
+		if (active_shape != null){
+			remove_arrows();
+		}
+
+		var x = layer.x
+		var y = layer.y
+		var width = layer.block_size
+		var strokeWidth = 4
+		var rounding = layer.block_size/2
+
+		canvas_ref.drawPath({
+			layer: true,
+			name: "arrow_left",
+			strokeStyle: '#000',
+			fillStyle: 'transparent',
+			strokeWidth: strokeWidth,
+			p1: {
+				type: 'quadratic',
+				x1: x + width, y1: y + width / 2,
+				cx1: x + width + rounding, cy1: y - rounding + width / 2,
+				x2: x + width * 2, y2: y + width / 2,
+				endArrow: true,
+				rounded: true,
+				arrowAngle: 60,
+				arrowRadius: 10
+			},
+			click: function(){
+				rotate_shape(-90)
+			}
+		});
+
+		canvas_ref.drawPath({
+			layer: true,
+			name: "arrow_right",
+			strokeStyle: '#000',
+			fillStyle: 'transparent',
+			strokeWidth: strokeWidth,
+			p1: {
+				type: 'quadratic',
+				x1: x, y1: y + width / 2,
+				cx1: x + rounding - width, cy1: y - rounding + width / 2,
+				x2: x - width, y2: y + width / 2,
+				endArrow: true,
+				arrowAngle: -60,
+				arrowRadius: 10
+			},
+			click: function(){
+				rotate_shape(90)
+			}
+		});
+	}
+
+	var remove_arrows = function(){
+		canvas_ref.removeLayer("arrow_left");
+		canvas_ref.removeLayer("arrow_right");
+	}
+
+	var update_arrows = function(layer, is_drag){
+		var dx = layer.dx
+		var dy = layer.dy
+		var arrow_left = canvas_ref.getLayer("arrow_left");
+		arrow_left.x += dx;
+		arrow_left.y += dy;
+
+		var arrow_right = canvas_ref.getLayer("arrow_right");
+		arrow_right.x += dx;
+		arrow_right.y += dy;
+
+		if (is_drag){
+			active_shape.shadowColor = 'black'
+			active_shape.shadowX = 1
+			active_shape.shadowY = -1
+			active_shape.shadowBlur = 3
+		}else{
+			active_shape.shadowColor = 'transparent'
 		}
 	}
 
-	var is_over_grid = function (x, y) {
-		return x >= grid_x && x <= grid_x + width && y >= grid_y && y <= grid_y + height
+	var set_active = function(layer){
+		canvas_ref.moveLayer(layer.name, -1);
+		active_shape = layer
+		redraw_arrows(canvas_ref, layer)
 	}
 
 	var place_randomly = function (shape) {
@@ -77,22 +168,29 @@ $(document).ready(function () {
 
 		canvas_ref.drawPentoShape({
 			layer: true,
+			name: shape.type + shape.shape_id,
 			type: shape.type,
 			mirror: shape.mirror,
 			color: '#c33',
 			block_size: block_size,
 			draggable: !read_only,
 			x: rand_x, y: rand_y,
-			click: function (layer) {
-				active_shape = layer
+			parent: canvas_ref,
+			isActive: false,
+			fromCenter: true,
+			mouseover: function(layer){
+				set_active(layer)
 			},
-			dragstart: function () {
+			click: function (layer) {
+				set_active(layer)
+			},
+			dragstart: function (layer) {
 				// code to run when dragging starts
-
+				update_arrows(layer, true)
 			},
 			drag: function (layer) {
 				// code to run as layer is being dragged
-
+				update_arrows(layer, true)
 			},
 			dragstop: function (layer) {
 				// code to run when dragging stops
@@ -102,23 +200,12 @@ $(document).ready(function () {
 				if (is_over_grid(layer_x, layer_y)) {
 					lock_shape_on_grid(layer)
 				}
+
+				update_arrows(layer, false)
+				set_active(layer)
 			}
 		});
 	}
-
-	// keys for rotation
-	$("body").keyup(function (event) {
-		switch (event.key) {
-			case "ArrowRight":
-				rotate_shape(90)
-				break;
-			case "ArrowLeft":
-				rotate_shape(-90)
-				break;
-			default:
-				break;
-		}
-	})
 
 	// main 
 	console.log("Drawing board...")
