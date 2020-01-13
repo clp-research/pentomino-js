@@ -8,23 +8,44 @@
 	<title>A pentomino framework</title>
 	<meta name="description" content="Pentomino Framework">
 	<meta name="author" content="clpresearch">
+
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
 	<link rel="stylesheet" href="css/style.css">
-	
+
 
 </head>
 
 <body>
-	<canvas id="board" width="800" height="600" style="border:1px solid #000000;">
-	</canvas>
+	<div class="pentomino container">
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-		integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
-		crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.7.3/jcanvas.min.js"
-		integrity="sha384-amfY6Xr18yRWq6l+1TPfkoSGRCGLNhkU67i1uElI5+u4hC5G5lhbvUU75assw5Jm"
-		crossorigin="anonymous"></script>
-	<script src='./js/pento_shapes.js'></script>
-	<script src="./js/script.js"></script>
+		<div class="row">
+			<div class="four columns">
+				<div class="twelf columns">
+					<label>Target</label>
+					<img class="img center" src="img/pento_F.png"/>
+				</div>
+				<div class="form">
+							<label for="exampleEmailInput">Instructions</label>
+							<input class="u-full-width instruction-input" type="text">
+							<a class="button" id="add_instr">Add instruction</a>
+						</div>
+				</div>
+				<div class="eight columns">
+					<canvas id="board" width="500" height="600" style="border:1px solid #000000;"></canvas>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+			integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+			crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.7.3/jcanvas.min.js"
+			integrity="sha384-amfY6Xr18yRWq6l+1TPfkoSGRCGLNhkU67i1uElI5+u4hC5G5lhbvUU75assw5Jm"
+			crossorigin="anonymous"></script>
+		<script src='./js/pento_shapes.js'></script>
+		<script src="./js/script.js"></script>
 </body>
 
 </html>

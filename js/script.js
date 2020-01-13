@@ -3,8 +3,8 @@ $(document).ready(function () {
 	var rows = 10;
 	var block_size = 20;
 	var grid_color = '#000';
-	var grid_x = 50;
-	var grid_y = 50;
+	var grid_x = 40;
+	var grid_y = 40;
 
 	var width = block_size * cols;
 	var height = block_size * rows;
@@ -12,6 +12,7 @@ $(document).ready(function () {
 	var canvas_ref = $("#board");
 	var read_only = false
 	var active_shape = null;
+	var instruction_limit = 5;
 
 	var draw_line = function (x, y, x2, y2, color) {
 
@@ -22,6 +23,25 @@ $(document).ready(function () {
 			x1: x, y1: y,
 			x2: x2, y2: y2
 		});
+	}
+
+	var draw_text = function(x,y,text){
+		canvas_ref.drawText({
+			layer: true,
+			name: text.replace(" ","_"),
+			fillStyle: 'black',
+			strokeWidth: 2,
+			x: x, y: y,
+			fontSize: 16,
+			text: text,
+			fromCenter: false
+		})
+	}
+
+	var init_board = function(){
+		draw_text(40,10,"Game board")
+		draw_line(0, 400, 600, 400, 'black')
+		draw_text(40,410, "Tray")
 	}
 
 	var init_grid = function () {
@@ -46,8 +66,9 @@ $(document).ready(function () {
 		//return []
 		return [
 			{ 'shape_id': 1, type: 'F', color: 'red' },
-			{ 'shape_id': 2, type: 'F', color: 'red'},
-			{ 'shape_id': 3, type: 'I', color: 'blue' }
+			{ 'shape_id': 2, type: 'T', color: 'green'},
+			{ 'shape_id': 3, type: 'F', color: 'yellow', mirror: true},
+			{ 'shape_id': 4, type: 'I', color: 'blue' }
 		]
 	}
 
@@ -163,15 +184,15 @@ $(document).ready(function () {
 	}
 
 	var place_randomly = function (shape) {
-		var rand_x = grid_x + width + Math.floor((Math.random() * 300) + 1);
-		var rand_y = grid_y + height + Math.floor((Math.random() * 200) + 1);
+		var rand_x = 100 + Math.floor((Math.random() * 200));
+		var rand_y = 400 + Math.floor((Math.random() * 100));
 
 		canvas_ref.drawPentoShape({
 			layer: true,
 			name: shape.type + shape.shape_id,
 			type: shape.type,
 			mirror: shape.mirror,
-			color: '#c33',
+			color: shape.color,
 			block_size: block_size,
 			draggable: !read_only,
 			x: rand_x, y: rand_y,
@@ -207,13 +228,28 @@ $(document).ready(function () {
 		});
 	}
 
-	// main 
-	console.log("Drawing board...")
-
+	// draw grid for placement of shapes
 	init_grid();
 
+	// draw board frames/headers
+	init_board();
+
+	// deploy shapes
 	var shapes = get_shapes();
 	for (var shape in shapes) {
 		place_randomly(shapes[shape]);
 	}
+
+	// register event handler
+	$('body').on('dblclick', function(event){
+		active_shape = null
+		remove_arrows();
+	});
+
+	$('#add_instr').click(function(){
+		if ($('.instruction-input').length < instruction_limit){
+			var input_widget = '<input class="u-full-width instruction-input" type="text"></input>'
+			$(input_widget).insertAfter('.instruction-input:last');
+		}
+	})
 })

@@ -41,10 +41,26 @@ var draw_F = function (ctx, x, y, block_size, color, mirror) {
 	}
 }
 
+// draw T
+var draw_T = function (ctx, x, y, block_size, color) {
+
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+
+	// Draw blocks
+	for (var i = 0; i < 3; i++) {
+		draw_block(ctx, x, y + i * block_size, block_size, color);
+	}
+
+	draw_block(ctx, x - block_size, y, block_size, color);
+	draw_block(ctx, x + block_size, y, block_size, color);
+}
+
 // Create a drawPentoShape() method
 $.jCanvas.extend({
 	name: 'drawPentoShape',
 	type: 'quadratic',
+	fromCenter: true,
 	props: {
 		/*
 		* I
@@ -66,6 +82,9 @@ $.jCanvas.extend({
 				break;
 			case 'F':
 				draw_F(ctx, params.x, params.y, params.block_size, params.color, params.mirror)
+				break;
+			case 'T':
+				draw_T(ctx, params.x, params.y, params.block_size, params.color, params.mirror)
 				break;
 			default:
 				console.log("Unknown pento shape " + params.type)
