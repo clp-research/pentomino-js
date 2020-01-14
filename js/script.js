@@ -11,6 +11,8 @@ $(document).ready(function () {
 
 	var canvas_ref = $("#board");
 	var read_only = false
+	var lock_on_grid = true;
+	var prevent_collision = true;
 	var active_shape = null;
 	var instruction_limit = 5;
 
@@ -25,10 +27,10 @@ $(document).ready(function () {
 		});
 	}
 
-	var draw_text = function(x,y,text){
+	var draw_text = function (x, y, text) {
 		canvas_ref.drawText({
 			layer: true,
-			name: text.replace(" ","_"),
+			name: text.replace(" ", "_"),
 			fillStyle: 'black',
 			strokeWidth: 2,
 			x: x, y: y,
@@ -38,10 +40,10 @@ $(document).ready(function () {
 		})
 	}
 
-	var init_board = function(){
-		draw_text(40,10,"Game board")
+	var init_board = function () {
+		draw_text(40, 10, "Game board")
 		draw_line(0, 400, 600, 400, 'black')
-		draw_text(40,410, "Tray")
+		draw_text(40, 410, "Tray")
 	}
 
 	var init_grid = function () {
@@ -66,18 +68,18 @@ $(document).ready(function () {
 		//return []
 		return [
 			{ 'shape_id': 1, type: 'F', color: 'red' },
-			{ 'shape_id': 2, type: 'T', color: 'green'},
-			{ 'shape_id': 3, type: 'F', color: 'yellow', mirror: true},
+			{ 'shape_id': 2, type: 'T', color: 'green' },
+			{ 'shape_id': 3, type: 'F', color: 'yellow', mirror: true },
 			{ 'shape_id': 4, type: 'I', color: 'blue' }
 		]
 	}
 
 	var lock_shape_on_grid = function (layer) {
-		console.log("Locking shape " + layer)
-		new_x = Math.floor((layer.x - grid_x) / block_size) * block_size
-		new_y = Math.floor((layer.y - grid_y) / block_size) * block_size
-		layer.x = new_x + grid_x
-		layer.y = new_y + grid_y
+
+		new_x = Math.floor((layer.x - grid_x + layer.offsetX) / block_size) * block_size
+		new_y = Math.floor((layer.y - grid_y + layer.offsetY) / block_size) * block_size
+		layer.x = new_x + grid_x - layer.offsetX
+		layer.y = new_y + grid_y - layer.offsetY
 		canvas_ref.drawLayers()
 	}
 
@@ -85,29 +87,54 @@ $(document).ready(function () {
 		return x >= grid_x && x <= grid_x + width && y >= grid_y && y <= grid_y + height
 	}
 
-	var rotate_shape = function(angle){
-		console.log("Rotate by "+angle)
+	var is_over_shape = function (layer) {
+		var layers = canvas_ref.getLayers();
+		for (var i = 0; i < layers.length; i++) {
+			var placed_layer = layers[i];
+			if (placed_layer.name && placed_layer.isPento && placed_layer.name != layer.name) {
+
+				if ($.jCanvas.shape_dict[layer.name].hits($.jCanvas.shape_dict[placed_layer.name])) {
+					return true
+				}
+			}
+		}
+		return false
+	}
+
+	var rotate_shape = function (angle) {
 		active_shape.rotate += angle
-		if (active_shape.rotate>360){
+		if (active_shape.rotate > 360 || active_shape.rotate < 0) {
 			active_shape.rotate = 0
 		}
 
-		// correct position
-		// TODO
-		
 		canvas_ref.drawLayers()
 	}
 
+	var get_offsets = function (type) {
+		// returns offsets for (x,y) coordinates to position
+		// drawing in the middle of the shape area
+		switch (type) {
+			case 'I':
+				return [30, 0]
+			case 'T': case 'F':
+				return [30, 0]
+		}
+		return [30, 0]
+	}
+
 	var redraw_arrows = function (canvas_ref, layer) {
-		if (active_shape != null){
+		if (active_shape != null) {
 			remove_arrows();
 		}
 
-		var x = layer.x
-		var y = layer.y
+		var offsetX = get_offsets(layer.type)[0];
+		var offsetY = get_offsets(layer.type)[1];
+
+		var x = layer.x + offsetX
+		var y = layer.y + offsetY
 		var width = layer.block_size
 		var strokeWidth = 4
-		var rounding = layer.block_size/2
+		var rounding = layer.block_size / 2
 
 		canvas_ref.drawPath({
 			layer: true,
@@ -125,8 +152,8 @@ $(document).ready(function () {
 				arrowAngle: 60,
 				arrowRadius: 10
 			},
-			click: function(){
-				rotate_shape(-90)
+			click: function () {
+				rotate_shape(90)
 			}
 		});
 
@@ -145,18 +172,18 @@ $(document).ready(function () {
 				arrowAngle: -60,
 				arrowRadius: 10
 			},
-			click: function(){
-				rotate_shape(90)
+			click: function () {
+				rotate_shape(-90)
 			}
 		});
 	}
 
-	var remove_arrows = function(){
+	var remove_arrows = function () {
 		canvas_ref.removeLayer("arrow_left");
 		canvas_ref.removeLayer("arrow_right");
 	}
 
-	var update_arrows = function(layer, is_drag){
+	var update_arrows = function (layer, is_drag) {
 		var dx = layer.dx
 		var dy = layer.dy
 		var arrow_left = canvas_ref.getLayer("arrow_left");
@@ -167,17 +194,17 @@ $(document).ready(function () {
 		arrow_right.x += dx;
 		arrow_right.y += dy;
 
-		if (is_drag){
+		if (is_drag) {
 			active_shape.shadowColor = 'black'
 			active_shape.shadowX = 1
 			active_shape.shadowY = -1
 			active_shape.shadowBlur = 3
-		}else{
+		} else {
 			active_shape.shadowColor = 'transparent'
 		}
 	}
 
-	var set_active = function(layer){
+	var set_active = function (layer) {
 		canvas_ref.moveLayer(layer.name, -1);
 		active_shape = layer
 		redraw_arrows(canvas_ref, layer)
@@ -187,9 +214,14 @@ $(document).ready(function () {
 		var rand_x = 100 + Math.floor((Math.random() * 200));
 		var rand_y = 400 + Math.floor((Math.random() * 100));
 
+		var offsetX = get_offsets(shape.type)[0];
+		var offsetY = get_offsets(shape.type)[1];
+		var last_x;
+		var last_y;
+
 		canvas_ref.drawPentoShape({
 			layer: true,
-			name: shape.type + shape.shape_id,
+			name: shape.type + shape.shape_id + shape.color,
 			type: shape.type,
 			mirror: shape.mirror,
 			color: shape.color,
@@ -197,9 +229,13 @@ $(document).ready(function () {
 			draggable: !read_only,
 			x: rand_x, y: rand_y,
 			parent: canvas_ref,
-			isActive: false,
+			isPento: true,
 			fromCenter: true,
-			mouseover: function(layer){
+			offsetX: offsetX,
+			offsetY: offsetY,
+			width: 80,
+			height: 80,
+			mouseover: function (layer) {
 				set_active(layer)
 			},
 			click: function (layer) {
@@ -208,22 +244,30 @@ $(document).ready(function () {
 			dragstart: function (layer) {
 				// code to run when dragging starts
 				update_arrows(layer, true)
+				last_x = layer.x;
+				last_y = layer.y;
 			},
 			drag: function (layer) {
 				// code to run as layer is being dragged
 				update_arrows(layer, true)
 			},
 			dragstop: function (layer) {
+
 				// code to run when dragging stops
 				var layer_x = layer.x + layer.width / 2
 				var layer_y = layer.y + layer.height / 2
 
-				if (is_over_grid(layer_x, layer_y)) {
+				if (is_over_grid(layer_x, layer_y) && lock_on_grid) {
 					lock_shape_on_grid(layer)
 				}
 
+				if (is_over_shape(layer) && prevent_collision) {
+					layer.x = last_x;
+					layer.y = last_y;	
+				}
 				update_arrows(layer, false)
 				set_active(layer)
+
 			}
 		});
 	}
@@ -241,13 +285,13 @@ $(document).ready(function () {
 	}
 
 	// register event handler
-	$('body').on('dblclick', function(event){
+	$('body').on('dblclick', function (event) {
 		active_shape = null
 		remove_arrows();
 	});
 
-	$('#add_instr').click(function(){
-		if ($('.instruction-input').length < instruction_limit){
+	$('#add_instr').click(function () {
+		if ($('.instruction-input').length < instruction_limit) {
 			var input_widget = '<input class="u-full-width instruction-input" type="text"></input>'
 			$(input_widget).insertAfter('.instruction-input:last');
 		}
