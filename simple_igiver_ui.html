@@ -1,0 +1,60 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>A pentomino framework</title>
+	<meta name="description" content="Pentomino Framework">
+	<meta name="author" content="clpresearch">
+
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="pentomino container">
+
+		<div class="row">
+			<div class="six columns min-height">
+				<label>Initial</label>
+				<img class="img center" src="img/pento_F.png" />
+			</div>
+
+			<div class="six columns min-height">
+				<label>Target</label>
+				<img class="img center" src="img/pento_F.png" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="spacer"></div>
+		</div>
+		<div class="row">
+			<div class="six columns">
+				<div class="form">
+					<label>Instructions</label>
+					<label class="counter"></label>
+					<input class="u-full-width instruction-input" type="text">
+					
+				</div>
+				<div class="row more-inputs">
+
+				</div>
+				<a class="button" id="add_instr">Add instruction</a>
+			</div>
+			<div class="six columns">
+				<label>Distractors</label>
+				<img class="img center" src="img/pento_F.png" />
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+		integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+		crossorigin="anonymous"></script>
+	<script src="./js/simple_ig.js"></script>
+</body>
+
+</html>

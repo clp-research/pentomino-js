@@ -11,9 +11,9 @@ $(document).ready(function () {
 
 	var canvas_ref = $("#board");
 	var read_only = false
-	var lock_on_grid = true;
-	var prevent_collision = true;
-	var active_shape = null;
+	var lock_on_grid = false;
+	var prevent_collision = false;
+	document.active_shape = null;
 	var instruction_limit = 5;
 
 	var draw_line = function (x, y, x2, y2, color) {
@@ -102,9 +102,9 @@ $(document).ready(function () {
 	}
 
 	var rotate_shape = function (angle) {
-		active_shape.rotate += angle
-		if (active_shape.rotate > 360 || active_shape.rotate < 0) {
-			active_shape.rotate = 0
+		document.active_shape.rotate += angle
+		if (document.active_shape.rotate > 360 || document.active_shape.rotate < -360) {
+			document.active_shape.rotate = 0
 		}
 
 		canvas_ref.drawLayers()
@@ -123,7 +123,7 @@ $(document).ready(function () {
 	}
 
 	var redraw_arrows = function (canvas_ref, layer) {
-		if (active_shape != null) {
+		if (document.active_shape != null) {
 			remove_arrows();
 		}
 
@@ -195,25 +195,22 @@ $(document).ready(function () {
 		arrow_right.y += dy;
 
 		if (is_drag) {
-			active_shape.shadowColor = 'black'
-			active_shape.shadowX = 1
-			active_shape.shadowY = -1
-			active_shape.shadowBlur = 3
+			document.active_shape.shadowColor = 'black'
+			document.active_shape.shadowX = 1
+			document.active_shape.shadowY = -1
+			document.active_shape.shadowBlur = 3
 		} else {
-			active_shape.shadowColor = 'transparent'
+			document.active_shape.shadowColor = 'transparent'
 		}
 	}
 
 	var set_active = function (layer) {
 		canvas_ref.moveLayer(layer.name, -1);
-		active_shape = layer
+		document.active_shape = layer
 		redraw_arrows(canvas_ref, layer)
 	}
 
-	var place_randomly = function (shape) {
-		var rand_x = 100 + Math.floor((Math.random() * 200));
-		var rand_y = 400 + Math.floor((Math.random() * 100));
-
+	var place_shape = function(x, y, shape){
 		var offsetX = get_offsets(shape.type)[0];
 		var offsetY = get_offsets(shape.type)[1];
 		var last_x;
@@ -227,7 +224,7 @@ $(document).ready(function () {
 			color: shape.color,
 			block_size: block_size,
 			draggable: !read_only,
-			x: rand_x, y: rand_y,
+			x: x, y: y,
 			parent: canvas_ref,
 			isPento: true,
 			fromCenter: true,
@@ -272,28 +269,22 @@ $(document).ready(function () {
 		});
 	}
 
+	this.place_randomly = function (shape) {
+		var rand_x = 100 + Math.floor((Math.random() * 200));
+		var rand_y = 400 + Math.floor((Math.random() * 100));
+	
+		place_shape(rand_x, rand_y, shape)
+	}
+
 	// draw grid for placement of shapes
 	init_grid();
 
 	// draw board frames/headers
 	init_board();
 
-	// deploy shapes
-	var shapes = get_shapes();
-	for (var shape in shapes) {
-		place_randomly(shapes[shape]);
-	}
-
 	// register event handler
 	$('body').on('dblclick', function (event) {
-		active_shape = null
+		document.active_shape = null
 		remove_arrows();
 	});
-
-	$('#add_instr').click(function () {
-		if ($('.instruction-input').length < instruction_limit) {
-			var input_widget = '<input class="u-full-width instruction-input" type="text"></input>'
-			$(input_widget).insertAfter('.instruction-input:last');
-		}
-	})
 })
