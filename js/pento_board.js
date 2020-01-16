@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	// reference to canvas for drawing
-	this.canvas_ref = $("#board");
+	this.pento_canvas_ref = $("#board");
 
 	// pento grid parameters
 	this.pento_grid_cols = 20;
@@ -18,7 +18,7 @@ $(document).ready(function () {
 
 	this.draw_line = function (x, y, x2, y2, color) {
 
-		this.canvas_ref.drawLine({
+		this.pento_canvas_ref.drawLine({
 			layer: true,
 			strokeStyle: color,
 			strokeWidth: 1,
@@ -28,7 +28,7 @@ $(document).ready(function () {
 	}
 
 	this.draw_text = function (x, y, text) {
-		this.canvas_ref.drawText({
+		this.pento_canvas_ref.drawText({
 			layer: true,
 			name: text.replace(" ", "_"),
 			fillStyle: 'black',
@@ -47,14 +47,14 @@ $(document).ready(function () {
 	}
 
 	this.remove_grid = function(){
-		this.canvas_ref.removeLayer('grid')
+		this.pento_canvas_ref.removeLayer('grid')
 	}
 
 	this.init_grid = function () {
-		this.pento_board_width = this.pento_block_size * this.pento_grid_cols;
-		this.pento_board_height = this.pento_block_size * this.pento_grid_rows;
+		this.pento_grid_width = this.pento_block_size * this.pento_grid_cols;
+		this.pento_grid_height = this.pento_block_size * this.pento_grid_rows;
 
-		this.canvas_ref.addLayer({
+		this.pento_canvas_ref.addLayer({
 			type: 'rectangle',
 			name: 'grid',
 			fillStyle: 'white',
@@ -73,23 +73,13 @@ $(document).ready(function () {
 		}
 	}
 
-	this.get_shapes = function () {
-		//return []
-		return [
-			{ 'shape_id': 1, type: 'F', color: 'red' , position: {"x": 160, "y": 80}},
-			{ 'shape_id': 2, type: 'T', color: 'green' },
-			{ 'shape_id': 3, type: 'F', color: 'yellow', mirror: true },
-			{ 'shape_id': 4, type: 'I', color: 'blue' }
-		]
-	}
-
 	this.lock_shape_on_grid = function (layer) {
 
 		new_x = Math.floor((layer.x - this.pento_grid_x + layer.offsetX) / block_size) * block_size
 		new_y = Math.floor((layer.y - this.pento_grid_y + layer.offsetY) / block_size) * block_size
 		layer.x = new_x + this.pento_grid_x - layer.offsetX
 		layer.y = new_y + this.pento_grid_y - layer.offsetY
-		this.canvas_ref.drawLayers()
+		this.pento_canvas_ref.drawLayers()
 	}
 
 	this.is_over_grid = function (x, y) {
@@ -97,7 +87,7 @@ $(document).ready(function () {
 	}
 
 	this.is_over_shape = function (layer) {
-		var layers = this.canvas_ref.getLayers();
+		var layers = this.pento_canvas_ref.getLayers();
 		for (var i = 0; i < layers.length; i++) {
 			var placed_layer = layers[i];
 			if (placed_layer.name && placed_layer.isPento && placed_layer.name != layer.name) {
@@ -116,7 +106,11 @@ $(document).ready(function () {
 			this.pento_active_shape.rotate = 0
 		}
 
-		this.canvas_ref.drawLayers()
+		this.pento_canvas_ref.drawLayers()
+	}
+
+	this.get_pento_types = function(){
+		return ['F','I','L','N','P','T','U','V','W','X','Y','Z']
 	}
 
 	this.get_offsets = function (type) {
@@ -131,7 +125,25 @@ $(document).ready(function () {
 		return [30, 0]
 	}
 
-	this.redraw_arrows = function (canvas_ref, layer) {
+	this.create_pento_shape = function(id, type, color){
+		var Shape = this.Shape
+		return new Shape(id, type, color)
+	}
+
+	this.destroy_all_shapes = function(){
+		var keys = Object.keys($.jCanvas.shape_dict)
+		for(var key in keys){
+			this.destroy_shape(keys[key])
+		}
+		this.pento_canvas_ref.drawLayers()
+	}
+
+	this.destroy_shape = function(name){
+		delete $.jCanvas.shape_dict[name]
+		this.pento_canvas_ref.removeLayer(name)
+	}
+
+	this.redraw_arrows = function (pento_canvas_ref, layer) {
 		if (this.pento_active_shape != null) {
 			this.remove_arrows();
 		}
@@ -145,7 +157,7 @@ $(document).ready(function () {
 		var strokeWidth = 4
 		var rounding = layer.block_size / 2
 
-		canvas_ref.drawPath({
+		pento_canvas_ref.drawPath({
 			layer: true,
 			name: "arrow_left",
 			strokeStyle: '#000',
@@ -166,7 +178,7 @@ $(document).ready(function () {
 			}
 		});
 
-		canvas_ref.drawPath({
+		pento_canvas_ref.drawPath({
 			layer: true,
 			name: "arrow_right",
 			strokeStyle: '#000',
@@ -188,18 +200,18 @@ $(document).ready(function () {
 	}
 
 	this.remove_arrows = function () {
-		this.canvas_ref.removeLayer("arrow_left");
-		this.canvas_ref.removeLayer("arrow_right");
+		this.pento_canvas_ref.removeLayer("arrow_left");
+		this.pento_canvas_ref.removeLayer("arrow_right");
 	}
 
 	this.update_arrows = function (layer, is_drag) {
 		var dx = layer.dx
 		var dy = layer.dy
-		var arrow_left = this.canvas_ref.getLayer("arrow_left");
+		var arrow_left = this.pento_canvas_ref.getLayer("arrow_left");
 		arrow_left.x += dx;
 		arrow_left.y += dy;
 
-		var arrow_right = this.canvas_ref.getLayer("arrow_right");
+		var arrow_right = this.pento_canvas_ref.getLayer("arrow_right");
 		arrow_right.x += dx;
 		arrow_right.y += dy;
 
@@ -214,82 +226,107 @@ $(document).ready(function () {
 	}
 
 	this.set_active = function (layer) {
-		this.canvas_ref.moveLayer(layer.name, -1);
+		this.pento_canvas_ref.moveLayer(layer.name, -1);
 		this.pento_active_shape = layer
-		this.redraw_arrows(this.canvas_ref, layer)
+		this.redraw_arrows(this.pento_canvas_ref, layer)
 	}
 
-	this.place_shape = function(x, y, shape){
+	this.place_shape = function(shape){
 		var offsetX = this.get_offsets(shape.type)[0];
 		var offsetY = this.get_offsets(shape.type)[1];
 		var last_x;
 		var last_y;
 
-		this.canvas_ref.drawPentoShape({
+		var x; var y;
+		if (shape.col){
+			var coords = this.grid_cell_to_coordinates(shape)
+			x = coords[0]
+			y = coords[1]
+		}else{
+			x = shape.x
+			y = shape.y
+		}
+
+		this.pento_canvas_ref.drawPentoShape({
 			layer: true,
-			name: shape.type + shape.shape_id + shape.color,
+			name: shape.name,
 			type: shape.type,
 			mirror: shape.mirror,
 			color: shape.color,
 			block_size: this.pento_block_size,
 			draggable: !this.pento_read_only,
 			x: x, y: y,
-			parent: this.canvas_ref,
+			parent: this.pento_canvas_ref,
 			isPento: true,
 			fromCenter: true,
 			offsetX: offsetX,
 			offsetY: offsetY,
 			width: 80,
 			height: 80,
+			rotate: shape.rotation,
+			shape: shape,
 			mouseover: function (layer) {
-				document.set_active(layer)
+				if (!document.pento_read_only){
+					document.set_active(layer)
+				}	
 			},
 			click: function (layer) {
-				document.set_active(layer)
+				if (!document.pento_read_only){
+					document.set_active(layer)
+				}	
 			},
 			dragstart: function (layer) {
 				// code to run when dragging starts
-				document.update_arrows(layer, true)
-				last_x = layer.x;
-				last_y = layer.y;
+				if (!document.pento_read_only){
+					document.update_arrows(layer, true)
+					last_x = layer.x;
+					last_y = layer.y;
+				}
 			},
 			drag: function (layer) {
 				// code to run as layer is being dragged
-				document.update_arrows(layer, true)
+				if (!document.pento_read_only){
+					document.update_arrows(layer, true)
+				}
 			},
 			dragstop: function (layer) {
+				if (!document.pento_read_only){
+					// code to run when dragging stops
+					var layer_x = layer.x + layer.width / 2
+					var layer_y = layer.y + layer.height / 2
 
-				// code to run when dragging stops
-				var layer_x = layer.x + layer.width / 2
-				var layer_y = layer.y + layer.height / 2
+					if (document.is_over_grid(layer_x, layer_y) && lock_on_grid) {
+						document.lock_shape_on_grid(layer)
+					}
 
-				if (document.is_over_grid(layer_x, layer_y) && lock_on_grid) {
-					document.lock_shape_on_grid(layer)
+					if (document.is_over_shape(layer) && prevent_collision) {
+						layer.x = last_x;
+						layer.y = last_y;	
+					}
+					document.update_arrows(layer, false)
+					document.set_active(layer)
 				}
-
-				if (document.is_over_shape(layer) && prevent_collision) {
-					layer.x = last_x;
-					layer.y = last_y;	
-				}
-				document.update_arrows(layer, false)
-				document.set_active(layer)
-
 			}
 		});
 	}
 
-	this.place_randomly = function (shape) {
-		var rand_x = 100 + Math.floor((Math.random() * 200));
-		var rand_y = 400 + Math.floor((Math.random() * 100));
-	
-		this.place_shape(rand_x, rand_y, shape)
+	this.grid_cell_to_coordinates = function(shape){
+		var col = Math.max(shape["col"]-1,0)
+		var row = Math.max(shape["row"]-1,0)
+		var offsets = this.get_offsets(shape.type)
+
+		return [(this.pento_grid_x + col * this.pento_block_size)-offsets[0], 
+			(this.pento_grid_y + row * this.pento_block_size)-offsets[1]]
 	}
 
-	// draw grid for placement of shapes
-	this.init_grid();
 
-	// draw board frames/headers
-	this.init_board();
+	this.place_randomly = function (shape) {
+		shape["position"] = {}
+		shape["position"]["x"] = 100 + Math.floor((Math.random() * 200));
+		shape["position"]["y"] = 400 + Math.floor((Math.random() * 100));
+	
+		this.place_shape(shape)
+	}
 
 	// register event handler
 	$('body').on('dblclick', function (event) {
