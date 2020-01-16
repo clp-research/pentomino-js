@@ -10,18 +10,24 @@ $(document).ready(function(){
     this.pento_read_only = true
     this.pento_grid_rows = 5
     this.pento_grid_cols = 5
+    this.pento_with_tray = true
+
+    // draw board frames/headers
+	this.init_board();
 
 	// draw grid for placement of shapes
 	this.init_grid();
-
-	// draw board frames/headers
-	this.init_board();
 
     // add utility functions
     this.saveBoard = function(){
         this.pento_canvas_ref[0].toBlob(function(data){
             saveAs(data, 'pento_board_generated.png')
         })
+    }
+
+    this.toggleTray = function(){
+        this.pento_with_tray = !this.pento_with_tray
+        this.init_board()
     }
 
     this.generate = function(){
@@ -51,6 +57,11 @@ $(document).ready(function(){
             new_shape.rotate(rand_rot)
             
             this.place_shape(new_shape)
+
+            // place in tray
+            if (this.pento_with_tray){
+                this.place_randomly(new_shape)
+            }
         }
         
     }

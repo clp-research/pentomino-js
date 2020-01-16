@@ -20,30 +20,31 @@
 	<div class="pentomino container">
 
 		<div class="row">
-				<div class="twelf columns">
-					<canvas id="board" width="500" height="600" style="border:1px solid #000000;"></canvas>
-				</div>
+			<div class="twelf columns">
+				<canvas id="board" width="500" height="600" style="border:1px solid #000000;"></canvas>
 			</div>
+		</div>
 		<div class="row">
 			<div class="twelf columns">
 				<button class="generate btn" onclick="generate()">Generate</button>
+				<button class="toggle btn" onclick="toggleTray()">Toggle tray</button>
 				<button class="save btn" onclick="saveBoard()">Save</button>
 			</div>
 		</div>
 
-		</div>
+	</div>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-			integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
-			crossorigin="anonymous"></script>
-			<script src="./js/jcanvas.js"></script>
-		<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.7.3/jcanvas.min.js"
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+		integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+		crossorigin="anonymous"></script>
+	<script src="./js/jcanvas.js"></script>
+	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.7.3/jcanvas.min.js"
 			integrity="sha384-amfY6Xr18yRWq6l+1TPfkoSGRCGLNhkU67i1uElI5+u4hC5G5lhbvUU75assw5Jm"
 			crossorigin="anonymous"></script-->
-		<script src='./js/pento_shapes.js'></script>
-		<script src='./js/pento_board.js'></script>
-		<script src='./js/FileSaver.js'></script>
-		<script src='./js/generator.js'></script>
+	<script src='./js/pento_shapes.js'></script>
+	<script src='./js/pento_board.js'></script>
+	<script src='./js/FileSaver.js'></script>
+	<script src='./js/generator.js'></script>
 </body>
 
 </html>

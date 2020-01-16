@@ -15,11 +15,15 @@ $(document).ready(function () {
 	this.pento_lock_on_grid = false;
 	this.pento_prevent_collision = false;
 	this.pento_active_shape = null;
+	this.pento_with_tray = true;
 
-	this.draw_line = function (x, y, x2, y2, color) {
-
+	this.draw_line = function (x, y, x2, y2, color, name) {
+		if (name == undefined){
+			name = "line"+Math.random()
+		}
 		this.pento_canvas_ref.drawLine({
 			layer: true,
+			name: name,
 			strokeStyle: color,
 			strokeWidth: 1,
 			x1: x, y1: y,
@@ -40,10 +44,24 @@ $(document).ready(function () {
 		})
 	}
 
+	this.destroy_board = function(){
+		this.pento_canvas_ref.removeLayer("game_board");
+		this.pento_canvas_ref.removeLayer("tray")
+		this.pento_canvas_ref.removeLayer("separator")
+	}
+
 	this.init_board = function () {
+		this.destroy_board();
+
 		this.draw_text(40, 10, "Game board")
-		this.draw_line(0, 400, 600, 400, 'black')
-		this.draw_text(40, 410, "Tray")
+		if (this.pento_with_tray){
+			this.pento_canvas_ref.attr("height", 600);
+			this.draw_line(0, 400, 600, 400, 'black', 'separator')
+			this.draw_text(40, 410, "Tray")
+		}else{
+			this.pento_canvas_ref.attr("height", 400);
+		}
+		this.pento_canvas_ref.drawLayers()
 	}
 
 	this.remove_grid = function(){
@@ -74,7 +92,6 @@ $(document).ready(function () {
 	}
 
 	this.lock_shape_on_grid = function (layer) {
-
 		new_x = Math.floor((layer.x - this.pento_grid_x + layer.offsetX) / block_size) * block_size
 		new_y = Math.floor((layer.y - this.pento_grid_y + layer.offsetY) / block_size) * block_size
 		layer.x = new_x + this.pento_grid_x - layer.offsetX
@@ -313,17 +330,16 @@ $(document).ready(function () {
 	this.grid_cell_to_coordinates = function(shape){
 		var col = Math.max(shape["col"]-1,0)
 		var row = Math.max(shape["row"]-1,0)
-		var offsets = this.get_offsets(shape.type)
+		var offsets = [0,0]//this.get_offsets(shape.type)
 
-		return [(this.pento_grid_x + col * this.pento_block_size)-offsets[0], 
-			(this.pento_grid_y + row * this.pento_block_size)-offsets[1]]
+		return [(this.pento_grid_x + col * this.pento_block_size)+offsets[0], 
+			(this.pento_grid_y + row * this.pento_block_size)+offsets[1]]
 	}
 
 
 	this.place_randomly = function (shape) {
-		shape["position"] = {}
-		shape["position"]["x"] = 100 + Math.floor((Math.random() * 200));
-		shape["position"]["y"] = 400 + Math.floor((Math.random() * 100));
+		shape.x = 100 + Math.floor((Math.random() * 200));
+		shape.y = 400 + Math.floor((Math.random() * 100));
 	
 		this.place_shape(shape)
 	}
