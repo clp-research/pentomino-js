@@ -54,3 +54,7 @@ label.counter{
     padding-bottom: 25px;
     padding-top: 25px;
 }
+
+canvas#board{
+    border:1px solid black;
+}

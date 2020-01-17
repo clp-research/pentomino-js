@@ -8,8 +8,11 @@ $(document).ready(function(){
 
     // specific for pentomino
     this.pento_read_only = true
-    this.pento_grid_rows = 5
-    this.pento_grid_cols = 5
+    this.pento_lock_on_grid = true
+    this.pento_grid_rows = 10
+    this.pento_grid_cols = 10
+    this.pento_grid_x = 150
+    this.pento_grid_y = 100
     this.pento_with_tray = true
 
     // draw board frames/headers
@@ -37,7 +40,8 @@ $(document).ready(function(){
         // set value ranges for random selection
         var columns = [...Array(this.pento_grid_cols).keys()];
         var rows = [...Array(this.pento_grid_rows).keys()];
-        var colors = ["red","blue","green","brown","gray"]
+        var colors = this.get_pento_colors();
+        //["red","blue","green","brown","gray"]
         var pento_types = this.get_pento_types()
         var rotations = [0, 90, 180, 270]
 
@@ -50,19 +54,29 @@ $(document).ready(function(){
             var rand_col = columns[Math.floor(Math.random() * columns.length)];
             var rand_row = rows[Math.floor(Math.random() * rows.length)];
             var rand_rot = rotations[Math.floor(Math.random() * rotations.length)];
+            var do_mirror = Math.random()> 0.5;
 
             // create and place
-            var new_shape = this.create_pento_shape(r, rand_type, rand_color)
+            var new_shape = this.create_pento_shape(r, rand_type, rand_color, do_mirror)
             new_shape.move_on_grid(rand_col, rand_row)
             new_shape.rotate(rand_rot)
-            
             this.place_shape(new_shape)
-
-            // place in tray
-            if (this.pento_with_tray){
-                this.place_randomly(new_shape)
-            }
         }
         
+        for(var r=0; r < NUMBER_OF_SHAPES; r++){
+            // generate random types
+            var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
+            var rand_color = colors[Math.floor(Math.random() * colors.length)];
+
+            // random position
+            var rand_rot = rotations[Math.floor(Math.random() * rotations.length)];
+            var do_mirror = Math.random()> 0.5;
+
+            // create and place
+            var new_shape = this.create_pento_shape(r, rand_type, rand_color, do_mirror)
+            new_shape.rotate(rand_rot)
+            this.place_randomly(new_shape)
+
+        }
     }
 })

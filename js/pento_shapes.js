@@ -18,7 +18,7 @@ $(document).ready(function () {
 	}
 
 	class Shape {
-		constructor(id, type, color) {
+		constructor(id, type, color, is_mirrored) {
 			this.id = id
 			this.x = 0
 			this.y = 0
@@ -26,7 +26,8 @@ $(document).ready(function () {
 			this.color = color
 			this.rotation = 0
 			this.col = null
-			this.row = null
+			this.row = null	
+			this.is_mirrored = is_mirrored || false
 
 			// generate name
 			this.name = this.type + this.id + this.color
@@ -104,6 +105,149 @@ $(document).ready(function () {
 
 	}
 
+	// draw Y 
+	var draw_Y = function (ctx, Y_shape, x, y, block_size, color, mirror) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 4; i++) {
+			var block = draw_block(ctx, x, y + i * block_size, block_size, color);
+			Y_shape.add_block(block)
+		}
+
+		if (mirror) {
+			var block = draw_block(ctx, x + block_size, y + block_size, block_size, color);
+		} else {
+			var block = draw_block(ctx, x - block_size, y + block_size, block_size, color);
+		}
+		Y_shape.add_block(block)
+	}
+
+	// draw L
+	var draw_L = function (ctx, L_shape, x, y, block_size, color, mirror) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 4; i++) {
+			var block = draw_block(ctx, x, y + i * block_size, block_size, color);
+			L_shape.add_block(block)
+		}
+
+		if (mirror) {
+			var block = draw_block(ctx, x + block_size, y + 3 * block_size, block_size, color);
+		} else {
+			var block = draw_block(ctx, x - block_size, y + 3 * block_size, block_size, color);
+		}
+		L_shape.add_block(block)
+	}
+
+	// draw N
+	var draw_N = function (ctx, N_shape, x, y, block_size, color, mirror) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = draw_block(ctx, x, y + i * block_size, block_size, color);
+			N_shape.add_block(block)
+		}
+
+		for (var i = 2; i < 4; i++) {
+			if (mirror) {
+				var block = draw_block(ctx, x + block_size, y + i * block_size, block_size, color);
+			} else {
+				var block = draw_block(ctx, x - block_size, y + i * block_size, block_size, color);
+			}
+			N_shape.add_block(block)
+		}
+	}
+
+	// draw P
+	var draw_P = function (ctx, P_shape, x, y, block_size, color, mirror) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = draw_block(ctx, x, y + i * block_size, block_size, color);
+			P_shape.add_block(block)
+		}
+
+		for (var i = 0; i < 2; i++) {
+			if (mirror) {
+				var block = draw_block(ctx, x + block_size, y + i * block_size, block_size, color);
+			} else {
+				var block = draw_block(ctx, x - block_size, y + i * block_size, block_size, color);
+			}
+			P_shape.add_block(block)
+		}
+	}
+
+	// draw U
+	var draw_U = function (ctx, U_shape, x, y, block_size, color) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = draw_block(ctx, x + i * block_size, y + block_size, block_size, color);
+			U_shape.add_block(block)
+		}
+
+
+		var block = draw_block(ctx, x, y, block_size, color);
+		U_shape.add_block(block)
+
+		var block = draw_block(ctx, x + 2 * block_size, y, block_size, color);
+		U_shape.add_block(block)
+	}
+
+	// draw V
+	var draw_V = function (ctx, V_shape, x, y, block_size, color) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = draw_block(ctx, x + i * block_size, y + 2 * block_size, block_size, color);
+			V_shape.add_block(block)
+		}
+
+		for (var i = 0; i < 2; i++) {
+			var block = draw_block(ctx, x + 2 * block_size, y + i * block_size, block_size, color);
+			V_shape.add_block(block)
+		}
+	}
+
+	// draw W
+	var draw_W = function (ctx, W_shape, x, y, block_size, color) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 2; i++) {
+			var block = draw_block(ctx, x + i * block_size, y + 2 * block_size, block_size, color);
+			W_shape.add_block(block)
+		}
+
+		for (var i = 1; i < 3; i++) {
+			var block = draw_block(ctx, x + i * block_size, y + 1 * block_size, block_size, color);
+			W_shape.add_block(block)
+		}
+
+		var block = draw_block(ctx, x + 2 * block_size, y, block_size, color);
+		W_shape.add_block(block)
+	}
+
 	// draw F 
 	var draw_F = function (ctx, F_shape, x, y, block_size, color, mirror) {
 
@@ -125,6 +269,47 @@ $(document).ready(function () {
 		}
 
 	}
+
+
+	// draw X 
+	var draw_X = function (ctx, X_shape, x, y, block_size, color) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = draw_block(ctx, x, y + i * block_size, block_size, color);
+			X_shape.add_block(block)
+		}
+
+		X_shape.add_block(draw_block(ctx, x - block_size, y + block_size, block_size, color));
+		X_shape.add_block(draw_block(ctx, x + block_size, y + block_size, block_size, color));
+
+	}
+
+	// draw Z
+	var draw_Z = function (ctx, X_shape, x, y, block_size, color, mirror) {
+
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = draw_block(ctx, x, y + i * block_size, block_size, color);
+			X_shape.add_block(block)
+		}
+
+		if (mirror) {
+			X_shape.add_block(draw_block(ctx, x + block_size, y + 2 * block_size, block_size, color));
+			X_shape.add_block(draw_block(ctx, x - block_size, y, block_size, color));
+		} else {
+			X_shape.add_block(draw_block(ctx, x + block_size, y, block_size, color));
+			X_shape.add_block(draw_block(ctx, x - block_size, y + 2 * block_size, block_size, color));
+		}
+
+	}
+
 
 	// draw T
 	var draw_T = function (ctx, T_shape, x, y, block_size, color) {
@@ -179,6 +364,33 @@ $(document).ready(function () {
 					break;
 				case 'T':
 					draw_T(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color, params.mirror)
+					break;
+				case 'L':
+					draw_L(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color, params.mirror)
+					break;
+				case 'N':
+					draw_N(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color, params.mirror)
+					break;
+				case 'P':
+					draw_P(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color, params.mirror)
+					break;
+				case 'U':
+					draw_U(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color)
+					break;
+				case 'V':
+					draw_V(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color)
+					break;
+				case 'W':
+					draw_W(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color)
+					break;
+				case 'X':
+					draw_X(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color)
+					break;
+				case 'Y':
+					draw_Y(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color, params.mirror)
+					break;
+				case 'Z':
+					draw_Z(ctx, shape, params.x + params.offsetX, params.y + params.offsetY, params.block_size, params.color, params.mirror)
 					break;
 				default:
 					shape = null;
