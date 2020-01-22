@@ -103,18 +103,30 @@ $(document).ready(function () {
 		return x >= this.pento_grid_x && x <= this.pento_grid_x + this.pento_grid_width && y >= this.pento_grid_y && y <= this.pento_grid_y + this.pento_grid_height
 	}
 
-	this.is_over_shape = function (layer) {
+	this.check_collisions_of_shape = function(shape){
+		var layer = this.pento_canvas_ref.getLayer(shape.name)
+		var collisions = this.get_collisions(layer)
+		return collisions.length > 0
+	}
+
+	this.get_collisions = function(layer){
 		var layers = this.pento_canvas_ref.getLayers();
+		var hits = []
+
 		for (var i = 0; i < layers.length; i++) {
 			var placed_layer = layers[i];
 			if (placed_layer.name && placed_layer.isPento && placed_layer.name != layer.name) {
-
 				if ($.jCanvas.shape_dict[layer.name].hits($.jCanvas.shape_dict[placed_layer.name])) {
-					return true
+					hits.push($.jCanvas.shape_dict[placed_layer.name])
 				}
 			}
 		}
-		return false
+		return hits
+	}
+
+	this.is_over_shape = function (layer) {
+		var collisions = this.get_collisions(layer)
+		return collisions.length > 0
 	}
 
 	this.rotate_shape = function (angle) {

@@ -45,7 +45,7 @@ $(document).ready(function(){
         var pento_types = this.get_pento_types()
         var rotations = [0, 90, 180, 270]
 
-        for(var r=0; r < NUMBER_OF_SHAPES; r++){
+        for(var r=0; r < NUMBER_OF_SHAPES;){
             // generate random types
             var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
             var rand_color = colors[Math.floor(Math.random() * colors.length)];
@@ -61,9 +61,15 @@ $(document).ready(function(){
             new_shape.move_on_grid(rand_col, rand_row)
             new_shape.rotate(rand_rot)
             this.place_shape(new_shape)
+
+            if (this.check_collisions_of_shape(new_shape)){
+                this.destroy_shape(new_shape.name)
+            }else{
+                r++;
+            }
         }
         
-        for(var r=0; r < NUMBER_OF_SHAPES; r++){
+        for(var r=0; r < NUMBER_OF_SHAPES;){
             // generate random types
             var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
             var rand_color = colors[Math.floor(Math.random() * colors.length)];
@@ -74,9 +80,15 @@ $(document).ready(function(){
 
             // create and place
             var new_shape = this.create_pento_shape(r, rand_type, rand_color, do_mirror)
-            new_shape.rotate(rand_rot)
             this.place_randomly(new_shape)
 
+            if (this.check_collisions_of_shape(new_shape)){
+                this.destroy_shape(new_shape.name)
+            }else{
+                r++;
+            }
+            
         }
+        this.pento_canvas_ref.drawLayers()
     }
 })

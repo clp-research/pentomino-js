@@ -28,10 +28,15 @@ $(document).ready(function () {
 			this.col = null
 			this.row = null	
 			this.is_mirrored = is_mirrored || false
+			this._virtual_grid = (4,4)
+			this.block_size = 30
 
 			// generate name
 			this.name = this.type + this.id + this.color
 			this.blocks = []
+
+			// center for rotation
+			this.center = [0, 0]
 		}
 
 		rotate(angle) {
@@ -40,6 +45,12 @@ $(document).ready(function () {
 			} else {
 				this.rotation += angle
 			}
+
+			this._rotate_blocks()
+		}
+
+		_rotate_blocks(){
+
 		}
 
 		move_on_grid(col, row) {
@@ -48,12 +59,25 @@ $(document).ready(function () {
 		}
 
 		move(dx, dy) {
-			x += dx
-			y += dy
+			this.x += dx
+			this.y += dy
+
+			_update_center(dx, dy)
+		}
+
+		_calculate_center(){
+			this.center[0] = (this._virtual_grid[0] * this.block_size) + this.x
+			this.center[1] = (this._virtual_grid[1] * this.block_size) + this.y
+		}
+
+		_update_center(dx, dy){
+			this.center[0] += dx
+			this.center[1] += dy
 		}
 
 		add_block(block) {
 			this.blocks.push(block)
+			this._calculate_center()
 		}
 
 		get_blocks() {
