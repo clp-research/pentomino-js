@@ -3,8 +3,7 @@ $(document).ready(function(){
     // parameters
     // specific for generator
     NUMBER_OF_SHAPES = 5
-    UNIQUE_ONLY = false
-    WITH_GRID = false
+    NUMBER_OF_CONNECTIONS = 0
 
     // specific for pentomino
     this.pento_read_only = true
@@ -19,7 +18,34 @@ $(document).ready(function(){
 	this.init_board();
 
 	// draw grid for placement of shapes
-	this.init_grid();
+    this.init_grid();
+    
+    // init form
+    var shapes = this.get_pento_types()
+    shapes.forEach(function(item, index){
+        $('.shape-select').append(
+            '<label>'+item+'&nbsp;</label><input id="ntype" type="checkbox" checked="1"/><br>')
+    })
+
+    var calculate_actions = function(){
+        var connections = parseInt($("input#nconnections").val());
+        var rotations = parseInt($("input#nrotations").val());
+        var shapecount = parseInt($("input#nshapes").val());
+
+        var colors = $("input#colors").is( ":checked" ) ? 0 : 1;
+        var shape_difficutly = $("input#shapes").is( ":checked" ) ? 1 :0;
+
+        var type_count = 0
+        $('input#ntype').each(function(index, item){
+            type_count += $(item).is( ":checked" ) ? 1 :0;
+        })
+        var type_difficulty = Math.round(Math.min(shapecount, type_count)/4)
+
+        $(".complexity-actions").html(shapecount + rotations + connections)
+        $(".complexity-level").html(colors + type_difficulty + shape_difficutly)
+    }
+
+    calculate_actions()
 
     // add utility functions
     this.saveBoard = function(){
@@ -91,4 +117,9 @@ $(document).ready(function(){
         }
         this.pento_canvas_ref.drawLayers()
     }
+
+    
+    $("input").change(function(){
+        calculate_actions()
+    });
 })

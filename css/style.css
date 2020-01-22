@@ -58,3 +58,11 @@ label.counter{
 canvas#board{
     border:1px solid black;
 }
+
+.with-margin{
+    margin: 15px;
+}
+
+b{
+    margin-left: 15px;
+}

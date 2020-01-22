@@ -18,17 +18,60 @@
 
 <body>
 	<div class="pentomino container">
-
 		<div class="row">
-			<div class="twelf columns">
-				<canvas id="board" width="500" height="600"></canvas>
+			<div class="six columns">
+				<div class="row">
+					<div class="twelf columns">
+						<canvas id="board" width="500" height="600"></canvas>
+					</div>
+				</div>
+				<div class="row">
+					<div class="twelf columns">
+						<button class="generate btn" onclick="generate()">Generate</button>
+						<button class="toggle btn" onclick="toggleTray()">Toggle tray</button>
+						<button class="save btn" onclick="saveBoard()">Save</button>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="twelf columns">
-				<button class="generate btn" onclick="generate()">Generate</button>
-				<button class="toggle btn" onclick="toggleTray()">Toggle tray</button>
-				<button class="save btn" onclick="saveBoard()">Save</button>
+			<div class="six columns">
+				<div class="row with-margin">
+						<h5>Configuration</h5>
+						<div class="form">
+							<hr>
+							<p>General</p>
+							<label>Number of shapes</label>
+							<input id="nshapes" type="text" value="0"/>
+
+							<label>Number of connections</label>
+							<input id="nconnections" type="text" value="0"/>
+
+							<label>Number of rotations</label>
+							<input id="nrotations" type="text" value="0"/>
+
+							<label>Only unique colors</label>
+							<input id="colors" type="checkbox"/>
+
+							<br>
+							<label>Only unique shapes</label>
+							<input id="shapes" type="checkbox"/>
+
+							<hr>
+							<p>Available shapes</p>
+							<div class="shape-select">
+							</div>
+							
+						</div>
+						<hr>
+						<div class="complexity-container">
+							<label>Minimum Required Actions</label>
+							<b class="complexity-actions">0</b>
+						</div>
+						<div class="complexity-container">
+							<label>Difficulty</label>
+							<b class="complexity-level">0</b>
+						</div>
+				</div>
+
 			</div>
 		</div>
 
