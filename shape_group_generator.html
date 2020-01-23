@@ -22,13 +22,17 @@
 			<div class="six columns">
 				<div class="row">
 					<div class="twelf columns">
-						<canvas id="board" width="500" height="600"></canvas>
+						<canvas id="initial" width="500" height="600"></canvas>
+					</div>
+				</div>
+				<div class="row">
+					<div class="twelf columns">
+						<canvas id="target" width="500" height="600"></canvas>
 					</div>
 				</div>
 				<div class="row">
 					<div class="twelf columns">
 						<button class="generate btn" onclick="generate()">Generate</button>
-						<button class="toggle btn" onclick="toggleTray()">Toggle tray</button>
 						<button class="save btn" onclick="saveBoard()">Save</button>
 					</div>
 				</div>
@@ -48,11 +52,12 @@
 							<label>Number of rotations</label>
 							<input id="nrotations" type="text" value="0"/>
 
-							<label>Only unique colors</label>
+							<br>
+							<label>Monocolor</label>
 							<input id="colors" type="checkbox"/>
 
 							<br>
-							<label>Only unique shapes</label>
+							<label>Monoshape</label>
 							<input id="shapes" type="checkbox"/>
 
 							<hr>
@@ -84,6 +89,7 @@
 	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.7.3/jcanvas.min.js"
 			integrity="sha384-amfY6Xr18yRWq6l+1TPfkoSGRCGLNhkU67i1uElI5+u4hC5G5lhbvUU75assw5Jm"
 			crossorigin="anonymous"></script-->
+	<script src='./js/pento_config.js'></script>
 	<script src='./js/pento_shapes.js'></script>
 	<script src='./js/pento_board.js'></script>
 	<script src='./js/FileSaver.js'></script>
