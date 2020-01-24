@@ -1,13 +1,13 @@
 $(document).ready(function(){
 
 
-this.PentoBoard_class = class PentoBoard{
+this.PentoBoard = class PentoBoard{
 		
 		constructor(canvas_id, title, with_tray){
 			this.canvas_id = canvas_id
 			this.pento_canvas_ref = $(canvas_id);
 			this.title = title
-			this.config = new document.PentoConfig_class()
+			this.config = new document.PentoConfig()
 			this.pento_shapes = {}
 
 			// pento grid parameters
@@ -27,9 +27,13 @@ this.PentoBoard_class = class PentoBoard{
 
 			this.init_board()
 			this.init_grid()
+
+			// register event handler
+			$(canvas_id).on('dblclick', function (event) {
+				this.pento_active_shape = null
+				this.remove_arrows();
+			});
 		}
-
-
 
 		draw_line(x, y, x2, y2, color, name) {
 			if (name == undefined){
@@ -132,9 +136,7 @@ this.PentoBoard_class = class PentoBoard{
 			for (var i = 0; i < layers.length; i++) {
 				var placed_layer = layers[i];
 				if (placed_layer.name && placed_layer.isPento && placed_layer.name != layer.name) {
-					if ($.jCanvas.shape_dict[layer.name].hits($.jCanvas.shape_dict[placed_layer.name])) {
-						hits.push($.jCanvas.shape_dict[placed_layer.name])
-					}
+					//TODO
 				}
 			}
 			return hits
@@ -167,22 +169,13 @@ this.PentoBoard_class = class PentoBoard{
 			}
 		}
 
-		create_pento_shape(id, type, color, mirror){
-			var Shape = document.Shape
-			return new Shape(id, type, color, mirror)
-		}
-
 		destroy_all_shapes(){
-			var keys = Object.keys($.jCanvas.shape_dict)
-			for(var key in keys){
-				this.destroy_shape(keys[key])
+			for(var index in this.pento_shapes){
+				var shape = this.pento_shapes[index]
+				this.pento_canvas_ref.removeLayer(shape.name)
 			}
+			this.pento_shapes = []
 			this.pento_canvas_ref.drawLayers()
-		}
-
-		destroy_shape(name){
-			delete $.jCanvas.shape_dict[name]
-			this.pento_canvas_ref.removeLayer(name)
 		}
 
 		redraw_arrows(pento_canvas_ref, layer) {
@@ -279,19 +272,8 @@ this.PentoBoard_class = class PentoBoard{
 			var last_x;
 			var last_y;
 
-			var x; var y;
-			if (shape.col != null && shape.row != null){
-				var coords = this.grid_cell_to_coordinates(shape)
-				x = coords[0]
-				y = coords[1]
-			}else{
-				x = shape.x
-				y = shape.y
-			}
-
-			if (x <= 40 && y <= 60){
-				console.log("x,y "+x+","+y)
-			}
+			var x = shape.x
+			var y = shape.y
 
 			this.pento_canvas_ref.drawPentoShape({
 				layer: true,
@@ -354,21 +336,24 @@ this.PentoBoard_class = class PentoBoard{
 					}
 				}
 			});
+
+			this.pento_shapes.push(shape)
 		}
 
-		grid_cell_to_coordinates(shape){
-			var col = Math.max(shape["col"]-1,0)
-			var row = Math.max(shape["row"]-1,0)
+		place_shape_on_grid(shape, col, row){
+			var coords = this.grid_cell_to_coordinates(shape, col, row)
+			shape.x = coords[0]
+			shape.y = coords[1]
+			this.place_shape(shape)
+		}
+
+		grid_cell_to_coordinates(shape, col, row){
+			var col = Math.max(col-1,0)
+			var row = Math.max(row-1,0)
 			var offsets = this.get_offsets(shape.type)
 
 			return [(this.pento_grid_x + col * this.pento_block_size)+offsets[0], 
 				(this.pento_grid_y + row * this.pento_block_size)+offsets[1]]
 		}
 	}
-
-	// register event handler
-	$('body').on('dblclick', function (event) {
-		document.pento_active_shape = null
-		document.remove_arrows();
-	});
 })
