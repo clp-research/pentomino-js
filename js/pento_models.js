@@ -18,8 +18,9 @@ $(document).ready(function () {
 	class Block {
 		constructor(x, y, width, height, color) {
 			this.x = x
-			this.y = y
-			this.width = width
+				this.y = y
+				this.width = width
+
 			this.height = height
 			this.color = color
 			this.border_color = 'black'
@@ -121,249 +122,255 @@ $(document).ready(function () {
 	}
 
 	this.pento_create_shape = function (id, type, color, is_mirrored, rotation) {
+		//create empty shape
+		var new_shape = this._new_pento_shape(id, type, color, is_mirrored, rotation)
+
 		switch (type) {
+			case "F":
+				this.pento_F(new_shape)
+				break
 			case "I":
-				return this.pento_I(color, is_mirrored, rotation)
+				this.pento_I(new_shape)
+				break
+			case "L":
+				this.pento_L(new_shape)
+				break
+			case "N":
+				this.pento_N(new_shape)
+				break
+			case "P":
+				this.pento_P(new_shape)
+				break
+			case "T":
+				this.pento_T(new_shape)
+				break;
+			case "U":
+				this.pento_U(new_shape)
+				break;
+			case "V":
+				this.pento_V(new_shape)
+				break
+			case "W":
+				this.pento_W(new_shape)
+				break
+			case "X":
+				this.pento_X(new_shape)
+				break
+			case "Y":
+				this.pento_Y(new_shape)
+				break
+			case "Z":
+				this.pento_Z(new_shape)
+				break
 			default:
-				return this.pento_I(color, is_mirrored, rotation)
+				console.log("Unsupported shape type: " + type)
 		}
+		return new_shape
 	}
 
+	this._new_pento_shape = function () {
+		return new Shape(-1, 'None', 'black', false, 0)
+	}
 
 	this._new_pento_shape = function (id, type, color, is_mirrored, rotation) {
 		return new Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation)
 	}
 
-	this.pento_I = function (color, is_mirrored, rotation) {
 
-		I_shape = this._new_pento_shape(0, 'I', color, is_mirrored, rotation)
-
-		// Draw blocks
-		for (var i = 0; i < 4; i++) {
-			var block = this.pento_create_block(0, i * I_shape.block_size, I_shape.block_size, color);
-			I_shape.add_block(block)
-		}
-
-		return I_shape
-	}
-
-	this.pento_Y = function (color, mirror, rotation) {
-
-		Y_shape = this._new_pento_shape(0, 'Y', color, is_mirrored, rotation)
-
-		// Draw blocks
-		for (var i = 0; i < 4; i++) {
-			var block = this.pento_create_block(x, y + i * block_size, block_size, color);
-			Y_shape.add_block(block)
-		}
-
-		if (mirror) {
-			var block = this.pento_create_block(x + block_size, y + block_size, block_size, color);
-		} else {
-			var block = this.pento_create_block(x - block_size, y + block_size, block_size, color);
-		}
-		Y_shape.add_block(block)
-		return Y_shape
-	}
-
-	this.pento_L = function (ctx, L_shape, x, y, block_size, color, mirror) {
-		L_shape = this.pento_create_shape(0, 'L', color, is_mirrored)
-
-		// Draw blocks
-		for (var i = 0; i < 4; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			L_shape.add_block(block)
-		}
-
-		if (mirror) {
-			var block = this.pento_create_block(ctx, x + block_size, y + 3 * block_size, block_size, color);
-		} else {
-			var block = this.pento_create_block(ctx, x - block_size, y + 3 * block_size, block_size, color);
-		}
-		L_shape.add_block(block)
-	}
-
-	// draw N
-	var draw_N = function (ctx, N_shape, x, y, block_size, color, mirror) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
+	// draw F 
+	this.pento_F = function (shape) {
 
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			N_shape.add_block(block)
+			var block = this.pento_create_block(0, + i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
+		}
+
+		if (shape.is_mirrored) {
+			shape.add_block(this.pento_create_block(shape.block_size, + shape.block_size, shape.block_size, shape.color));
+			shape.add_block(this.pento_create_block(- shape.block_size, 0, shape.block_size, shape.color));
+		} else {
+			shape.add_block(this.pento_create_block(- shape.block_size, + shape.block_size, shape.block_size, shape.color));
+			shape.add_block(this.pento_create_block(shape.block_size, 0, shape.block_size, shape.color));
+		}
+
+	}
+
+	// Draw I
+	this.pento_I = function (shape) {
+		// Draw blocks
+		for (var i = 0; i < 4; i++) {
+			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
+		}
+
+	}
+
+	// Draw L
+	this.pento_L = function (shape) {
+		// Draw blocks
+		for (var i = 0; i < 4; i++) {
+			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
+		}
+
+		if (shape.is_mirrored) {
+			var block = this.pento_create_block(shape.block_size, 3 * shape.block_size, shape.block_size, shape.color);
+		} else {
+			var block = this.pento_create_block(- shape.block_size, 3 * shape.block_size, shape.block_size, shape.color);
+		}
+		shape.add_block(block)
+	}
+
+	// draw N
+	this.pento_N = function (shape) {
+
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = this.pento_create_block(0, + i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
 		for (var i = 2; i < 4; i++) {
-			if (mirror) {
-				var block = this.pento_create_block(ctx, x + block_size, y + i * block_size, block_size, color);
+			if (shape.is_mirrored) {
+				var block = this.pento_create_block(shape.block_size, + i * shape.block_size, shape.block_size, shape.color);
 			} else {
-				var block = this.pento_create_block(ctx, x - block_size, y + i * block_size, block_size, color);
+				var block = this.pento_create_block(shape.block_size, + i * shape.block_size, shape.block_size, shape.color);
 			}
-			N_shape.add_block(block)
+			shape.add_block(block)
 		}
 	}
 
 	// draw P
-	var draw_P = function (ctx, P_shape, x, y, block_size, color, mirror) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
+	this.pento_P = function (shape) {
 
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			P_shape.add_block(block)
+			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
 		for (var i = 0; i < 2; i++) {
-			if (mirror) {
-				var block = this.pento_create_block(ctx, x + block_size, y + i * block_size, block_size, color);
+			if (shape.is_mirrored) {
+				var block = this.pento_create_block(shape.block_size, + i * shape.block_size, shape.block_size, shape.color);
 			} else {
-				var block = this.pento_create_block(ctx, x - block_size, y + i * block_size, block_size, color);
+				var block = this.pento_create_block(- shape.block_size, + i * shape.block_size, shape.block_size, shape.color);
 			}
-			P_shape.add_block(block)
+			shape.add_block(block)
 		}
+	}
+
+	// Draw T
+	this.pento_T = function (shape) {
+		// Draw blocks
+		for (var i = 0; i < 3; i++) {
+			var block = this.pento_create_block(0, + i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
+		}
+
+		shape.add_block(this.pento_create_block(- shape.block_size, 0, shape.block_size, shape.color));
+		shape.add_block(this.pento_create_block(shape.block_size, 0, shape.block_size, shape.color));
+
 	}
 
 	// draw U
-	var draw_U = function (ctx, U_shape, x, y, block_size, color) {
+	this.pento_U = function (shape) {
 
-		ctx.beginPath();
-		ctx.moveTo(x, y);
 
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x + i * block_size, y + block_size, block_size, color);
-			U_shape.add_block(block)
+			var block = this.pento_create_block(i * shape.block_size, + shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
 
-		var block = this.pento_create_block(ctx, x, y, block_size, color);
-		U_shape.add_block(block)
+		var block = this.pento_create_block(0, 0, shape.block_size, shape.color);
+		shape.add_block(block)
 
-		var block = this.pento_create_block(ctx, x + 2 * block_size, y, block_size, color);
-		U_shape.add_block(block)
+		var block = this.pento_create_block(2 * shape.block_size, 0, shape.block_size, shape.color);
+		shape.add_block(block)
 	}
 
 	// draw V
-	var draw_V = function (ctx, V_shape, x, y, block_size, color) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
+	this.pento_V = function (shape) {
 
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x + i * block_size, y + 2 * block_size, block_size, color);
-			V_shape.add_block(block)
+			var block = this.pento_create_block(i * shape.block_size, 2 * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
 		for (var i = 0; i < 2; i++) {
-			var block = this.pento_create_block(ctx, x + 2 * block_size, y + i * block_size, block_size, color);
-			V_shape.add_block(block)
+			var block = this.pento_create_block(2 * shape.block_size, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 	}
 
 	// draw W
-	var draw_W = function (ctx, W_shape, x, y, block_size, color) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
+	this.pento_W = function (shape) {
 
 		// Draw blocks
 		for (var i = 0; i < 2; i++) {
-			var block = this.pento_create_block(ctx, x + i * block_size, y + 2 * block_size, block_size, color);
-			W_shape.add_block(block)
+			var block = this.pento_create_block(i * shape.block_size, 2 * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
 		for (var i = 1; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x + i * block_size, y + 1 * block_size, block_size, color);
-			W_shape.add_block(block)
+			var block = this.pento_create_block(i * shape.block_size, 1 * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
-		var block = this.pento_create_block(ctx, x + 2 * block_size, y, block_size, color);
-		W_shape.add_block(block)
+		var block = this.pento_create_block(2 * shape.block_size, 0, shape.block_size, shape.color);
+		shape.add_block(block)
 	}
 
-	// draw F 
-	var draw_F = function (ctx, F_shape, x, y, block_size, color, mirror) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
-
+	// Draw X
+	this.pento_X = function (shape) {
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			F_shape.add_block(block)
+			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
-		if (mirror) {
-			F_shape.add_block(this.pento_create_block(ctx, x + block_size, y + block_size, block_size, color));
-			F_shape.add_block(this.pento_create_block(ctx, x - block_size, y, block_size, color));
+		shape.add_block(this.pento_create_block(- shape.block_size, shape.block_size, shape.block_size, shape.color));
+		shape.add_block(this.pento_create_block(shape.block_size, shape.block_size, shape.block_size, shape.color));
+	}
+
+	// Draw Y
+	this.pento_Y = function (shape) {
+		// Draw blocks
+		for (var i = 0; i < 4; i++) {
+			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
+		}
+
+		if (shape.is_mirrored) {
+			var block = this.pento_create_block(shape.block_size, shape.block_size, shape.block_size, shape.color);
 		} else {
-			F_shape.add_block(this.pento_create_block(ctx, x - block_size, y + block_size, block_size, color));
-			F_shape.add_block(this.pento_create_block(ctx, x + block_size, y, block_size, color));
+			var block = this.pento_create_block(- shape.block_size, shape.block_size, shape.block_size, shape.color);
 		}
-
-	}
-
-
-	// draw X 
-	var draw_X = function (ctx, X_shape, x, y, block_size, color) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
-
-		// Draw blocks
-		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			X_shape.add_block(block)
-		}
-
-		X_shape.add_block(this.pento_create_block(ctx, x - block_size, y + block_size, block_size, color));
-		X_shape.add_block(this.pento_create_block(ctx, x + block_size, y + block_size, block_size, color));
-
+		shape.add_block(block)
 	}
 
 	// draw Z
-	var draw_Z = function (ctx, X_shape, x, y, block_size, color, mirror) {
-
-		ctx.beginPath();
-		ctx.moveTo(x, y);
-
+	this.pento_Z = function (shape) {
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			X_shape.add_block(block)
+			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
+			shape.add_block(block)
 		}
 
-		if (mirror) {
-			X_shape.add_block(this.pento_create_block(ctx, x + block_size, y + 2 * block_size, block_size, color));
-			X_shape.add_block(this.pento_create_block(ctx, x - block_size, y, block_size, color));
+		if (shape.is_mirrored) {
+			shape.add_block(this.pento_create_block(shape.block_size, 2 * shape.block_size, shape.block_size, shape.color));
+			shape.add_block(this.pento_create_block(-shape.block_size, 0, shape.block_size, shape.color));
 		} else {
-			X_shape.add_block(this.pento_create_block(ctx, x + block_size, y, block_size, color));
-			X_shape.add_block(this.pento_create_block(ctx, x - block_size, y + 2 * block_size, block_size, color));
+			shape.add_block(this.pento_create_block(shape.block_size, 0, shape.block_size, shape.color));
+			shape.add_block(this.pento_create_block(- shape.block_size, 2 * shape.block_size, shape.block_size, shape.color));
 		}
 
 	}
 
 
-	// draw T
-	var draw_T = function (ctx, T_shape, x, y, block_size, color) {
 
-		ctx.beginPath();
-		ctx.moveTo(x, y);
-
-		// Draw blocks
-		for (var i = 0; i < 3; i++) {
-			var block = this.pento_create_block(ctx, x, y + i * block_size, block_size, color);
-			T_shape.add_block(block)
-		}
-
-		T_shape.add_block(this.pento_create_block(ctx, x - block_size, y, block_size, color));
-		T_shape.add_block(this.pento_create_block(ctx, x + block_size, y, block_size, color));
-
-	}
 })
 
