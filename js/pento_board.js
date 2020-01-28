@@ -24,6 +24,12 @@ this.PentoBoard = class PentoBoard{
 			this.pento_prevent_collision = false;
 			this.pento_active_shape = null;
 			this.pento_with_tray = with_tray;
+			
+			// event handler
+			this.event_handlers = []
+
+			// actions
+			this.actions = ["move","rotate","connect"]
 
 			this.init_board()
 			this.init_grid()
@@ -33,6 +39,12 @@ this.PentoBoard = class PentoBoard{
 				this.pento_active_shape = null
 				this.remove_arrows();
 			});
+		}
+
+		draw(){
+			if (this.pento_canvas_ref){
+				this.pento_canvas_ref.drawLayers()
+			}
 		}
 
 		draw_line(x, y, x2, y2, color, name) {
@@ -274,6 +286,7 @@ this.PentoBoard = class PentoBoard{
 
 			var x = shape.x
 			var y = shape.y
+			var self = this
 
 			this.pento_canvas_ref.drawPentoShape({
 				layer: true,
@@ -294,50 +307,52 @@ this.PentoBoard = class PentoBoard{
 				rotate: shape.rotation,
 				shape: shape,
 				mouseover: function (layer) {
-					if (!document.pento_read_only){
-						document.set_active(layer)
+					if (!self.pento_read_only){
+						self.set_active(layer)
 					}	
 				},
 				click: function (layer) {
-					if (!document.pento_read_only){
-						document.set_active(layer)
+					if (!self.pento_read_only){
+						self.set_active(layer)
 					}	
 				},
 				dragstart: function (layer) {
 					// code to run when dragging starts
-					if (!document.pento_read_only){
-						document.update_arrows(layer, true)
+					if (!self.pento_read_only){
+						self.update_arrows(layer, true)
 						last_x = layer.x;
 						last_y = layer.y;
 					}
 				},
 				drag: function (layer) {
 					// code to run as layer is being dragged
-					if (!document.pento_read_only){
-						document.update_arrows(layer, true)
+					if (!self.pento_read_only){
+						self.update_arrows(layer, true)
 					}
 				},
 				dragstop: function (layer) {
-					if (!document.pento_read_only){
+					if (!self.pento_read_only){
 						// code to run when dragging stops
 						var layer_x = layer.x + layer.width / 2
 						var layer_y = layer.y + layer.height / 2
 
-						if (document.is_over_grid(layer_x, layer_y) && document.pento_lock_on_grid) {
-							document.lock_shape_on_grid(layer)
+						if (self.is_over_grid(layer_x, layer_y) && self.pento_lock_on_grid) {
+							self.lock_shape_on_grid(layer)
 						}
 
-						if (document.is_over_shape(layer) && document.pento_prevent_collision) {
+						if (self.is_over_shape(layer) && self.pento_prevent_collision) {
 							layer.x = last_x;
 							layer.y = last_y;	
 						}
-						document.update_arrows(layer, false)
-						document.set_active(layer)
+						self.update_arrows(layer, false)
+						self.set_active(layer)
+
+						self.fire_event("shape_moved", shape.name, {"rotation": shape.rotation + params["angle"]})
 					}
 				}
 			});
 
-			this.pento_shapes.push(shape)
+			this.pento_shapes[shape.name] = shape
 		}
 
 		place_shape_on_grid(shape, col, row){
@@ -354,6 +369,48 @@ this.PentoBoard = class PentoBoard{
 
 			return [(this.pento_grid_x + col * this.pento_block_size)+offsets[0], 
 				(this.pento_grid_y + row * this.pento_block_size)+offsets[1]]
+		}
+		
+		// actions
+		get_actions(){
+			return this.actions
+		}
+
+
+		execute_action(action_name, shape, params){
+			//["move","rotate","connect"]
+			switch(action_name){
+				case "move":
+					shape.move(params["dx"],params["dy"])
+					this.fire_event("shape_moved", shape.name, {"dx": params["dx"], "dy": params["dy"]})
+					break
+				case "rotate":
+					shape.rotate(params["rotation"])
+					this.fire_event("shape_moved", shape.name, {"rotation": params["rotation"]})
+					break
+				case "connect":
+					var group_id = shape.connect_to(params["other_shape"])
+					this.fire_event("shape_connected", shape.name, {"other_shape": params["other_shape"].name,
+				"group_id": group_id})
+					break
+				default:
+					console.log("Unknown action: "+action_name)
+			}
+		}
+
+		// event functions
+		register_event_handler(handler){
+			this.event_handlers.push(handler)
+		}
+
+		fire_event(event_type, event_object_id, event_changes){
+			var event = {
+				"type": event_type,
+				"object_id": event_object_id,
+				"changes" :event_changes
+			}
+
+			this.event_handlers.forEach(handler => handler.handle(event))
 		}
 	}
 })

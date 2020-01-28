@@ -60,6 +60,10 @@ $(document).ready(function () {
 			this.center = [0, 0]
 		}
 
+		connect_to(other_shape){
+			return "group"+this.id+other_shape.id
+		}
+
 		rotate(angle) {
 			if (this.rotation + angle > 360 || this.rotation + angle < 0) {
 				this.rotation = 0
@@ -83,7 +87,7 @@ $(document).ready(function () {
 			this.x += dx
 			this.y += dy
 
-			_update_center(dx, dy)
+			this._update_center(dx, dy)
 		}
 
 		_calculate_center() {
@@ -117,6 +121,19 @@ $(document).ready(function () {
 				}
 			}
 			return false
+		}
+
+		make_copy(new_id){
+			var shape_copy = document.pento_create_shape(new_id, this.type, this.color,
+				this.is_mirrored, this.rotation)
+				
+			shape_copy.blocks = this.get_blocks()
+			shape_copy.x = this.x
+			shape_copy.y = this.y
+			shape_copy.width = this.width
+			shape_copy.height = this.height
+
+			return shape_copy
 		}
 	}
 
