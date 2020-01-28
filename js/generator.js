@@ -88,13 +88,6 @@ $(document).ready(function(){
 
     calculate_actions()
 
-    // add utility functions
-    this.saveBoard = function(){
-        this.pento_board_target.pento_canvas_ref[0].toBlob(function(data){
-            saveAs(data, 'pento_board_target_generated.png')
-        })
-    }
-
     this.generate_params = function(action_type, shapes){
         var movement_range = 100
         switch(action_type){
@@ -189,6 +182,10 @@ $(document).ready(function(){
         this.pento_board_initial.draw()
     }
 
+    this.save = function(){
+        this.pento_board_initial.saveBoard()
+        this.pento_board_target.saveBoard()
+    }
     
     $("input").change(function(){
         calculate_actions()

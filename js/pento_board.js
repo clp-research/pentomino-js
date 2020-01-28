@@ -412,5 +412,15 @@ this.PentoBoard = class PentoBoard{
 
 			this.event_handlers.forEach(handler => handler.handle(event))
 		}
+
+		// utility
+		saveBoard(){
+			var self = this
+			this.pento_canvas_ref[0].toBlob(function(data){
+				saveAs(data, self.title+'.png')
+			})
+		}
 	}
+
+
 })
