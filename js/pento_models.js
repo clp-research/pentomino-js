@@ -386,8 +386,5 @@ $(document).ready(function () {
 		}
 
 	}
-
-
-
 })
 

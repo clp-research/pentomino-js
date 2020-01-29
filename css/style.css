@@ -55,8 +55,12 @@ label.counter{
     padding-top: 25px;
 }
 
-canvas#board{
-    border:1px solid black;
+canvas{
+    border:1px solid darkgray;
+    margin-top: 30px;
+    margin-right: 0px;
+    margin-bottom: 15px;;
+    margin-left: 0px;
 }
 
 .with-margin{

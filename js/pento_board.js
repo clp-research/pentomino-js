@@ -39,6 +39,25 @@ this.PentoBoard = class PentoBoard{
 				this.pento_active_shape = null
 				this.remove_arrows();
 			});
+
+			// init actions
+			this.setup_canvas()
+			this.draw()
+		}
+
+		setup_canvas(){
+			$(this.canvas_id).prop("width", this.pento_grid_cols * this.pento_block_size)
+			$(this.canvas_id).prop("height", this.pento_grid_cols * this.pento_block_size)
+		}
+
+		set(key, value){
+			switch(key){
+				case "read_only":
+					this.pento_read_only = value
+					break;
+				default:
+					console.log("unknown config option: "+key)
+			}
 		}
 
 		draw(){
@@ -83,7 +102,7 @@ this.PentoBoard = class PentoBoard{
 		init_board() {
 			this.destroy_board();
 
-			this.draw_text(40, 10, this.title)
+			this.draw_text(10, 10, this.title)
 			if (this.pento_with_tray){
 				this.pento_canvas_ref.attr("height", 600);
 				this.draw_line(0, 400, 600, 400, 'black', 'separator')

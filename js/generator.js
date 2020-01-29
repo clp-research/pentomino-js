@@ -11,7 +11,6 @@ $(document).ready(function(){
     SHAPES_FILTER = []
 
     // specific for pentomino
-    this.pento_read_only = true
     this.pento_lock_on_grid = true
     this.pento_grid_rows = 10
     this.pento_grid_cols = 10
@@ -25,24 +24,33 @@ $(document).ready(function(){
     // draw board frames/headers
     var PentoBoard = this.PentoBoard
     this.pento_board_target = new PentoBoard("#initial", "Initial", false);
+    this.pento_board_target.set("read_only", true)
+
     this.pento_board_initial = new PentoBoard("#target", "Target", false)
-    
+    this.pento_board_initial.set("read_only", true)
+
     // init form
     var shapes = this.pento_config.get_pento_types()
     shapes.forEach(function(item, index){
+        var checked = localStorage.getItem("exclude_"+item)
+        if (checked == "1"){
+            checked = "checked=\"1\""
+        }else{
+            checked = ""
+        }
         $('.shape-select').append(
             '<div class="one column"><label>'+item+'&nbsp;</label><input id="ntype" shape_type="'+item
-            +'" type="checkbox" checked="1"/><br></div>')
+            +'" class="shape-type-'+item+'" type="checkbox" '+checked+'/><br></div>')
     })
 
     // init stored data
-    $("input#nshapes").val(localStorage.getItem("nshapes"))
-    $("input#nchanges_rotations").val(localStorage.getItem("nchanges_rotations"))
-    $("input#nchanges").val(localStorage.getItem("nchanges"))
-    $("input#nrotations").val(localStorage.getItem("nrotations"))
-    $("input#nconnections").val(localStorage.getItem("nconnections"))
-    $("input#colors").prop("checked", parseInt(localStorage.getItem("colors")) == 1)
-    $("input#shapes").prop("checked", parseInt(localStorage.getItem("shape_difficulty")) == 1)
+    $("input#nshapes").val(localStorage.getItem("nshapes") || 1)
+    $("input#nchanges_rotations").val(localStorage.getItem("nchanges_rotations") || 0)
+    $("input#nchanges").val(localStorage.getItem("nchanges") || 1)
+    $("input#nrotations").val(localStorage.getItem("nrotations") || 0)
+    $("input#nconnections").val(localStorage.getItem("nconnections") || 0)
+    $("input#colors").prop("checked", localStorage.getItem("colors") == "true")
+    $("input#shapes").prop("checked", localStorage.getItem("shape_difficulty") == "true")
 
     this.calculate_actions = function(){
         // set global vars
@@ -127,7 +135,7 @@ $(document).ready(function(){
         var columns = [...Array(this.pento_grid_cols).keys()];
         var rows = [...Array(this.pento_grid_rows).keys()];
 
-        if (MONOCOLOR){
+        if (!MONOCOLOR){
             var colors = this.pento_config.get_pento_colors();
         }else{
             var colors = ['lightblue']
@@ -136,7 +144,7 @@ $(document).ready(function(){
         pento_types = this.pento_config.get_pento_types()
         var pento_types = pento_types.filter((shape_type) => SHAPES_FILTER.indexOf(shape_type)==-1)
 
-        if (!MONOSHAPES){
+        if (MONOSHAPES){
             var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
         }
  
