@@ -26,6 +26,23 @@ $(document).ready(function(){
     var PentoBoard = this.PentoBoard
     this.pento_board_target = new PentoBoard("#initial", "Initial", false);
     this.pento_board_initial = new PentoBoard("#target", "Target", false)
+    
+    // init form
+    var shapes = this.pento_config.get_pento_types()
+    shapes.forEach(function(item, index){
+        $('.shape-select').append(
+            '<div class="one column"><label>'+item+'&nbsp;</label><input id="ntype" shape_type="'+item
+            +'" type="checkbox" checked="1"/><br></div>')
+    })
+
+    // init stored data
+    $("input#nshapes").val(localStorage.getItem("nshapes"))
+    $("input#nchanges_rotations").val(localStorage.getItem("nchanges_rotations"))
+    $("input#nchanges").val(localStorage.getItem("nchanges"))
+    $("input#nrotations").val(localStorage.getItem("nrotations"))
+    $("input#nconnections").val(localStorage.getItem("nconnections"))
+    $("input#colors").prop("checked", parseInt(localStorage.getItem("colors")) == 1)
+    $("input#shapes").prop("checked", parseInt(localStorage.getItem("shape_difficulty")) == 1)
 
     this.calculate_actions = function(){
         // set global vars
@@ -34,12 +51,17 @@ $(document).ready(function(){
         NUMBER_OF_CONNECTIONS = parseInt($("input#nconnections").val());
         MONOCOLOR = $("input#colors").is( ":checked" );
         MONOSHAPES = $("input#shapes").is( ":checked" );
+        NUMBER_OF_CHANGES = parseInt($("input#nchanges").val());
+        NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
 
         // store data
+        localStorage.setItem("nchanges_rotations", NUMBER_OF_CHANGES_ROTATIONS)
+        localStorage.setItem("nchanges", NUMBER_OF_CHANGES)
         localStorage.setItem("nshapes",NUMBER_OF_SHAPES)
         localStorage.setItem("nrotations", NUMBER_OF_ROTATIONS)
         localStorage.setItem("nconnections", NUMBER_OF_CONNECTIONS)
         localStorage.setItem("colors", MONOCOLOR)
+        localStorage.setItem("shape_difficulty", MONOSHAPES)
 
         var shapes = this.pento_config.get_pento_types()
         shapes.forEach(function(item, index){
@@ -60,16 +82,46 @@ $(document).ready(function(){
         $(".complexity-actions").html(NUMBER_OF_SHAPES + NUMBER_OF_ROTATIONS + NUMBER_OF_CONNECTIONS)
     }
 
-    // add utility functions
-    this.saveBoard = function(){
-        this.pento_board_target.pento_canvas_ref[0].toBlob(function(data){
-            saveAs(data, 'pento_board_target_generated.png')
-        })
+    this.generate_params = function(action_type, shapes){
+        var movement_range = 100
+        switch(action_type){
+            case 'move':
+                var rand_x = Math.floor(Math.random() * movement_range) - movement_range/2
+                var rand_y = Math.floor(Math.random() * movement_range) - movement_range/2
+                return {"dx": rand_x, "dy": rand_y}
+            case "rotate":
+                var rand_angle = Math.floor(Math.random() * 360)
+                return {'rotation': rand_angle}
+            case "connect":
+                var random_other = shapes[Math.floor(Math.random() * shapes.length)]
+                return {'other_shape': random_other}
+            default:
+                console.log("Not implemented: "+ action_type)
+                return 
+        }
+    }
+
+    this.create_initial_state = function(shapes, nactions){
+        for(var shape_index in shapes){
+            var shape = shapes[shape_index]
+            this.pento_board_initial.place_shape(shape)
+        }
+
+        var actions = this.pento_board_initial.get_actions()
+        for (var i=0; i < nactions; i++){
+            var action_index = Math.floor(Math.random() * actions.length)
+            var shape_index = Math.floor(Math.random()* shapes.length)
+            var random_action = actions[action_index]
+            var random_shape = shapes[shape_index]
+
+            this.pento_board_initial.execute_action(random_action, random_shape, this.generate_params(random_action, shapes))
+        }
     }
 
     this.generate = function(){
         // remove all previously generated shapes
         this.pento_board_target.destroy_all_shapes()
+        this.pento_board_initial.destroy_all_shapes()
 
         // set value ranges for random selection
         var columns = [...Array(this.pento_grid_cols).keys()];
@@ -91,6 +143,7 @@ $(document).ready(function(){
         var rotations = [...Array(360).keys()];
 
         var rotation_counter = 0
+        var generated_shapes = []
         for(var r=0; r < NUMBER_OF_SHAPES; r++){
             // generate random types
             var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
@@ -111,32 +164,23 @@ $(document).ready(function(){
             // create and place
             var new_shape = this.pento_create_shape(r, rand_type, rand_color, do_mirror, rand_rot)
             this.pento_board_target.place_shape_on_grid(new_shape, rand_col, rand_row)
+
+            generated_shapes.push(new_shape.make_copy(r+20))
         }
-        this.pento_board_target.pento_canvas_ref.drawLayers()
+        this.pento_board_target.draw()
+
+        this.create_initial_state(generated_shapes, NUMBER_OF_CHANGES)
+        this.pento_board_initial.draw()
     }
 
-    // init form
-    var shapes = this.pento_config.get_pento_types()
-    shapes.forEach(function(item, index){
-        var value = localStorage.getItem("exclude_"+item)
-
-        var checked = ""
-        if (value === "1"){
-            var checked = 'checked="1"'
-        }
-        $('.shape-select').append(
-            '<label for="'+item+'">'+item+'&nbsp;</label><input id="ntype" class="shape-type-'+item+'" shape_type="'+item+'" type="checkbox" '+checked+'/><br>')
-    })
-
-    // init stored data
-    $("input#nshapes").val(localStorage.getItem("nshapes"))
-    $("input#nrotations").val(localStorage.getItem("nrotations"))
-    $("input#nconnections").val(localStorage.getItem("nconnections"))
-    $("input#colors").prop("checked", localStorage.getItem("colors") === "true")
-    $("input#shapes").prop("checked", localStorage.getItem("shape_difficulty") === "true")
-    this.calculate_actions()
+    this.save = function(){
+        this.pento_board_initial.saveBoard()
+        this.pento_board_target.saveBoard()
+    }
     
     $("input").change(function(){
         document.calculate_actions()
     });
+
+    this.calculate_actions()
 })

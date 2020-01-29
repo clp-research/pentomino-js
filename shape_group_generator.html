@@ -33,7 +33,7 @@
 				<div class="row">
 					<div class="twelf columns">
 						<button class="generate btn" onclick="generate()">Generate</button>
-						<button class="save btn" onclick="saveBoard()">Save</button>
+						<button class="save btn" onclick="save()">Save</button>
 					</div>
 				</div>
 			</div>
@@ -42,16 +42,23 @@
 						<h5>Configuration</h5>
 						<div class="form">
 							<hr>
-							<p>General</p>
+							<p>Target State Config</p>
 							<label>Number of shapes</label>
 							<input id="nshapes" type="text" value="0"/>
-
-							<label>Number of connections</label>
-							<input id="nconnections" type="text" value="0"/>
 
 							<label>Number of rotations</label>
 							<input id="nrotations" type="text" value="0"/>
 
+							<hr>
+							<p>Initial State Config</p>
+							<label>Number of change</label>
+							<input id="nchanges" type="text" value="0"/>
+
+							<label>Number of rotations</label>
+							<input id="nchanges_rotations" type="text" value="0"/>
+
+							<hr>
+							<p>Additional Config</p>
 							<br>
 							<label>Monocolor</label>
 							<input id="colors" type="checkbox"/>
@@ -62,19 +69,16 @@
 
 							<hr>
 							<p>Available shapes</p>
-							<div class="shape-select">
+							<div class="row shape-select">
 							</div>
 							
 						</div>
 						<hr>
 						<div class="complexity-container">
-							<label>Minimum Required Actions</label>
+							<h6>Minimum Required Actions</h6>
 							<b class="complexity-actions">0</b>
 						</div>
-						<div class="complexity-container">
-							<label>Difficulty</label>
-							<b class="complexity-level">0</b>
-						</div>
+						<hr>
 				</div>
 
 			</div>
