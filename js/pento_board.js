@@ -102,7 +102,7 @@ this.PentoBoard = class PentoBoard{
 		init_board() {
 			this.destroy_board();
 
-			this.draw_text(10, 10, this.title)
+			//this.draw_text(10, 10, this.title)
 			if (this.pento_with_tray){
 				this.pento_canvas_ref.attr("height", 600);
 				this.draw_line(0, 400, 600, 400, 'black', 'separator')
@@ -400,8 +400,8 @@ this.PentoBoard = class PentoBoard{
 			//["move","rotate","connect"]
 			switch(action_name){
 				case "move":
-					shape.move(params["dx"],params["dy"])
-					this.fire_event("shape_moved", shape.name, {"dx": params["dx"], "dy": params["dy"]})
+					shape.move(params["x"],params["y"])
+					this.fire_event("shape_moved", shape.name, {"x": params["x"], "y": params["y"]})
 					break
 				case "rotate":
 					shape.rotate(params["rotation"])

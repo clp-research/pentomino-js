@@ -13,75 +13,87 @@
 	<link rel="stylesheet" href="css/skeleton.css">
 	<link rel="stylesheet" href="css/style.css">
 
-
 </head>
 
 <body>
 	<div class="pentomino container">
 		<div class="row">
-			<div class="six columns">
-				<div class="row">
-					<div class="twelf columns">
-						<canvas id="initial" ></canvas>
-					</div>
+			<div class="four columns">
+				<div class="row with-margin">
+					<h5>Steps</h5>
+					<hr>
+					<div class="snapshots"></div>
 				</div>
-				<div class="row">
-					<div class="twelf columns">
-						<canvas id="target" ></canvas>
+			</div>
+			<div class="four columns">
+				<div class="row with-margin">
+					<h5>Boards</h5>
+					<hr>
+					<div class="row">
+						<div class="twelf columns">
+							<h6>Initial</h6>
+							<canvas id="initial"></canvas>
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="twelf columns">
-						<button class="generate btn" onclick="generate()">Generate</button>
-						<button class="save btn" onclick="save()">Save</button>
+					<div class="row">
+						<div class="twelf columns">
+							<h6>Target</h6>
+							<canvas id="target"></canvas>
+						</div>
+					</div>
+					<div class="row">
+						<div class="twelf columns">
+							<button class="generate btn" onclick="generate()">Generate</button>
+							<button class="save btn" onclick="save()">Save</button>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="six columns">
+			<div class="four columns">
 				<div class="row with-margin">
-						<h5>Configuration</h5>
-						<div class="form">
-							<hr>
-							<p>Target State Config</p>
-							<label>Number of shapes</label>
-							<input id="nshapes" type="text" value="0"/>
-
-							<label>Number of rotations</label>
-							<input id="nrotations" type="text" value="0"/>
-
-							<label>Number of connections</label>
-							<input id="nconnections" type="text" value="0"/>
-
-							<hr>
-							<p>Initial State Config</p>
-							<label>Number of change</label>
-							<input id="nchanges" type="text" value="0"/>
-
-							<label>Number of rotations</label>
-							<input id="nchanges_rotations" type="text" value="0"/>
-
-							<hr>
-							<p>Additional Config</p>
-							<br>
-							<label>Monocolor</label>
-							<input id="colors" type="checkbox"/>
-
-							<br>
-							<label>Monoshape</label>
-							<input id="shapes" type="checkbox"/>
-
-							<hr>
-							<p>Available shapes</p>
-							<div class="row shape-select">
-							</div>
-							
-						</div>
+					<h5>Configuration</h5>
+					<div class="form">
 						<hr>
-						<div class="complexity-container">
-							<h6>Minimum Required Actions</h6>
-							<b class="complexity-actions">0</b>
-						</div>
+						<p>Target State Config</p>
+						<label>Number of shapes</label>
+						<input id="nshapes" type="text" value="0" />
+
+						<label>Number of rotations</label>
+						<input id="nrotations" type="text" value="0" />
+
+						<label>Number of connections</label>
+						<input id="nconnections" type="text" value="0" />
+
 						<hr>
+						<p>Initial State Config</p>
+						<label>Number of change</label>
+						<input id="nchanges" type="text" value="0" />
+
+						<label>Number of rotations</label>
+						<input id="nchanges_rotations" type="text" value="0" />
+
+						<hr>
+						<p>Additional Config</p>
+						<br>
+						<label>Monocolor</label>
+						<input id="colors" type="checkbox" />
+
+						<br>
+						<label>Monoshape</label>
+						<input id="shapes" type="checkbox" />
+
+						<hr>
+						<p>Available shapes</p>
+						<div class="row shape-select">
+						</div>
+
+					</div>
+					<hr>
+					<div class="complexity-container">
+						<h6>Minimum Required Actions</h6>
+						<b class="complexity-actions">0</b>
+					</div>
+					<hr>
 				</div>
 
 			</div>

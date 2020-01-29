@@ -90,13 +90,23 @@ $(document).ready(function(){
         $(".complexity-actions").html(NUMBER_OF_SHAPES + NUMBER_OF_ROTATIONS + NUMBER_OF_CONNECTIONS)
     }
 
+    this.random_in_range = function(min, max){
+        var val = min -1
+        while(val < min || val > max){
+            val = Math.floor(Math.random() * max) - max/2
+        }
+        return val
+    }
+
     this.generate_params = function(action_type, shapes){
-        var movement_range = 100
+        var max = 400
+        var min = 0
+
         switch(action_type){
             case 'move':
-                var rand_x = Math.floor(Math.random() * movement_range) - movement_range/2
-                var rand_y = Math.floor(Math.random() * movement_range) - movement_range/2
-                return {"dx": rand_x, "dy": rand_y}
+                var rand_x = this.random_in_range(min, max)
+                var rand_y = this.random_in_range(min, max)
+                return {"x": rand_x, "y": rand_y}
             case "rotate":
                 var rand_angle = Math.floor(Math.random() * 360)
                 return {'rotation': rand_angle}
@@ -109,7 +119,22 @@ $(document).ready(function(){
         }
     }
 
+    this.make_board_screenshot = function(index, canvas_id, action){
+        $('.snapshots').append('<canvas class="snapshot center" id="snapshot_'+index+'" width="300px" height="300px"></canvas>')
+
+        //grab the context from your destination canvas
+        var destCtx = $('#snapshot_'+index)[0].getContext('2d');
+
+        //call its drawImage() function passing it the source canvas directly
+        destCtx.drawImage($(canvas_id)[0], 0, 0, 300, 300);
+
+        destCtx.font = "11px Arial";
+        destCtx.fillText(action, 4, 300-4); 
+    }
+
     this.create_initial_state = function(shapes, nactions){
+        $('.snapshots').empty()
+
         for(var shape_index in shapes){
             var shape = shapes[shape_index]
             this.pento_board_initial.place_shape(shape)
@@ -122,7 +147,16 @@ $(document).ready(function(){
             var random_action = actions[action_index]
             var random_shape = shapes[shape_index]
 
-            this.pento_board_initial.execute_action(random_action, random_shape, this.generate_params(random_action, shapes))
+            var params = this.generate_params(random_action, shapes)
+            this.pento_board_initial.execute_action(random_action, random_shape, params)
+            this.pento_board_initial.draw()
+            
+
+            var paramString = ""
+            for (key in params){
+                paramString += key+"="+params[key]+","
+            }
+            this.make_board_screenshot(i, '#target', random_action + " ("+paramString+"id="+random_shape.name+")")
         }
     }
 
@@ -148,7 +182,8 @@ $(document).ready(function(){
             var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
         }
  
-        var rotations = [...Array(360).keys()];
+        var rotations = [0,45,90,135,180,225,270,315,360];
+        //var rotations = [...Array(360).keys()];
 
         var rotation_counter = 0
         var generated_shapes = []

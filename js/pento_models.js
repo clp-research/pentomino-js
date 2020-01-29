@@ -84,9 +84,11 @@ $(document).ready(function () {
 			this.row = row
 		}
 
-		move(dx, dy) {
-			this.x += dx
-			this.y += dy
+		move(x, y) {
+			var dx = this.x - x
+			var dy = this.y - y
+			this.x = x
+			this.y = y
 
 			this._update_center(dx, dy)
 		}
