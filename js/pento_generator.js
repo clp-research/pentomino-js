@@ -52,6 +52,16 @@ $(document).ready(function(){
     $("input#colors").prop("checked", localStorage.getItem("colors") == "true")
     $("input#shapes").prop("checked", localStorage.getItem("shape_difficulty") == "true")
 
+    this.toggle_shape_select = function(){
+        var shapes = this.pento_config.get_pento_types()
+        shapes.forEach(function(item, index){
+            var shape_widget = $('input.shape-type-'+item)
+            var toggle = shape_widget.is(":checked") ? false: true
+            shape_widget.prop( "checked", toggle );
+        })
+        this.calculate_actions()
+    }
+
     this.calculate_actions = function(){
         // set global vars
         NUMBER_OF_SHAPES = parseInt($("input#nshapes").val());
@@ -134,6 +144,7 @@ $(document).ready(function(){
 
     this.create_initial_state = function(shapes, nactions){
         $('.snapshots').empty()
+        pento_generator_actions = {}
 
         for(var shape_index in shapes){
             var shape = shapes[shape_index]
@@ -142,15 +153,25 @@ $(document).ready(function(){
 
         var actions = this.pento_board_initial.get_actions()
         for (var i=0; i < nactions; i++){
-            var action_index = Math.floor(Math.random() * actions.length)
+            // select shape
             var shape_index = Math.floor(Math.random()* shapes.length)
-            var random_action = actions[action_index]
             var random_shape = shapes[shape_index]
+
+            var action_index = Math.floor(Math.random() * actions.length)
+            var random_action = actions[action_index]
+
+            if (!pento_generator_actions.hasOwnProperty(random_shape.name )){
+                pento_generator_actions[random_shape.name] = [random_action]
+            }else if(pento_generator_actions[random_shape.name].length == 3 || pento_generator_actions[random_shape.name].indexOf(random_action) != -1){
+                i -= 1
+                continue
+            }else{
+                pento_generator_actions[random_shape.name].push(random_action)
+            }
 
             var params = this.generate_params(random_action, shapes)
             this.pento_board_initial.execute_action(random_action, random_shape, params)
             this.pento_board_initial.draw()
-            
 
             var paramString = ""
             for (key in params){
@@ -161,6 +182,8 @@ $(document).ready(function(){
     }
 
     this.generate = function(){
+
+
         // remove all previously generated shapes
         this.pento_board_target.destroy_all_shapes()
         this.pento_board_initial.destroy_all_shapes()

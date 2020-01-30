@@ -21,9 +21,6 @@ $(document).ready(function () {
 		}
 	}
 
-	// define a place for storing shape data
-	$.jCanvas.shape_dict = {};
-
 	// Create a drawPentoShape() method
 	$.jCanvas.extend({
 		name: 'drawPentoShape',
@@ -43,6 +40,9 @@ $(document).ready(function () {
 			shape: null
 		},
 		fn: function (ctx, params) {
+			// set rotation
+			params.rotate = params.shape.rotation
+			
 			// Enable layer transformations like scale and rotate
 			$.jCanvas.transformShape(this, ctx, params);
 

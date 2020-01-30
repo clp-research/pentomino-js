@@ -6,7 +6,7 @@ A pentomino framework built with jQuery, jCanvas and HTML5 canvas.
 
 There are three interfaces provided in this repository: 
 
-### shape_group_generator.html
+### index.html
 
 This UI is made to generate and edit groups of shapes that can make bigger shapes.
 

@@ -65,16 +65,27 @@ $(document).ready(function () {
 			return "group"+this.id+other_shape.id
 		}
 
-		rotate(angle) {
-			if (this.rotation + angle > 360 || this.rotation + angle < 0) {
-				this.rotation = 0
-			} else {
-				this.rotation += angle
+		_get_true_angle(angle){
+			if (this.rotation + angle > 360){
+				return (this.rotation + angle) -360
+			}else if (this.rotation + angle < 0){
+				return (this.rotation + angle) + 360
 			}
+			return this.rotation+angle
+		}
 
+		/**
+		 * Rotates the shape by delta angle
+		 * @param {*} angle 
+		 */
+		rotate(angle) {
+			this.rotation = this._get_true_angle(angle)
 			this._rotate_blocks()
 		}
 
+		/**
+		 * Helper that updates the rotation of internal block model
+		 */
 		_rotate_blocks() {
 
 		}
