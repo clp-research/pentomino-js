@@ -45,7 +45,7 @@ $(document).ready(function () {
 
     // init stored data
     $("input#nshapes").val(localStorage.getItem("nshapes") || 1)
-    $("input#nchanges_rotations").val(localStorage.getItem("nchanges_rotations") || 0)
+    //$("input#nchanges_rotations").val(localStorage.getItem("nchanges_rotations") || 0)
     $("input#nchanges").val(localStorage.getItem("nchanges") || 1)
     $("input#nrotations").val(localStorage.getItem("nrotations") || 0)
     $("input#nconnections").val(localStorage.getItem("nconnections") || 0)
@@ -70,10 +70,10 @@ $(document).ready(function () {
         MONOCOLOR = $("input#colors").is(":checked");
         MONOSHAPES = $("input#shapes").is(":checked");
         NUMBER_OF_CHANGES = parseInt($("input#nchanges").val());
-        NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
+        //NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
 
         // store data
-        localStorage.setItem("nchanges_rotations", NUMBER_OF_CHANGES_ROTATIONS)
+        //localStorage.setItem("nchanges_rotations", NUMBER_OF_CHANGES_ROTATIONS)
         localStorage.setItem("nchanges", NUMBER_OF_CHANGES)
         localStorage.setItem("nshapes", NUMBER_OF_SHAPES)
         localStorage.setItem("nrotations", NUMBER_OF_ROTATIONS)
@@ -237,7 +237,7 @@ $(document).ready(function () {
             var new_shape = this.pento_create_shape(r, rand_type, rand_color, do_mirror, rand_rot)
             this.pento_board_target.place_shape_on_grid(new_shape, rand_col, rand_row)
 
-            generated_shapes.push(new_shape.make_copy(r + 20))
+            generated_shapes.push(new_shape.make_copy(r + 100))
         }
         this.pento_board_target.draw()
 
@@ -255,4 +255,5 @@ $(document).ready(function () {
     });
 
     this.calculate_actions()
+    this.generate()
 })
