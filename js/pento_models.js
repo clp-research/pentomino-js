@@ -18,8 +18,8 @@ $(document).ready(function () {
 	class Block {
 		constructor(x, y, width, height, color) {
 			this.x = x
-				this.y = y
-				this.width = width
+			this.y = y
+			this.width = width
 
 			this.height = height
 			this.color = color
@@ -50,7 +50,12 @@ $(document).ready(function () {
 			this.col = null
 			this.row = null
 			this.is_mirrored = is_mirrored || false
-			this._virtual_grid = (4, 4)
+
+			// shape internal grid and bounding box
+			this._internal_grid_size = [4, 4]
+			this._internal_grid_shifts = [1, 0]
+			this._internal_virtual_grid = []
+			this._init_grid()
 
 			// generate name
 			this.name = this.type + this.id + this.color
@@ -61,17 +66,41 @@ $(document).ready(function () {
 			this.center = [0, 0]
 		}
 
-		connect_to(other_shape){
-			return "group"+this.id+other_shape.id
+		_init_grid() {
+			for (var i = 0;i < this._internal_grid_size[0]; i++) {
+				this._internal_virtual_grid.push([])
+				for (var e = 0; e < this._internal_grid_size[1]; e++) {
+					this._internal_virtual_grid[i].push(0)
+				}
+			}
 		}
 
-		_get_true_angle(angle){
-			if (this.rotation + angle > 360){
-				return (this.rotation + angle) -360
-			}else if (this.rotation + angle < 0){
+		_set_grid_value(row, col, value) {
+			this._internal_virtual_grid[row][col] = value
+		}
+
+		_get_grid_value(row, col) {
+			return this._internal_virtual_grid[row][col]
+		}
+
+		_update_grid(block_x, block_y) {
+			var row = (block_x / this.block_size) + this._internal_grid_shifts[0]
+			var col = (block_y / this.block_size) + this._internal_grid_shifts[0]
+
+			this._set_grid_value(row, col, 1)
+		}
+
+		connect_to(other_shape) {
+			return "group" + this.id + other_shape.id
+		}
+
+		_get_true_angle(angle) {
+			if (this.rotation + angle > 360) {
+				return (this.rotation + angle) - 360
+			} else if (this.rotation + angle < 0) {
 				return (this.rotation + angle) + 360
 			}
-			return this.rotation+angle
+			return this.rotation + angle
 		}
 
 		/**
@@ -105,8 +134,8 @@ $(document).ready(function () {
 		}
 
 		_calculate_center() {
-			this.center[0] = (this._virtual_grid[0] * this.block_size) + this.x
-			this.center[1] = (this._virtual_grid[1] * this.block_size) + this.y
+			this.center[0] = (this._internal_grid_size[0] * this.block_size) + this.x
+			this.center[1] = (this._internal_grid_size[1] * this.block_size) + this.y
 		}
 
 		_update_center(dx, dy) {
@@ -116,6 +145,7 @@ $(document).ready(function () {
 
 		add_block(block) {
 			this.blocks.push(block)
+			this._update_grid(block.x, block.y)
 			this._calculate_center()
 		}
 
@@ -137,10 +167,10 @@ $(document).ready(function () {
 			return false
 		}
 
-		make_copy(new_id){
+		make_copy(new_id) {
 			var shape_copy = document.pento_create_shape(new_id, this.type, this.color,
 				this.is_mirrored, this.rotation)
-				
+
 			shape_copy.blocks = this.get_blocks()
 			shape_copy.x = this.x
 			shape_copy.y = this.y
