@@ -20,19 +20,94 @@ $(document).ready(function () {
 			this.x = x
 			this.y = y
 			this.width = width
-
 			this.height = height
 			this.color = color
 			this.border_color = 'black'
+
+			this.vertices = []
+			this.update_vertices()
+		}
+
+		update_vertices(){
+			this.vertices = [
+				[this.x+0, this.y+0],
+				[this.x+0 + this.width+0, this.y+0],
+				[this.x+0 + this.width+0, this.y+0 + this.height+0],
+				[this.x+0, this.y+0 + this.height+0]
+			]
+		}
+
+		move(dx, dy){
+			this.x += dx
+			this.y += dy
+		}
+
+		rotate(angle, center){
+			for(var i=0; i < this.vertices.length; i++){
+				var vertex = this.vertices[i]
+				var x = vertex[0] + this.width/2
+				var y = vertex[1] + this.height/2
+				vertex[0] = Math.cos(angle * Math.PI/180) * x - Math.sin(angle * Math.PI/180) * y
+				vertex[1] = Math.sin(angle * Math.PI/180) * x + Math.cos(angle * Math.PI/180) * y
+			}
 		}
 
 		hits(block) {
-			if (block.x >= this.x && block.x <= this.x + this.width
-				&& block.y >= this.y && block.y <= this.y + this.height) {
-				return true
+			var rectangles = [this.vertices, block.vertices];
+			var minA, maxA, projected, i, i1, j, minB, maxB;
+
+			for (i = 0; i < rectangles.length; i++) {
+
+				// for each polygon, look at each edge of the polygon, and determine if it separates
+				// the two shapes
+				var rectangle = rectangles[i];
+				for (i1 = 0; i1 < rectangle.length; i1++) {
+
+					// grab 2 vertices to create an edge
+					var i2 = (i1 + 1) % rectangle.length;
+					var p1 = rectangle[i1];
+					var p2 = rectangle[i2];
+
+					// find the line perpendicular to this edge
+					var normal = { x: p2[1] - p1[1], y: p1[0] - p2[0] };
+
+					minA = maxA = undefined;
+					// for each vertex in the first shape, project it onto the line perpendicular to the edge
+					// and keep track of the min and max of these values
+					for (j = 0; j < a.length; j++) {
+						projected = normal.x * a[j][0] + normal.y * a[j][1];
+						if (isUndefined(minA) || projected < minA) {
+							minA = projected;
+						}
+						if (isUndefined(maxA) || projected > maxA) {
+							maxA = projected;
+						}
+					}
+
+					// for each vertex in the second shape, project it onto the line perpendicular to the edge
+					// and keep track of the min and max of these values
+					minB = maxB = undefined;
+					for (j = 0; j < b.length; j++) {
+						projected = normal.x * b[j][0] + normal.y * b[j][1];
+						if (isUndefined(minB) || projected < minB) {
+							minB = projected;
+						}
+						if (isUndefined(maxB) || projected > maxB) {
+							maxB = projected;
+						}
+					}
+
+					// if there is no overlap between the projects, the edge we are looking at separates the two
+					// polygons, and we know there is no overlap
+					if (maxA < minB || maxB < minA) {
+						CONSOLE("polygons don't intersect!");
+						return false;
+					}
+				}
 			}
-			return false
+			return true;
 		}
+
 	}
 
 	this.pento_create_block = function (x, y, block_size, color) {
@@ -63,7 +138,33 @@ $(document).ready(function () {
 			this.block_size = 20
 
 			// center for rotation
-			this.center = [0, 0]
+			this.center = []
+			this._calculate_center()
+
+			// conntected shapes
+			this.connected = []
+		}
+
+		is_connected(other_shape){
+			return this.connected.indexOf(other_shape.name) != -1
+		}
+
+		has_connections(){
+			return this.connected.length > 0
+		}
+
+		connect_to(other_shape) {
+			other_shape.rotation = this.rotation
+
+			// align internal grids
+
+			// connect grids so that the resulting matrix doesnt contain a two (after adding both together)
+
+			// register connection
+			this.connected.push(other_shape.name)
+			other_shape.connected.push(this.name)
+
+			return "group" + this.id + other_shape.id
 		}
 
 		_init_grid() {
@@ -90,10 +191,6 @@ $(document).ready(function () {
 			this._set_grid_value(row, col, 1)
 		}
 
-		connect_to(other_shape) {
-			return "group" + this.id + other_shape.id
-		}
-
 		_get_true_angle(angle) {
 			if (this.rotation + angle > 360) {
 				return (this.rotation + angle) - 360
@@ -116,7 +213,10 @@ $(document).ready(function () {
 		 * Helper that updates the rotation of internal block model
 		 */
 		_rotate_blocks() {
-
+			for(var i=0; i < this.get_blocks().length; i++){
+				var block = this.get_blocks()[i]
+				block.rotate(this.rotation, this.center)
+			}
 		}
 
 		move_on_grid(col, row) {
@@ -131,6 +231,7 @@ $(document).ready(function () {
 			this.y = y
 
 			this._update_center(dx, dy)
+			this._move_blocks(dx, dy)
 		}
 
 		_calculate_center() {
@@ -141,6 +242,13 @@ $(document).ready(function () {
 		_update_center(dx, dy) {
 			this.center[0] += dx
 			this.center[1] += dy
+		}
+
+		_move_blocks(dx, dy){
+			for(var i=0; i < this.get_blocks().length; i++){
+				var block = this.get_blocks()[i]
+				block.move(dx, dy)
+			}
 		}
 
 		add_block(block) {
@@ -226,6 +334,10 @@ $(document).ready(function () {
 				console.log("Unsupported shape type: " + type)
 		}
 		return new_shape
+	}
+
+	Shape.prototype.toString = function shapeToString(){
+		return this.name
 	}
 
 	this._new_pento_shape = function () {

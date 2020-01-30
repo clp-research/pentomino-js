@@ -155,20 +155,21 @@ this.PentoBoard = class PentoBoard{
 		}
 
 		check_collisions_of_shape(shape){
-			var layer = this.pento_canvas_ref.getLayer(shape.name)
-			var collisions = this.get_collisions(layer)
+			var collisions = this.get_collisions(shape)
 			return collisions.length > 0
 		}
 
-		get_collisions(layer){
-			var layers = this.pento_canvas_ref.getLayers();
+		get_collisions(shape){
 			var hits = []
+			for (var i = 0; i < this.pento_shapes.length; i++) {
+				var other_shape = this.pento_shapes[i]
 
-			for (var i = 0; i < layers.length; i++) {
-				var placed_layer = layers[i];
-				if (placed_layer.name && placed_layer.isPento && placed_layer.name != layer.name) {
-					//TODO
+				if (other_shape.name != shape.name){
+					if (shape.hits(other_shape)){
+						hits.push(other_shape)
+					}
 				}
+
 			}
 			return hits
 		}
@@ -390,11 +391,32 @@ this.PentoBoard = class PentoBoard{
 				(this.pento_grid_y + row * this.pento_block_size)+offsets[1]]
 		}
 		
-		// actions
 		get_actions(){
 			return this.actions
 		}
 
+		isValidAction(action_name, shape, params){
+			if (this.get_actions().indexOf(action_name) != -1){
+				switch(action_name){
+					case "connect":
+						if (!params['other_shape'].is_connected(shape) && shape.name != params['other_shape']){
+							return true
+						}
+						break;
+					case "move":
+						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()){
+							return true
+						}
+						break;
+					case "rotate":
+						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()){
+							return true
+						}
+						break;
+				}
+			}
+			return false
+		}
 
 		execute_action(action_name, shape, params){
 			//["move","rotate","connect"]
@@ -440,6 +462,5 @@ this.PentoBoard = class PentoBoard{
 			})
 		}
 	}
-
 
 })

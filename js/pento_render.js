@@ -4,21 +4,26 @@ $(document).ready(function () {
 	var draw_block = function (ctx, block, offsetX, offsetY) {
 
 		ctx.fillStyle = block.color;
-		ctx.rect(block.x + offsetX, block.y + offsetY, block.width, block.height)
-
 		ctx.strokeStyle = block.border_color
-		ctx.strokeRect(block.x + offsetX, block.y + offsetY, block.width, block.height)
+		
+		ctx.moveTo(block.vertices[0][0]+ offsetX, block.vertices[0][1]+ offsetY);
+		ctx.lineTo(block.vertices[1][0] + offsetX, block.vertices[1][1]+ offsetY);
+		ctx.lineTo(block.vertices[2][0]+ offsetX, block.vertices[2][1]+ offsetY);
+		ctx.lineTo(block.vertices[3][0]+ offsetX, block.vertices[3][1]+ offsetY);
+		ctx.lineTo(block.vertices[0][0]+ offsetX, block.vertices[0][1]+ offsetY)
+		ctx.fill();
 	}
 
 	var draw_shape = function (ctx, shape, params) {
 		ctx.beginPath();
-		ctx.moveTo(shape.x, shape.y);
 
 		// Draw blocks
 		for (var i = 0; i < shape.get_blocks().length; i++) {
 			var block = shape.get_blocks()[i]
 			draw_block(ctx, block, shape.x + params.offsetX, shape.y + params.offsetY);
 		}
+
+		ctx.closePath()
 	}
 
 	// Create a drawPentoShape() method
@@ -41,7 +46,7 @@ $(document).ready(function () {
 		},
 		fn: function (ctx, params) {
 			// set rotation
-			params.rotate = params.shape.rotation
+			//params.rotate = params.shape.rotation
 			
 			// Enable layer transformations like scale and rotate
 			$.jCanvas.transformShape(this, ctx, params);
