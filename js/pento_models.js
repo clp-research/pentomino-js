@@ -30,10 +30,10 @@ $(document).ready(function () {
 
 		update_vertices(){
 			this.vertices = [
-				[this.x+0, this.y+0],
-				[this.x+0 + this.width+0, this.y+0],
-				[this.x+0 + this.width+0, this.y+0 + this.height+0],
-				[this.x+0, this.y+0 + this.height+0]
+				[this.x, this.y],
+				[this.x + this.width, this.y],
+				[this.x + this.width, this.y + this.height],
+				[this.x, this.y + this.height]
 			]
 		}
 
@@ -42,7 +42,7 @@ $(document).ready(function () {
 			this.y += dy
 		}
 
-		rotate(angle, center){
+		rotate(angle){
 			for(var i=0; i < this.vertices.length; i++){
 				var vertex = this.vertices[i]
 				var x = vertex[0] + this.width/2
@@ -53,8 +53,17 @@ $(document).ready(function () {
 		}
 
 		hits(block) {
+			return this.hits(block, 0, 0)
+		}
+
+		hits(block, dx, dy) {
 			var a = this.vertices
 			var b = block.vertices
+			for(var i=0; i < a.length; i++){
+				var vertex = a[i]
+				vertex[0] += dx
+				vertex[1] += dy
+			}
 
 			var rectangles = [a, b];
 			var minA, maxA, projected, i, i1, j, minB, maxB;
@@ -264,12 +273,17 @@ $(document).ready(function () {
 		}
 
 		hits(other_shape) {
+			// calculate delta between shapes
+			var dx = this.x - other_shape.x
+			var dy = this.y - other_shape.y
+
 			for (var index in this.blocks) {
 				var current_block = this.blocks[index];
 				var other_blocks = other_shape.get_blocks();
 
 				for (var o_index in other_blocks) {
-					if (current_block.hits(other_blocks[o_index])) {
+					var other_block = other_blocks[o_index]
+					if (current_block.hits(other_block, dx, dy)) {
 						return true
 					}
 				}

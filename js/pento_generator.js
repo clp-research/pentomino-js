@@ -241,6 +241,7 @@ $(document).ready(function () {
 
             if (this.pento_board_target.is_valid(new_shape)){
                 generated_shapes.push(new_shape.make_copy(r + NUMBER_OF_SHAPES + 1))
+
             }else{
                 this.pento_board_target.destroy_shape(new_shape)
             }

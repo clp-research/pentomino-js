@@ -403,7 +403,9 @@ this.PentoBoard = class PentoBoard{
 		}
 
 		is_valid(shape){
-			return this.get_collisions(shape).length == 0
+			var collisions = this.get_collisions(shape)
+			console.log(collisions)
+			return collisions.length == 0
 		}
 
 		isValidAction(action_name, shape, params){
