@@ -218,7 +218,8 @@ $(document).ready(function () {
 
         var rotation_counter = 0
         var generated_shapes = []
-        for (var r = 0; r < NUMBER_OF_SHAPES; r++) {
+        var r =0
+        while (r < NUMBER_OF_SHAPES) {
             // generate random types
             var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
             var rand_color = colors[Math.floor(Math.random() * colors.length)];
@@ -237,15 +238,20 @@ $(document).ready(function () {
 
             // create and place
             var new_shape = this.pento_create_shape(r, rand_type, rand_color, do_mirror, rand_rot)
-            this.pento_board_target.place_shape_on_grid(new_shape, rand_col, rand_row)
+            var coords = this.pento_board_target.grid_cell_to_coordinates(new_shape, rand_col, rand_row)
+            new_shape.move(coords[0], coords[1])
 
             if (this.pento_board_target.is_valid(new_shape)){
-                generated_shapes.push(new_shape.make_copy(r + NUMBER_OF_SHAPES + 1))
-
+                this.pento_board_target.place_shape(new_shape)
+                generated_shapes.push(new_shape.make_copy(r + 100))
+                r++;
+                
             }else{
                 this.pento_board_target.destroy_shape(new_shape)
             }
         }
+
+        console.log(this.pento_board_target.pento_shapes)
         this.pento_board_target.draw()
 
         this.create_initial_state(generated_shapes, NUMBER_OF_CHANGES)

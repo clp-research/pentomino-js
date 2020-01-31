@@ -1,9 +1,9 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
 
-this.PentoBoard = class PentoBoard{
-		
-		constructor(canvas_id, title, with_tray){
+	this.PentoBoard = class PentoBoard {
+
+		constructor(canvas_id, title, with_tray) {
 			this.canvas_id = canvas_id
 			this.pento_canvas_ref = $(canvas_id);
 			this.title = title
@@ -24,12 +24,12 @@ this.PentoBoard = class PentoBoard{
 			this.pento_prevent_collision = false;
 			this.pento_active_shape = null;
 			this.pento_with_tray = with_tray;
-			
+
 			// event handler
 			this.event_handlers = []
 
 			// actions
-			this.actions = ["move","rotate","connect"]
+			this.actions = ["move", "rotate", "connect"]
 
 			this.init_board()
 			this.init_grid()
@@ -45,30 +45,28 @@ this.PentoBoard = class PentoBoard{
 			this.draw()
 		}
 
-		setup_canvas(){
+		setup_canvas() {
 			$(this.canvas_id).prop("width", this.pento_grid_cols * this.pento_block_size)
 			$(this.canvas_id).prop("height", this.pento_grid_cols * this.pento_block_size)
 		}
 
-		set(key, value){
-			switch(key){
+		set(key, value) {
+			switch (key) {
 				case "read_only":
 					this.pento_read_only = value
 					break;
 				default:
-					console.log("unknown config option: "+key)
+					console.log("unknown config option: " + key)
 			}
 		}
 
-		draw(){
-			if (this.pento_canvas_ref){
-				this.pento_canvas_ref.drawLayers()
-			}
+		draw() {
+			this.pento_canvas_ref.drawLayers()
 		}
 
 		draw_line(x, y, x2, y2, color, name) {
-			if (name == undefined){
-				name = "line"+Math.random()
+			if (name == undefined) {
+				name = "line" + Math.random()
 			}
 			this.pento_canvas_ref.drawLine({
 				layer: true,
@@ -93,7 +91,7 @@ this.PentoBoard = class PentoBoard{
 			})
 		}
 
-		destroy_board(){
+		destroy_board() {
 			this.pento_canvas_ref.removeLayer("game_board");
 			this.pento_canvas_ref.removeLayer("tray")
 			this.pento_canvas_ref.removeLayer("separator")
@@ -103,17 +101,17 @@ this.PentoBoard = class PentoBoard{
 			this.destroy_board();
 
 			//this.draw_text(10, 10, this.title)
-			if (this.pento_with_tray){
+			if (this.pento_with_tray) {
 				this.pento_canvas_ref.attr("height", 600);
 				this.draw_line(0, 400, 600, 400, 'black', 'separator')
 				this.draw_text(40, 410, "Tray")
-			}else{
+			} else {
 				this.pento_canvas_ref.attr("height", 400);
 			}
 			this.pento_canvas_ref.drawLayers()
 		}
 
-		remove_grid(){
+		remove_grid() {
 			this.pento_canvas_ref.removeLayer('grid')
 		}
 
@@ -126,17 +124,17 @@ this.PentoBoard = class PentoBoard{
 				name: 'grid',
 				fillStyle: 'white',
 				x: this.pento_grid_x, y: this.pento_grid_y,
-				width: this.pento_board_width , height: this.pento_board_height
+				width: this.pento_board_width, height: this.pento_board_height
 			})
 
-			if (draw_grid_lines){
+			if (draw_grid_lines) {
 				for (var i = 0; i <= this.pento_grid_rows; i++) {
-					this.draw_line(this.pento_grid_x, this.pento_grid_y + i * this.pento_block_size, 
+					this.draw_line(this.pento_grid_x, this.pento_grid_y + i * this.pento_block_size,
 						this.pento_grid_x + this.pento_grid_width, this.pento_grid_y + i * this.pento_block_size, this.pento_grid_color);
 				}
-		
+
 				for (var i = 0; i <= this.pento_grid_cols; i++) {
-					this.draw_line(this.pento_grid_x + i * this.pento_block_size, this.pento_grid_y + 0, 
+					this.draw_line(this.pento_grid_x + i * this.pento_block_size, this.pento_grid_y + 0,
 						this.pento_grid_x + i * this.pento_block_size, this.pento_grid_y + this.pento_grid_height, this.pento_grid_color);
 				}
 			}
@@ -154,18 +152,18 @@ this.PentoBoard = class PentoBoard{
 			return x >= this.pento_grid_x && x <= this.pento_grid_x + this.pento_grid_width && y >= this.pento_grid_y && y <= this.pento_grid_y + this.pento_grid_height
 		}
 
-		check_collisions_of_shape(shape){
+		check_collisions_of_shape(shape) {
 			var collisions = this.get_collisions(shape)
 			return collisions.length > 0
 		}
 
-		get_collisions(shape){
+		get_collisions(shape) {
 			var hits = []
-			for (var i = 0; i < this.pento_shapes.length; i++) {
-				var other_shape = this.pento_shapes[i]
+			for (var key in this.pento_shapes) {
+				var other_shape = this.pento_shapes[key]
 
-				if (other_shape.name != shape.name){
-					if (shape.hits(other_shape)){
+				if (other_shape.name != shape.name) {
+					if (shape.hits(other_shape)) {
 						hits.push(other_shape)
 					}
 				}
@@ -188,13 +186,6 @@ this.PentoBoard = class PentoBoard{
 			this.pento_canvas_ref.drawLayers()
 		}
 
-		destroy_shape(shape){
-			var name = shape.name
-			this.pento_canvas_ref.removeLayer(name)
-			this.pento_shapes = this.pento_shapes.filter((sh) => sh.name != name)
-			this.draw()
-		}
-
 		get_offsets(type) {
 			// returns offsets for (x,y) coordinates to position
 			// drawing in the middle of the shape area
@@ -204,17 +195,22 @@ this.PentoBoard = class PentoBoard{
 				case 'T': case 'F':
 					return [0, 0]
 				default:
-					return [0,0]
+					return [0, 0]
 			}
 		}
 
-		destroy_all_shapes(){
-			for(var index in this.pento_shapes){
+		destroy_shape(shape) {
+			var name = shape.name
+			this.pento_canvas_ref.removeLayer(name).drawLayers()
+			delete this.pento_shapes[name]
+		}
+
+		destroy_all_shapes() {
+			for (var index in this.pento_shapes) {
 				var shape = this.pento_shapes[index]
-				this.pento_canvas_ref.removeLayer(shape.name)
+				this.destroy_shape(shape)
 			}
-			this.pento_shapes = []
-			this.pento_canvas_ref.drawLayers()
+			//this.pento_canvas_ref.clearCanvas()
 		}
 
 		redraw_arrows(pento_canvas_ref, layer) {
@@ -305,7 +301,7 @@ this.PentoBoard = class PentoBoard{
 			this.redraw_arrows(this.pento_canvas_ref, layer)
 		}
 
-		place_shape(shape){
+		place_shape(shape) {
 			var offsetX = this.get_offsets(shape.type)[0];
 			var offsetY = this.get_offsets(shape.type)[1];
 			var last_x;
@@ -334,18 +330,18 @@ this.PentoBoard = class PentoBoard{
 				rotate: shape.rotation,
 				shape: shape,
 				mouseover: function (layer) {
-					if (!self.pento_read_only){
+					if (!self.pento_read_only) {
 						self.set_active(layer)
-					}	
+					}
 				},
 				click: function (layer) {
-					if (!self.pento_read_only){
+					if (!self.pento_read_only) {
 						self.set_active(layer)
-					}	
+					}
 				},
 				dragstart: function (layer) {
 					// code to run when dragging starts
-					if (!self.pento_read_only){
+					if (!self.pento_read_only) {
 						self.update_arrows(layer, true)
 						last_x = layer.x;
 						last_y = layer.y;
@@ -353,12 +349,12 @@ this.PentoBoard = class PentoBoard{
 				},
 				drag: function (layer) {
 					// code to run as layer is being dragged
-					if (!self.pento_read_only){
+					if (!self.pento_read_only) {
 						self.update_arrows(layer, true)
 					}
 				},
 				dragstop: function (layer) {
-					if (!self.pento_read_only){
+					if (!self.pento_read_only) {
 						// code to run when dragging stops
 						var layer_x = layer.x + layer.width / 2
 						var layer_y = layer.y + layer.height / 2
@@ -369,12 +365,12 @@ this.PentoBoard = class PentoBoard{
 
 						if (self.is_over_shape(layer) && self.pento_prevent_collision) {
 							layer.x = last_x;
-							layer.y = last_y;	
+							layer.y = last_y;
 						}
 						self.update_arrows(layer, false)
 						self.set_active(layer)
 
-						self.fire_event("shape_moved", shape.name, {"rotation": shape.rotation + params["angle"]})
+						self.fire_event("shape_moved", shape.name, { "x": layer.x, "y": layer.y })
 					}
 				}
 			});
@@ -382,47 +378,46 @@ this.PentoBoard = class PentoBoard{
 			this.pento_shapes[shape.name] = shape
 		}
 
-		place_shape_on_grid(shape, col, row){
+		place_shape_on_grid(shape, col, row) {
 			var coords = this.grid_cell_to_coordinates(shape, col, row)
 			shape.x = coords[0]
 			shape.y = coords[1]
 			this.place_shape(shape)
 		}
 
-		grid_cell_to_coordinates(shape, col, row){
-			var col = Math.max(col-1,0)
-			var row = Math.max(row-1,0)
+		grid_cell_to_coordinates(shape, col, row) {
+			var col = Math.max(col - 1, 0)
+			var row = Math.max(row - 1, 0)
 			var offsets = this.get_offsets(shape.type)
 
-			return [(this.pento_grid_x + col * this.pento_block_size)+offsets[0], 
-				(this.pento_grid_y + row * this.pento_block_size)+offsets[1]]
+			return [(this.pento_grid_x + col * this.pento_block_size) + offsets[0],
+			(this.pento_grid_y + row * this.pento_block_size) + offsets[1]]
 		}
-		
-		get_actions(){
+
+		get_actions() {
 			return this.actions
 		}
 
-		is_valid(shape){
+		is_valid(shape) {
 			var collisions = this.get_collisions(shape)
-			console.log(collisions)
 			return collisions.length == 0
 		}
 
-		isValidAction(action_name, shape, params){
-			if (this.get_actions().indexOf(action_name) != -1){
-				switch(action_name){
+		isValidAction(action_name, shape, params) {
+			if (this.get_actions().indexOf(action_name) != -1) {
+				switch (action_name) {
 					case "connect":
-						if (!params['other_shape'].is_connected(shape) && shape.name != params['other_shape']){
+						if (!params['other_shape'].is_connected(shape) && shape.name != params['other_shape']) {
 							return true
 						}
 						break;
 					case "move":
-						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()){
+						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
 							return true
 						}
 						break;
 					case "rotate":
-						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()){
+						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
 							return true
 						}
 						break;
@@ -431,47 +426,49 @@ this.PentoBoard = class PentoBoard{
 			return false
 		}
 
-		execute_action(action_name, shape, params){
+		execute_action(action_name, shape, params) {
 			//["move","rotate","connect"]
-			switch(action_name){
+			switch (action_name) {
 				case "move":
-					shape.move(params["x"],params["y"])
-					this.fire_event("shape_moved", shape.name, {"x": params["x"], "y": params["y"]})
+					shape.move(params["x"], params["y"])
+					this.fire_event("shape_moved", shape.name, { "x": params["x"], "y": params["y"] })
 					break
 				case "rotate":
 					shape.rotate(params["rotation"])
-					this.fire_event("shape_moved", shape.name, {"rotation": params["rotation"]})
+					this.fire_event("shape_moved", shape.name, { "rotation": params["rotation"] })
 					break
 				case "connect":
 					var group_id = shape.connect_to(params["other_shape"])
-					this.fire_event("shape_connected", shape.name, {"other_shape": params["other_shape"].name,
-				"group_id": group_id})
+					this.fire_event("shape_connected", shape.name, {
+						"other_shape": params["other_shape"].name,
+						"group_id": group_id
+					})
 					break
 				default:
-					console.log("Unknown action: "+action_name)
+					console.log("Unknown action: " + action_name)
 			}
 		}
 
 		// event functions
-		register_event_handler(handler){
+		register_event_handler(handler) {
 			this.event_handlers.push(handler)
 		}
 
-		fire_event(event_type, event_object_id, event_changes){
+		fire_event(event_type, event_object_id, event_changes) {
 			var event = {
 				"type": event_type,
 				"object_id": event_object_id,
-				"changes" :event_changes
+				"changes": event_changes
 			}
 
 			this.event_handlers.forEach(handler => handler.handle(event))
 		}
 
 		// utility
-		saveBoard(){
+		saveBoard() {
 			var self = this
-			this.pento_canvas_ref[0].toBlob(function(data){
-				saveAs(data, self.title+'.png')
+			this.pento_canvas_ref[0].toBlob(function (data) {
+				saveAs(data, self.title + '.png')
 			})
 		}
 	}

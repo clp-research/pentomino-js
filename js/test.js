@@ -13,6 +13,5 @@ $(document).ready(function(){
 
 	var shape2 = this.pento_create_shape(1, 'I', 'red', false, 0)
 	shape2.move(30,91)
-
 	console.log("Shape Collision Test: "+ (shape1.hits(shape2) == shape2.hits(shape1)))
 })
