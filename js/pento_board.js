@@ -188,6 +188,13 @@ this.PentoBoard = class PentoBoard{
 			this.pento_canvas_ref.drawLayers()
 		}
 
+		destroy_shape(shape){
+			var name = shape.name
+			this.pento_canvas_ref.removeLayer(name)
+			this.pento_shapes = this.pento_shapes.filter((sh) => sh.name != name)
+			this.draw()
+		}
+
 		get_offsets(type) {
 			// returns offsets for (x,y) coordinates to position
 			// drawing in the middle of the shape area
@@ -393,6 +400,10 @@ this.PentoBoard = class PentoBoard{
 		
 		get_actions(){
 			return this.actions
+		}
+
+		is_valid(shape){
+			return this.get_collisions(shape).length == 0
 		}
 
 		isValidAction(action_name, shape, params){

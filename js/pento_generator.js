@@ -184,6 +184,8 @@ $(document).ready(function () {
                     paramString += key + "=" + params[key] + ","
                 }
                 this.make_board_screenshot(i, '#target', random_action + " (" + paramString + "id=" + random_shape.name + ")")
+            }else{
+                i -= 1
             }
         }
     }
@@ -237,7 +239,11 @@ $(document).ready(function () {
             var new_shape = this.pento_create_shape(r, rand_type, rand_color, do_mirror, rand_rot)
             this.pento_board_target.place_shape_on_grid(new_shape, rand_col, rand_row)
 
-            generated_shapes.push(new_shape.make_copy(r + 100))
+            if (this.pento_board_target.is_valid(new_shape)){
+                generated_shapes.push(new_shape.make_copy(r + NUMBER_OF_SHAPES + 1))
+            }else{
+                this.pento_board_target.destroy_shape(new_shape)
+            }
         }
         this.pento_board_target.draw()
 

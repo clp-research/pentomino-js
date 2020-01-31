@@ -53,7 +53,10 @@ $(document).ready(function () {
 		}
 
 		hits(block) {
-			var rectangles = [this.vertices, block.vertices];
+			var a = this.vertices
+			var b = block.vertices
+
+			var rectangles = [a, b];
 			var minA, maxA, projected, i, i1, j, minB, maxB;
 
 			for (i = 0; i < rectangles.length; i++) {
@@ -76,10 +79,10 @@ $(document).ready(function () {
 					// and keep track of the min and max of these values
 					for (j = 0; j < a.length; j++) {
 						projected = normal.x * a[j][0] + normal.y * a[j][1];
-						if (isUndefined(minA) || projected < minA) {
+						if ( minA == undefined || projected < minA) {
 							minA = projected;
 						}
-						if (isUndefined(maxA) || projected > maxA) {
+						if (maxA == undefined || projected > maxA) {
 							maxA = projected;
 						}
 					}
@@ -89,10 +92,10 @@ $(document).ready(function () {
 					minB = maxB = undefined;
 					for (j = 0; j < b.length; j++) {
 						projected = normal.x * b[j][0] + normal.y * b[j][1];
-						if (isUndefined(minB) || projected < minB) {
+						if (minB==undefined || projected < minB) {
 							minB = projected;
 						}
-						if (isUndefined(maxB) || projected > maxB) {
+						if (maxB == undefined || projected > maxB) {
 							maxB = projected;
 						}
 					}
@@ -100,7 +103,6 @@ $(document).ready(function () {
 					// if there is no overlap between the projects, the edge we are looking at separates the two
 					// polygons, and we know there is no overlap
 					if (maxA < minB || maxB < minA) {
-						CONSOLE("polygons don't intersect!");
 						return false;
 					}
 				}
@@ -294,6 +296,9 @@ $(document).ready(function () {
 		var new_shape = this._new_pento_shape(id, type, color, is_mirrored, rotation)
 
 		switch (type) {
+			case "point":
+				this.pento_point(new_shape)
+				break
 			case "F":
 				this.pento_F(new_shape)
 				break
@@ -347,6 +352,12 @@ $(document).ready(function () {
 	this._new_pento_shape = function (id, type, color, is_mirrored, rotation) {
 		return new Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation)
 	}
+
+		// Draw point
+		this.pento_point = function (shape) {
+			var block = this.pento_create_block(0, 0, shape.block_size, shape.color);
+			shape.add_block(block)
+		}
 
 
 	// draw F 
