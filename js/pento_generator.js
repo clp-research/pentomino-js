@@ -130,8 +130,14 @@ $(document).ready(function () {
         }
     }
 
-    this.make_board_screenshot = function (index, canvas_id, action) {
-        $('.snapshots').append('<canvas class="snapshot center" id="snapshot_' + index + '" width="300px" height="300px"></canvas>')
+    this.make_board_screenshot = function (index, canvas_id, action, do_prepend) {
+        var element = '<canvas class="snapshot center" id="snapshot_' + index + '" width="300px" height="300px"></canvas>'
+        if (do_prepend){
+            $('.snapshots').prepend(element)
+        }else{
+            $('.snapshots').append(element)
+        }
+        
 
         //grab the context from your destination canvas
         var destCtx = $('#snapshot_' + index)[0].getContext('2d');
@@ -151,9 +157,6 @@ $(document).ready(function () {
             var shape = shapes[shape_index]
             this.pento_board_initial.place_shape(shape)
         }
-
-        this.pento_board_initial.draw()
-        this.make_board_screenshot(i, '#initial', "START")
 
         var actions = this.pento_board_initial.get_actions()
         for (var i = 0; i < nactions; i++) {
@@ -186,13 +189,18 @@ $(document).ready(function () {
                 for (key in params) {
                     paramString += key + "=" + params[key] + ","
                 }
-                this.make_board_screenshot(i, '#initial', random_action + " (" + paramString + "id=" + random_shape.name + ")")
+                this.make_board_screenshot(i, '#initial', random_action + " (" + paramString + "id=" + random_shape.name + ")", true)
             } else {
                 i -= 1
             }
         }
 
-        this.make_board_screenshot(i, '#target', "END")
+        // initial final
+        this.pento_board_initial.draw()
+        this.make_board_screenshot(i+1, '#initial', "START", true)
+
+        // target final
+        this.make_board_screenshot(i+2, '#target', "END", false)
     }
 
     this.generate = function () {

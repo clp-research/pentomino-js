@@ -25,6 +25,9 @@ $(document).ready(function () {
 			this.border_color = 'black'
 			this.rotation = 0
 
+			this.center_x = 20
+			this.center_y = 20
+
 			this.create_vertices();
 		}
 
@@ -56,8 +59,8 @@ $(document).ready(function () {
 		rotate(angle) {
 			for (var i = 0; i < this._vertices.length; i++) {
 				var vertex = this._vertices[i]
-				var x = vertex[0] + this.width / 2
-				var y = vertex[1] + this.height / 2
+				var x = vertex[0] + this.center_x / 2
+				var y = vertex[1] + this.center_y / 2
 				this.set_vertex(i, 0, Math.cos(angle * Math.PI / 180) * x - Math.sin(angle * Math.PI / 180) * y)
 				this.set_vertex(i, 1, Math.sin(angle * Math.PI / 180) * x + Math.cos(angle * Math.PI / 180) * y)
 			}
