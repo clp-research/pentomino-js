@@ -6,11 +6,11 @@ $(document).ready(function () {
 		ctx.fillStyle = block.color;
 		ctx.strokeStyle = block.border_color
 		
-		ctx.moveTo(block.vertices[0][0]+ offsetX, block.vertices[0][1]+ offsetY);
-		ctx.lineTo(block.vertices[1][0] + offsetX, block.vertices[1][1]+ offsetY);
-		ctx.lineTo(block.vertices[2][0]+ offsetX, block.vertices[2][1]+ offsetY);
-		ctx.lineTo(block.vertices[3][0]+ offsetX, block.vertices[3][1]+ offsetY);
-		ctx.lineTo(block.vertices[0][0]+ offsetX, block.vertices[0][1]+ offsetY)
+		ctx.moveTo(block.get_vertex(0,0)+ offsetX, block.get_vertex(0,1)+ offsetY);
+		ctx.lineTo(block.get_vertex(1,0)+ offsetX, block.get_vertex(1,1)+ offsetY);
+		ctx.lineTo(block.get_vertex(2,0)+ offsetX, block.get_vertex(2,1)+ offsetY);
+		ctx.lineTo(block.get_vertex(3,0)+ offsetX, block.get_vertex(3,1)+ offsetY);
+		ctx.lineTo(block.get_vertex(0,0)+ offsetX, block.get_vertex(0,1)+ offsetY)
 		ctx.fill();
 	}
 
@@ -22,38 +22,23 @@ $(document).ready(function () {
 			var block = shape.get_blocks()[i]
 			draw_block(ctx, block, shape.x + params.offsetX, shape.y + params.offsetY);
 		}
-
-		ctx.closePath()
 	}
 
 	// Create a drawPentoShape() method
 	$.jCanvas.extend({
 		name: 'drawPentoShape',
 		type: 'quadratic',
-		fromCenter: true,
-		width: 80,
-		height: 80,
 		props: {
-			/*
-			* I
-			* F/F'
-			* 
-			*/
-			type: '',
-			block_size: 20,
-			mirror: false,
+			offsetX: 0,
+			offsetY: 0,
 			shape: null
 		},
 		fn: function (ctx, params) {
-			// set rotation
-			//params.rotate = params.shape.rotation
-			
 			// Enable layer transformations like scale and rotate
 			$.jCanvas.transformShape(this, ctx, params);
 
 			// drawing
-			var shape = params.shape;
-			draw_shape(ctx, shape, params)
+			draw_shape(ctx, params.shape, params)
 
 			// Call the detectEvents() function to enable jCanvas events
 			// Be sure to pass it these arguments, too!

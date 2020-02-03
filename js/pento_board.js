@@ -6,6 +6,8 @@ $(document).ready(function () {
 		constructor(canvas_id, title, with_tray) {
 			this.canvas_id = canvas_id
 			this.pento_canvas_ref = $(canvas_id);
+			this.pento_canvas_ref.clearCanvas();
+
 			this.title = title
 			this.config = new document.PentoConfig()
 			this.pento_shapes = {}
@@ -178,25 +180,10 @@ $(document).ready(function () {
 		}
 
 		rotate_shape(angle) {
-			this.pento_active_shape.rotate += angle
-			if (this.pento_active_shape.rotate > 360 || this.pento_active_shape.rotate < -360) {
-				this.pento_active_shape.rotate = 0
-			}
+			var true_angle = (this.pento_active_shape.rotate + angle) % 360
+			this.pento_active_shape.rotate = true_angle
 
 			this.pento_canvas_ref.drawLayers()
-		}
-
-		get_offsets(type) {
-			// returns offsets for (x,y) coordinates to position
-			// drawing in the middle of the shape area
-			switch (type) {
-				case 'I':
-					return [0, 0]
-				case 'T': case 'F':
-					return [0, 0]
-				default:
-					return [0, 0]
-			}
 		}
 
 		destroy_shape(shape) {
@@ -301,34 +288,38 @@ $(document).ready(function () {
 			this.redraw_arrows(this.pento_canvas_ref, layer)
 		}
 
+		get_offsets(type) {
+			// returns offsets for (x,y) coordinates to position
+			// drawing in the middle of the shape area
+			switch (type) {
+				case 'I':
+					return [0, 0]
+				case 'T': case 'F':
+					return [0, 0]
+				default:
+					return [0, 0]
+			}
+		}
+
 		place_shape(shape) {
 			var offsetX = this.get_offsets(shape.type)[0];
 			var offsetY = this.get_offsets(shape.type)[1];
 			var last_x;
 			var last_y;
-
-			var x = shape.x
-			var y = shape.y
 			var self = this
 
 			this.pento_canvas_ref.drawPentoShape({
 				layer: true,
 				name: shape.name,
-				type: shape.type,
-				mirror: shape.is_mirrored,
-				color: shape.color,
 				block_size: this.pento_block_size,
 				draggable: !this.pento_read_only,
-				x: x, y: y,
-				parent: this.pento_canvas_ref,
-				isPento: true,
-				fromCenter: false,
+				x: shape.x, y:shape.y,
 				offsetX: offsetX,
 				offsetY: offsetY,
 				width: 80,
 				height: 80,
-				rotate: shape.rotation,
 				shape: shape,
+				fromCenter: true,
 				mouseover: function (layer) {
 					if (!self.pento_read_only) {
 						self.set_active(layer)
@@ -378,20 +369,8 @@ $(document).ready(function () {
 			this.pento_shapes[shape.name] = shape
 		}
 
-		place_shape_on_grid(shape, col, row) {
-			var coords = this.grid_cell_to_coordinates(shape, col, row)
-			shape.x = coords[0]
-			shape.y = coords[1]
-			this.place_shape(shape)
-		}
-
-		grid_cell_to_coordinates(shape, col, row) {
-			var col = Math.max(col - 1, 0)
-			var row = Math.max(row - 1, 0)
-			var offsets = this.get_offsets(shape.type)
-
-			return [(this.pento_grid_x + col * this.pento_block_size) + offsets[0],
-			(this.pento_grid_y + row * this.pento_block_size) + offsets[1]]
+		grid_cell_to_coordinates(col, row) {
+			return [col * this.pento_block_size, row * this.pento_block_size]
 		}
 
 		get_actions() {
@@ -400,7 +379,7 @@ $(document).ready(function () {
 
 		is_valid(shape) {
 			var collisions = this.get_collisions(shape)
-			return collisions.length == 0
+			return collisions.length == 0 && shape.x >= 0 && shape.y >= 0 && shape.x <= 400 && shape.y <= 400
 		}
 
 		isValidAction(action_name, shape, params) {
@@ -430,12 +409,12 @@ $(document).ready(function () {
 			//["move","rotate","connect"]
 			switch (action_name) {
 				case "move":
-					shape.move(params["x"], params["y"])
+					shape.moveTo(params["x"], params["y"])
 					this.fire_event("shape_moved", shape.name, { "x": params["x"], "y": params["y"] })
 					break
 				case "rotate":
 					shape.rotate(params["rotation"])
-					this.fire_event("shape_moved", shape.name, { "rotation": params["rotation"] })
+					this.fire_event("shape_rotated", shape.name, { "rotation": params["rotation"] })
 					break
 				case "connect":
 					var group_id = shape.connect_to(params["other_shape"])

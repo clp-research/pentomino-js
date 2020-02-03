@@ -24,12 +24,19 @@ $(document).ready(function () {
 			this.color = color
 			this.border_color = 'black'
 
-			this.vertices = []
-			this.update_vertices()
+			this.create_vertices();
 		}
 
-		update_vertices(){
-			this.vertices = [
+		/**
+		 * Returs a deepcopy of this block
+		 */
+		copy(){
+			var block_copy = Block(this.x, this.y, this.width, this.height, this.color)
+			return block_copy
+		}
+
+		create_vertices() {
+			this._vertices = [
 				[this.x, this.y],
 				[this.x + this.width, this.y],
 				[this.x + this.width, this.y + this.height],
@@ -37,29 +44,40 @@ $(document).ready(function () {
 			]
 		}
 
-		move(dx, dy){
-			this.x += dx
-			this.y += dy
+		get_vertex(row, col){
+			return this._vertices[row][col]
 		}
 
-		rotate(angle){
-			for(var i=0; i < this.vertices.length; i++){
-				var vertex = this.vertices[i]
-				var x = vertex[0] + this.width/2
-				var y = vertex[1] + this.height/2
-				vertex[0] = Math.cos(angle * Math.PI/180) * x - Math.sin(angle * Math.PI/180) * y
-				vertex[1] = Math.sin(angle * Math.PI/180) * x + Math.cos(angle * Math.PI/180) * y
+		set_vertex(row, col, value){
+			this._vertices[row][col] = value
+		}
+
+		rotate(angle) {
+			for (var i = 0; i < this._vertices.length; i++) {
+				var vertex = this._vertices[i]
+				var x = vertex[0] + this.width / 2
+				var y = vertex[1] + this.height / 2
+				this.set_vertex(i, 0, Math.cos(angle * Math.PI / 180) * x - Math.sin(angle * Math.PI / 180) * y)
+				this.set_vertex(i, 1, Math.sin(angle * Math.PI / 180) * x + Math.cos(angle * Math.PI / 180) * y)
 			}
 		}
 
-		hits(block) {
-			return this.hits(block, 0, 0)
-		}
-
+		/**
+		 * Calculates an overlap of two polygons using their vertices and the SAT method (Separating Axis Theorem)
+		 * @param {block for comparison} block 
+		 * @param {delta of shapes x coord} dx 
+		 * @param {delta of shapes y coord} dy 
+		 */
 		hits(block, dx, dy) {
-			var a = this.vertices
-			var b = block.vertices
-			for(var i=0; i < a.length; i++){
+			// create a copy of own vertices
+			var a = []
+			for (var vi in this._vertices.slice()){
+				a.push([this._vertices[vi][0]+0, this._vertices[vi][1]+0])
+			}
+			var b = block._vertices.slice()
+
+			// apply delta of shapes positions
+			for (var i = 0; i < a.length; i++) {
 				var vertex = a[i]
 				vertex[0] += dx
 				vertex[1] += dy
@@ -88,7 +106,7 @@ $(document).ready(function () {
 					// and keep track of the min and max of these values
 					for (j = 0; j < a.length; j++) {
 						projected = normal.x * a[j][0] + normal.y * a[j][1];
-						if ( minA == undefined || projected < minA) {
+						if (minA == undefined || projected < minA) {
 							minA = projected;
 						}
 						if (maxA == undefined || projected > maxA) {
@@ -101,7 +119,7 @@ $(document).ready(function () {
 					minB = maxB = undefined;
 					for (j = 0; j < b.length; j++) {
 						projected = normal.x * b[j][0] + normal.y * b[j][1];
-						if (minB==undefined || projected < minB) {
+						if (minB == undefined || projected < minB) {
 							minB = projected;
 						}
 						if (maxB == undefined || projected > maxB) {
@@ -133,34 +151,29 @@ $(document).ready(function () {
 			this.type = type
 			this.color = color
 			this.rotation = rotation
-			this.col = null
-			this.row = null
 			this.is_mirrored = is_mirrored || false
 
 			// shape internal grid and bounding box
 			this._internal_grid_size = [4, 4]
 			this._internal_grid_shifts = [1, 0]
 			this._internal_virtual_grid = []
+
 			this._init_grid()
 
 			// generate name
-			this.name = this.type + this.id + this.color
+			this.name = this.type + this.id + this.color +"("+Math.floor(Math.random() * 1000000)+")"
 			this.blocks = []
 			this.block_size = 20
-
-			// center for rotation
-			this.center = []
-			this._calculate_center()
 
 			// conntected shapes
 			this.connected = []
 		}
 
-		is_connected(other_shape){
+		is_connected(other_shape) {
 			return this.connected.indexOf(other_shape.name) != -1
 		}
 
-		has_connections(){
+		has_connections() {
 			return this.connected.length > 0
 		}
 
@@ -179,7 +192,7 @@ $(document).ready(function () {
 		}
 
 		_init_grid() {
-			for (var i = 0;i < this._internal_grid_size[0]; i++) {
+			for (var i = 0; i < this._internal_grid_size[0]; i++) {
 				this._internal_virtual_grid.push([])
 				for (var e = 0; e < this._internal_grid_size[1]; e++) {
 					this._internal_virtual_grid[i].push(0)
@@ -203,12 +216,7 @@ $(document).ready(function () {
 		}
 
 		_get_true_angle(angle) {
-			if (this.rotation + angle > 360) {
-				return (this.rotation + angle) - 360
-			} else if (this.rotation + angle < 0) {
-				return (this.rotation + angle) + 360
-			}
-			return this.rotation + angle
+			return 360 % (this.rotation + angle)
 		}
 
 		/**
@@ -224,48 +232,20 @@ $(document).ready(function () {
 		 * Helper that updates the rotation of internal block model
 		 */
 		_rotate_blocks() {
-			for(var i=0; i < this.get_blocks().length; i++){
+			for (var i = 0; i < this.get_blocks().length; i++) {
 				var block = this.get_blocks()[i]
 				block.rotate(this.rotation, this.center)
 			}
 		}
 
-		move_on_grid(col, row) {
-			this.col = col
-			this.row = row
-		}
-
-		move(x, y) {
-			var dx = this.x - x
-			var dy = this.y - y
+		moveTo(x, y) {
 			this.x = x
 			this.y = y
-
-			this._update_center(dx, dy)
-			this._move_blocks(dx, dy)
-		}
-
-		_calculate_center() {
-			this.center[0] = (this._internal_grid_size[0] * this.block_size) + this.x
-			this.center[1] = (this._internal_grid_size[1] * this.block_size) + this.y
-		}
-
-		_update_center(dx, dy) {
-			this.center[0] += dx
-			this.center[1] += dy
-		}
-
-		_move_blocks(dx, dy){
-			for(var i=0; i < this.get_blocks().length; i++){
-				var block = this.get_blocks()[i]
-				block.move(dx, dy)
-			}
 		}
 
 		add_block(block) {
 			this.blocks.push(block)
-			this._update_grid(block.x, block.y)
-			this._calculate_center()
+			//this._update_grid(block.x, block.y)
 		}
 
 		get_blocks() {
@@ -291,23 +271,28 @@ $(document).ready(function () {
 			return false
 		}
 
-		make_copy(new_id) {
-			var shape_copy = document.pento_create_shape(new_id, this.type, this.color,
+		/**
+		 * Returns a deep copy of the shape with the new id assigned
+		 * @param {id} new_id 
+		 */
+		copy(new_id) {
+			var shape_copy = document.pento_create_shape(new_id, this.x, this.y, this.type, this.color,
 				this.is_mirrored, this.rotation)
 
-			shape_copy.blocks = this.get_blocks()
-			shape_copy.x = this.x
-			shape_copy.y = this.y
+			var copied_blocks = []
+			for (var i=0; i < this.blocks; i++){
+				copied_blocks.push(this.blocks[i].copy())
+			}
+			shape_copy.blocks = copied_blocks
 			shape_copy.width = this.width
 			shape_copy.height = this.height
-
 			return shape_copy
 		}
 	}
 
-	this.pento_create_shape = function (id, type, color, is_mirrored, rotation) {
+	this.pento_create_shape = function (id, x, y, type, color, is_mirrored, rotation) {
 		//create empty shape
-		var new_shape = this._new_pento_shape(id, type, color, is_mirrored, rotation)
+		var new_shape = this._new_pento_shape(id, type, color, is_mirrored)
 
 		switch (type) {
 			case "point":
@@ -351,27 +336,29 @@ $(document).ready(function () {
 				break
 			default:
 				console.log("Unsupported shape type: " + type)
+				return;
 		}
+
+		// move and rotate
+		new_shape.moveTo(x, y)
+		new_shape.rotate(rotation)
+
 		return new_shape
 	}
 
-	Shape.prototype.toString = function shapeToString(){
+	Shape.prototype.toString = function shapeToString() {
 		return this.name
-	}
-
-	this._new_pento_shape = function () {
-		return new Shape(-1, 'None', 'black', false, 0)
 	}
 
 	this._new_pento_shape = function (id, type, color, is_mirrored, rotation) {
 		return new Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation)
 	}
 
-		// Draw point
-		this.pento_point = function (shape) {
-			var block = this.pento_create_block(0, 0, shape.block_size, shape.color);
-			shape.add_block(block)
-		}
+	// Draw point
+	this.pento_point = function (shape) {
+		var block = this.pento_create_block(0, 0, shape.block_size, shape.color);
+		shape.add_block(block)
+	}
 
 
 	// draw F 

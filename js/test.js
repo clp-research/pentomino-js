@@ -8,10 +8,8 @@ $(document).ready(function(){
 	var collision2 = block3.hits(block2)
 	console.log("Block Collision Test: "+(collision2 == collision))
 
-	var shape1 = this.pento_create_shape(0,'I', 'blue', false, 0)
-	shape1.move(10, 10)
+	var shape1 = this.pento_create_shape(0,10, 10,'I', 'blue', false, 0)
 
-	var shape2 = this.pento_create_shape(1, 'I', 'red', false, 0)
-	shape2.move(30,91)
+	var shape2 = this.pento_create_shape(1,30,91, 'I', 'red', false, 0)
 	console.log("Shape Collision Test: "+ (shape1.hits(shape2) == shape2.hits(shape1)))
 })
