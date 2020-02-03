@@ -197,7 +197,6 @@ $(document).ready(function () {
 				var shape = this.pento_shapes[index]
 				this.destroy_shape(shape)
 			}
-			//this.pento_canvas_ref.clearCanvas()
 		}
 
 		redraw_arrows(pento_canvas_ref, layer) {

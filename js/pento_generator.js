@@ -227,6 +227,9 @@ $(document).ready(function () {
             var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
         }
 
+        if (pento_types.length == 0)
+            return;
+
         var rotations = [45, 90, 135, 180, 225, 270, 315];
         //var rotations = [...Array(360).keys()];
 

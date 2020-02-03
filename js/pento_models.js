@@ -34,7 +34,7 @@ $(document).ready(function () {
 		/**
 		 * Returs a deepcopy of this block
 		 */
-		copy(){
+		copy() {
 			var block_copy = Block(this.x, this.y, this.width, this.height, this.color)
 			return block_copy
 		}
@@ -48,11 +48,11 @@ $(document).ready(function () {
 			]
 		}
 
-		get_vertex(row, col){
+		get_vertex(row, col) {
 			return this._vertices[row][col]
 		}
 
-		set_vertex(row, col, value){
+		set_vertex(row, col, value) {
 			this._vertices[row][col] = value
 		}
 
@@ -76,8 +76,8 @@ $(document).ready(function () {
 		hits(block, dx, dy) {
 			// create a copy of own vertices
 			var a = []
-			for (var vi in this._vertices.slice()){
-				a.push([this._vertices[vi][0]+0, this._vertices[vi][1]+0])
+			for (var vi in this._vertices.slice()) {
+				a.push([this._vertices[vi][0] + 0, this._vertices[vi][1] + 0])
 			}
 			var b = block._vertices.slice()
 
@@ -166,7 +166,7 @@ $(document).ready(function () {
 			this._init_grid()
 
 			// generate name
-			this.name = this.type + this.id + this.color +"("+Math.floor(Math.random() * 1000000)+")"
+			this.name = this.type + this.id + this.color + "(" + Math.floor(Math.random() * 1000000) + ")"
 			this.blocks = []
 			this.block_size = 20
 
@@ -182,16 +182,121 @@ $(document).ready(function () {
 			return this.connected.length > 0
 		}
 
-		connect_to(other_shape) {
-			other_shape.rotation = this.rotation
+		get_internal_grid() {
+			return this._internal_virtual_grid
+		}
 
+		get_direction(other_shape) {
+			var delta_x = other_shape.x - this.x
+			var delta_y = other_shape.y - this.y
+			var directions = ["top", "left", "bottom", "right"]
+
+			// select direction based on relativ position difference
+			if (delta_x >= 0 && delta_y <= 0) {
+				return directions[0]
+			} else if (delta_x <= 0 && delta_y >= 0) {
+				return directions[1]
+			} else if (delta_x >= 0 && delta_y >= 0) {
+				return directions[2]
+			} else {
+				return directions[3]
+			}
+		}
+
+		/**
+		 * Copy matrix
+		 * @param {Creates a deepcopy of a matrix} matrix 
+		 */
+		copy_matrix(matrix){
+			var new_matrix = []
+			for(var i = 0; i < matrix.length; i++){
+				var row = []
+				for (var e=0; e < matrix[i].length; e++){
+					row.push(matrix[i][e])
+				}
+				new_matrix.push(row)
+			}
+			return new_matrix
+		}
+
+
+		/**
+		 * Copy and rotate matrix 90 degrees clockwise
+		 * @param {*} matrix 
+		 */
+		copy_and_rotate(matrix){
+			// copy
+			var a = this.copy_matrix(matrix)
+
+			// rotate
+			var N = a.length
+			for (var i = 0; i < (N / 2 | 0); i++) {
+				for (var j = i; j < N - i - 1; j++) {
+					var temp = a[i][j];
+					a[i][j] = a[N - 1 - j][i];
+					a[N - 1 - j][i] = a[N - 1 - i][N - 1 - j];
+					a[N - 1 - i][N - 1 - j] = a[j][N - 1 - i];
+					a[j][N - 1 - i] = temp;
+				}
+			}
+
+			return a
+		}
+
+		get_right_fbc(matrix){
+			for(var i=matrix.length-1; i >= 0; i--){
+				if (matrix[i].indexOf(1) != -1)
+					break;
+			}
+			return i
+		}
+
+		get_left_fbc(matrix){
+			for(var i=0; i < matrix.length; i++){
+				if (matrix[i].indexOf(1) != -1)
+					break;
+			}
+			return i;
+		}
+
+		/**
+		 * Connects to shapes
+		 * @param {shape to connect to} other_shape 
+		 * @param {direction of connection} direction 
+		 */
+		align_and_connect(other_shape, direction){
+			var move_x = 0;
+			var move_y = 0;
+
+			if (direction == "top" || direction == "bottom"){
+				var matrix = this.copy_and_rotate(other_shape.get_internal_grid())
+			}else{
+				var matrix = this.copy_matrix(other_shape.get_internal_grid())
+			}
+
+			// index of left or right first blocking column respectively
+			var look_left = (direction == "top" || direction == "right") 
+			var fbc = look_left ? this.get_right_fbc(matrix) : this.get_left_fbc(matrix)
+			var fbc2 = look_left ? this.get_left_fbc(matrix) : this.get_right_fbc(matrix)
+
+			var delta_x = other_shape.x - this.x
+			var detla_y = other_shape.y - this.y
+
+			//other_shape.moveTo(this.x + 100, this.y + 100)
+		}
+
+		connect_to(other_shape) {
 			// align internal grids
+			other_shape.rotate(this.rotation - other_shape.rotation)
 
 			// connect grids so that the resulting matrix doesnt contain a two (after adding both together)
+			// move shapes close together
+			var direction = this.get_direction(other_shape)
+			this.align_and_connect(other_shape, direction)
 
 			// register connection
-			this.connected.push(other_shape.name)
-			other_shape.connected.push(this.name)
+			//this.connected.push(other_shape.name)
+			//other_shape.connected.push(this.name)
 
 			return "group" + this.id + other_shape.id
 		}
