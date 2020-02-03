@@ -28,6 +28,7 @@ $(document).ready(function () {
 	$.jCanvas.extend({
 		name: 'drawPentoShape',
 		type: 'quadratic',
+		fromCenter: true,
 		props: {
 			offsetX: 0,
 			offsetY: 0,

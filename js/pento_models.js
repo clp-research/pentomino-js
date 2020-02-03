@@ -23,6 +23,7 @@ $(document).ready(function () {
 			this.height = height
 			this.color = color
 			this.border_color = 'black'
+			this.rotation = 0
 
 			this.create_vertices();
 		}
@@ -60,6 +61,7 @@ $(document).ready(function () {
 				this.set_vertex(i, 0, Math.cos(angle * Math.PI / 180) * x - Math.sin(angle * Math.PI / 180) * y)
 				this.set_vertex(i, 1, Math.sin(angle * Math.PI / 180) * x + Math.cos(angle * Math.PI / 180) * y)
 			}
+			this.rotation = 360 % (this.rotation + angle)
 		}
 
 		/**
@@ -216,7 +218,7 @@ $(document).ready(function () {
 		}
 
 		_get_true_angle(angle) {
-			return 360 % (this.rotation + angle)
+			return (this.rotation + angle) % 360
 		}
 
 		/**
@@ -234,7 +236,7 @@ $(document).ready(function () {
 		_rotate_blocks() {
 			for (var i = 0; i < this.get_blocks().length; i++) {
 				var block = this.get_blocks()[i]
-				block.rotate(this.rotation, this.center)
+				block.rotate(this.rotation)
 			}
 		}
 
@@ -278,12 +280,6 @@ $(document).ready(function () {
 		copy(new_id) {
 			var shape_copy = document.pento_create_shape(new_id, this.x, this.y, this.type, this.color,
 				this.is_mirrored, this.rotation)
-
-			var copied_blocks = []
-			for (var i=0; i < this.blocks; i++){
-				copied_blocks.push(this.blocks[i].copy())
-			}
-			shape_copy.blocks = copied_blocks
 			shape_copy.width = this.width
 			shape_copy.height = this.height
 			return shape_copy

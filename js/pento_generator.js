@@ -248,7 +248,7 @@ $(document).ready(function () {
 
             if (this.pento_board_target.is_valid(new_shape)) {
                 this.pento_board_target.place_shape(new_shape)
-                generated_shapes.push(new_shape.copy(r + 10000))
+                generated_shapes.push(new_shape.copy(r+1))
                 r++;
 
             } else {
@@ -257,8 +257,8 @@ $(document).ready(function () {
         }
         this.pento_board_target.draw()
 
-        //this.create_initial_state(generated_shapes, NUMBER_OF_CHANGES)
-        //this.pento_board_initial.draw()
+        this.create_initial_state(generated_shapes, NUMBER_OF_CHANGES)
+        this.pento_board_initial.draw()
     }
 
     this.save = function () {
