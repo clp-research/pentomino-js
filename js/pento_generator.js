@@ -12,10 +12,10 @@ $(document).ready(function () {
 
     // specific for pentomino
     this.pento_lock_on_grid = true
-    this.pento_grid_rows = 17
-    this.pento_grid_cols = 17
-    this.pento_grid_col_min = 3
-    this.pento_grid_row_min = 3
+    this.pento_grid_rows = 15
+    this.pento_grid_cols = 15
+    this.pento_grid_col_min = 5
+    this.pento_grid_row_min = 5
     this.pento_with_tray = false
 
     // load config

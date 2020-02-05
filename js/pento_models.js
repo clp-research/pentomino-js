@@ -25,8 +25,8 @@ $(document).ready(function () {
 			this.border_color = 'black'
 			this.rotation = 0
 
-			this.center_x = 20
-			this.center_y = 20
+			this.center_x = 0
+			this.center_y = 0
 
 			this.create_vertices();
 		}

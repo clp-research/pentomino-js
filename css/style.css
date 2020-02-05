@@ -1,6 +1,5 @@
 .container{
-    max-width: 1400px;
-
+    max-width: 1600px;
 }
 
 a{
@@ -44,6 +43,16 @@ input[id^="input-"]{
 .spacer{
     height: 25px;
     width: 100%;
+}
+
+label.config{
+    min-width: 175px;
+    max-width: 250px;
+    padding-top: 15px;
+}
+
+.shape-select label{
+    padding-right: 3px;
 }
 
 label{
