@@ -31,7 +31,8 @@ $(document).ready(function () {
 			this.event_handlers = []
 
 			// actions
-			this.actions = ["move", "rotate", "connect", "flip"]
+			//this.actions = ["move", "rotate", "connect", "flip"]
+			this.actions = ["move"]
 
 			this.init_board()
 			this.init_grid()

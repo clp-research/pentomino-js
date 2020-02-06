@@ -165,6 +165,9 @@ $(document).ready(function () {
 
 			this._init_grid()
 
+			// log changes for rollback
+			this.changes = []
+
 			// generate name
 			this.name = this.type + this.id + this.color
 			this.blocks = []
@@ -351,14 +354,34 @@ $(document).ready(function () {
 			}
 		}
 
-		moveTo(x, y) {
+		rollback(steps){
+			if (this.changes.length>0){
+				for(var i=(this.changes.length-1); i >= Math.max(0, this.changes.length-steps); i--){
+					this.undo_action(this.changes[i])
+				}
+				this.changes = this.changes.slice(0,Math.max(0, this.changes.length-steps))
+			}
+		}
+
+		undo_action(action){
+			switch(action["name"]){
+				case "move":
+					this.moveTo(action["x"], action["y"], false)
+					break;
+			}
+		}
+
+		moveTo(x, y, track) {
+			if (track != false){
+				this.changes.push({"name": "move", "x": this.x+0, "y": this.y+0})
+			}
 			this.x = x
 			this.y = y
 		}
 
 		add_block(block) {
 			this.blocks.push(block)
-			//this._update_grid(block.x, block.y)
+			this._update_grid(block.x, block.y)
 		}
 
 		get_blocks() {

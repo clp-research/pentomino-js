@@ -167,7 +167,7 @@ $(document).ready(function () {
             var action_index = Math.floor(Math.random() * actions.length)
             var random_action = actions[action_index]
             var params = this.generate_params(random_action, shapes)
-            this.pento_board_initial.isValidAction(random_action, random_shape, params)
+            this.pento_board_initial.execute_action(random_action, random_shape, params)
 
             // check whether shape and action are valid
             if (this.pento_board_initial.isValidAction(random_action, random_shape, params)) {
@@ -181,7 +181,6 @@ $(document).ready(function () {
                     i -= 1
                     continue
                 }
-                this.pento_board_initial.execute_action(random_action, random_shape, params)
                 this.pento_board_initial.draw()
                 pento_generator_actions[random_shape.name].push(random_action)
 
@@ -191,6 +190,7 @@ $(document).ready(function () {
                 }
                 this.make_board_screenshot(i, '#initial', random_action + " (" + paramString + "id=" + random_shape.name + ")", true)
             } else {
+                random_shape.rollback(1)
                 i -= 1
             }
         }
@@ -283,5 +283,5 @@ $(document).ready(function () {
     });
 
     this.calculate_actions()
-    //this.generate()
+    this.generate()
 })
