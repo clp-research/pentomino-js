@@ -259,15 +259,19 @@ $(document).ready(function () {
 			return i;
 		}
 
+		get_movement(look_left, fbc, fbc2, matrix){
+
+
+			return [0,0]
+		}
+
 		/**
 		 * Connects to shapes
 		 * @param {shape to connect to} other_shape 
 		 * @param {direction of connection} direction 
 		 */
 		align_and_connect(other_shape, direction){
-			var move_x = 0;
-			var move_y = 0;
-
+			// get copy of matrix for inplace operations and rotate if necessary
 			if (direction == "top" || direction == "bottom"){
 				var matrix = this.copy_and_rotate(other_shape.get_internal_grid())
 			}else{
@@ -279,10 +283,9 @@ $(document).ready(function () {
 			var fbc = look_left ? this.get_right_fbc(matrix) : this.get_left_fbc(matrix)
 			var fbc2 = look_left ? this.get_left_fbc(matrix) : this.get_right_fbc(matrix)
 
-			var delta_x = other_shape.x - this.x
-			var detla_y = other_shape.y - this.y
-
-			//other_shape.moveTo(this.x + 100, this.y + 100)
+			// move other shape to new position
+			var new_positions = this.get_movement(look_left, fbc, fbc2, matrix)
+			other_shape.moveTo(new_positions[0], new_positions[1])
 		}
 
 		connect_to(other_shape) {
