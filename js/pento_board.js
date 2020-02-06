@@ -31,7 +31,7 @@ $(document).ready(function () {
 			this.event_handlers = []
 
 			// actions
-			this.actions = ["move", "rotate", "connect"]
+			this.actions = ["move", "rotate", "connect", "flip"]
 
 			this.init_board()
 			this.init_grid()
@@ -376,16 +376,23 @@ $(document).ready(function () {
 			return this.actions
 		}
 
-		is_valid(shape) {
-			var collisions = this.get_collisions(shape)
-			return collisions.length == 0 && shape.x >= 0 && shape.y >= 0 && shape.x <= 400 && shape.y <= 400
-		}
-
+		/**
+		 * Checks if action and shape are valid considering the current board state
+		 * @param {*} action_name 
+		 * @param {*} shape 
+		 * @param {*} params 
+		 */
 		isValidAction(action_name, shape, params) {
-			if (this.get_actions().indexOf(action_name) != -1) {
+			// make extra check for place as this is a one time action
+			if (this.get_actions().indexOf(action_name) != -1 || action_name == "place") {
 				switch (action_name) {
 					case "connect":
 						if (!params['other_shape'].is_connected(shape) && shape.name != params['other_shape']) {
+							return true
+						}
+						break;
+					case "place":
+						if (!this.check_collisions_of_shape(shape)) {
 							return true
 						}
 						break;
@@ -395,6 +402,11 @@ $(document).ready(function () {
 						}
 						break;
 					case "rotate":
+						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
+							return true
+						}
+						break;
+					case "flip":
 						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
 							return true
 						}

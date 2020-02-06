@@ -12,10 +12,10 @@ $(document).ready(function () {
 
     // specific for pentomino
     this.pento_lock_on_grid = true
-    this.pento_grid_rows = 15
-    this.pento_grid_cols = 15
-    this.pento_grid_col_min = 5
-    this.pento_grid_row_min = 5
+    this.pento_grid_rows = 16
+    this.pento_grid_cols = 16
+    this.pento_grid_col_min = 4
+    this.pento_grid_row_min = 4
     this.pento_with_tray = false
 
     // load config
@@ -231,6 +231,7 @@ $(document).ready(function () {
             return;
 
         var rotations = [45, 90, 135, 180, 225, 270, 315];
+        //var rotations = [0]
         //var rotations = [...Array(360).keys()];
 
         var rotation_counter = 0
@@ -251,13 +252,13 @@ $(document).ready(function () {
             } else {
                 rand_rot = 0
             }
-            var do_mirror = Math.random() > 0.5;
+            var do_mirror = false
 
             // create and place
             var coords = this.pento_board_target.grid_cell_to_coordinates(rand_col, rand_row)
             var new_shape = this.pento_create_shape(r, coords[0], coords[1], rand_type, rand_color, do_mirror, rand_rot)
 
-            if (this.pento_board_target.is_valid(new_shape)) {
+            if (this.pento_board_target.isValidAction("place", new_shape, {})) {
                 this.pento_board_target.place_shape(new_shape)
                 generated_shapes.push(new_shape.copy(r+1))
                 r++;
@@ -282,5 +283,5 @@ $(document).ready(function () {
     });
 
     this.calculate_actions()
-    this.generate()
+    //this.generate()
 })

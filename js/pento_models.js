@@ -166,7 +166,7 @@ $(document).ready(function () {
 			this._init_grid()
 
 			// generate name
-			this.name = this.type + this.id + this.color + "(" + Math.floor(Math.random() * 1000000) + ")"
+			this.name = this.type + this.id + this.color
 			this.blocks = []
 			this.block_size = 20
 
