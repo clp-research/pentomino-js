@@ -3,7 +3,7 @@ $(document).ready(function () {
 
 	this.PentoBoard = class PentoBoard {
 
-		constructor(canvas_id, title, with_tray) {
+		constructor(canvas_id, title, with_tray, with_grid) {
 			this.canvas_id = canvas_id
 			this.pento_canvas_ref = $(canvas_id);
 			this.pento_canvas_ref.clearCanvas();
@@ -14,13 +14,14 @@ $(document).ready(function () {
 
 			// pento grid parameters
 			this.pento_grid_cols = 20;
-			this.pento_grid_rows = 10;
+			this.pento_grid_rows = 20;
 			this.pento_block_size = 20;
-			this.pento_grid_color = '#000';
-			this.pento_grid_x = 40;
-			this.pento_grid_y = 40;
+			this.pento_grid_color = 'gray';
+			this.pento_grid_x = 0;
+			this.pento_grid_y = 0;
 
 			// pento game parameters
+			this.show_grid = with_grid
 			this.pento_read_only = false
 			this.pento_lock_on_grid = true;
 			this.pento_prevent_collision = false;
@@ -32,10 +33,10 @@ $(document).ready(function () {
 
 			// actions
 			//this.actions = ["move", "rotate", "connect", "flip"]
-			this.actions = ["move"]
+			this.actions = ["move", "rotate"]
 
 			this.init_board()
-			this.init_grid()
+			this.init_grid(this.show_grid)
 
 			// register event handler
 			$(canvas_id).on('dblclick', function (event) {
@@ -74,6 +75,7 @@ $(document).ready(function () {
 			this.pento_canvas_ref.drawLine({
 				layer: true,
 				name: name,
+				groups:['grid'],
 				strokeStyle: color,
 				strokeWidth: 1,
 				x1: x, y1: y,

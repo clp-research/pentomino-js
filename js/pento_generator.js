@@ -11,22 +11,20 @@ $(document).ready(function () {
     SHAPES_FILTER = []
 
     // specific for pentomino
-    this.pento_lock_on_grid = true
     this.pento_grid_rows = 16
     this.pento_grid_cols = 16
-    this.pento_grid_col_min = 4
-    this.pento_grid_row_min = 4
-    this.pento_with_tray = false
+    this.pento_grid_col_min = 3
+    this.pento_grid_row_min = 3
 
     // load config
     this.pento_config = new document.PentoConfig()
 
     // draw board frames/headers
     var PentoBoard = this.PentoBoard
-    this.pento_board_target = new PentoBoard("#target", "Target", false);
+    this.pento_board_target = new PentoBoard("#target", "Target", false, true);
     this.pento_board_target.set("read_only", true)
 
-    this.pento_board_initial = new PentoBoard("#initial", "Initial", false);
+    this.pento_board_initial = new PentoBoard("#initial", "Initial", false, true);
     this.pento_board_initial.set("read_only", true)
 
     // init form

@@ -25,8 +25,8 @@ $(document).ready(function () {
 			this.border_color = 'black'
 			this.rotation = 0
 
-			this.center_x = 0
-			this.center_y = 0
+			this.center_x = -width
+			this.center_y = -height
 
 			this.create_vertices();
 		}
@@ -56,7 +56,22 @@ $(document).ready(function () {
 			this._vertices[row][col] = value
 		}
 
+		_move(dx, dy){
+			this.x += dx
+			this.y += dy
+			this._update_vertices(dx, dy)
+		}
+
+		_update_vertices(dx, dy){
+			for(var i=0; i < this._vertices.length; i++){
+				var vertex = this._vertices[i]
+				vertex[0] += dx
+				vertex[1] += dy
+			}
+		}
+
 		rotate(angle) {
+			this._move(this.center_x, this.center_y)
 			for (var i = 0; i < this._vertices.length; i++) {
 				var vertex = this._vertices[i]
 				var x = vertex[0] + this.center_x / 2
@@ -64,7 +79,8 @@ $(document).ready(function () {
 				this.set_vertex(i, 0, Math.cos(angle * Math.PI / 180) * x - Math.sin(angle * Math.PI / 180) * y)
 				this.set_vertex(i, 1, Math.sin(angle * Math.PI / 180) * x + Math.cos(angle * Math.PI / 180) * y)
 			}
-			this.rotation = 360 % (this.rotation + angle)
+			this._move(-this.center_x, -this.center_y)
+			this.rotation = angle
 		}
 
 		/**
@@ -331,17 +347,42 @@ $(document).ready(function () {
 			this._set_grid_value(row, col, 1)
 		}
 
-		_get_true_angle(angle) {
-			return (this.rotation + angle) % 360
+
+
+		/**
+		 * Rolls back N steps of modifications done to the shape (except initial placement) 
+		 * @param {int} steps 
+		 */
+		rollback(steps){
+			if (this.changes.length>0){
+				for(var i=(this.changes.length-1); i >= Math.max(0, this.changes.length-steps); i--){
+					this.undo_action(this.changes[i])
+				}
+				this.changes = this.changes.slice(0,Math.max(0, this.changes.length-steps))
+			}
 		}
 
 		/**
-		 * Rotates the shape by delta angle
-		 * @param {*} angle 
+		 * Restores the state of the shape before the modification
+		 * @param {action object} action 
 		 */
-		rotate(angle) {
-			this.rotation = this._get_true_angle(angle)
-			this._rotate_blocks()
+		undo_action(action){
+			switch(action["name"]){
+				case "move":
+					this.moveTo(action["x"], action["y"], false)
+					break;
+				case "rotate":
+					this.rotate(action["angle"],  false)
+					break;
+			}
+		}
+
+		/**
+		 * Returns the true angle for rotation
+		 * @param {degree} angle 
+		 */
+		_get_true_angle(angle) {
+			return (this.rotation + angle) % 360
 		}
 
 		/**
@@ -354,21 +395,16 @@ $(document).ready(function () {
 			}
 		}
 
-		rollback(steps){
-			if (this.changes.length>0){
-				for(var i=(this.changes.length-1); i >= Math.max(0, this.changes.length-steps); i--){
-					this.undo_action(this.changes[i])
-				}
-				this.changes = this.changes.slice(0,Math.max(0, this.changes.length-steps))
+		/**
+		 * Rotates the shape by delta angle
+		 * @param {*} angle 
+		 */
+		rotate(angle, track) {
+			if (track != false){
+				this.changes.push({"name": "rotate", "angle": 360-angle})
 			}
-		}
-
-		undo_action(action){
-			switch(action["name"]){
-				case "move":
-					this.moveTo(action["x"], action["y"], false)
-					break;
-			}
+			this.rotation = this._get_true_angle(angle)
+			this._rotate_blocks()
 		}
 
 		moveTo(x, y, track) {
