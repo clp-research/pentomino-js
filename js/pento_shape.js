@@ -1,180 +1,4 @@
 $(document).ready(function () {
-	class PentoConfig {
-
-		constructor() { }
-
-		get_pento_colors() {
-			return ['#EEAAAA', '#DDBB99', '#CCCC88', '#BBDD99', '#AAEEAA', '#DD99BB', '#CC88CC', '#99BBDD', '#AAAAEE', '#88CCCC', '#99DDBB']
-		}
-
-		get_pento_types() {
-			return ['F', 'I', 'L', 'N', 'P', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-		}
-
-	}
-
-	this.PentoConfig = PentoConfig
-
-	class Block {
-		constructor(x, y, width, height, color) {
-			this.x = x
-			this.y = y
-			this.width = width
-			this.height = height
-			this.color = color
-			this.border_color = 'black'
-			this.rotation = 0
-
-			this.center_x = -width
-			this.center_y = -height
-
-			this.create_vertices();
-		}
-
-		is_inside(bbox, offsetX, offsetY){
-			for(var vertex_index in this._vertices){
-				var vertex = this._vertices[vertex_index]
-				var point_x = vertex[0] + offsetX
-				var point_y = vertex[1] + offsetY
-				if (point_x < bbox[0] || point_x > bbox[0] + bbox[2] || point_y > bbox[1] + bbox[3] || point_y < bbox[1]){
-					return false
-				}
-			}
-			return true
-		}
-
-		/**
-		 * Returs a deepcopy of this block
-		 */
-		copy() {
-			var block_copy = Block(this.x, this.y, this.width, this.height, this.color)
-			return block_copy
-		}
-
-		create_vertices() {
-			this._vertices = [
-				[this.x, this.y],
-				[this.x + this.width, this.y],
-				[this.x + this.width, this.y + this.height],
-				[this.x, this.y + this.height]
-			]
-		}
-
-		get_vertex(row, col) {
-			return this._vertices[row][col]
-		}
-
-		set_vertex(row, col, value) {
-			this._vertices[row][col] = value
-		}
-
-		_move(dx, dy){
-			this.x += dx
-			this.y += dy
-			this._update_vertices(dx, dy)
-		}
-
-		_update_vertices(dx, dy){
-			for(var i=0; i < this._vertices.length; i++){
-				var vertex = this._vertices[i]
-				vertex[0] += dx
-				vertex[1] += dy
-			}
-		}
-
-		rotate(angle) {
-			this._move(this.center_x, this.center_y)
-			for (var i = 0; i < this._vertices.length; i++) {
-				var vertex = this._vertices[i]
-				var x = vertex[0] + this.center_x / 2
-				var y = vertex[1] + this.center_y / 2
-				this.set_vertex(i, 0, Math.cos(angle * Math.PI / 180) * x - Math.sin(angle * Math.PI / 180) * y)
-				this.set_vertex(i, 1, Math.sin(angle * Math.PI / 180) * x + Math.cos(angle * Math.PI / 180) * y)
-			}
-			this._move(-this.center_x, -this.center_y)
-			this.rotation = angle
-		}
-
-		/**
-		 * Calculates an overlap of two polygons using their vertices and the SAT method (Separating Axis Theorem)
-		 * @param {block for comparison} block 
-		 * @param {delta of shapes x coord} dx 
-		 * @param {delta of shapes y coord} dy 
-		 */
-		hits(block, dx, dy) {
-			// create a copy of own vertices
-			var a = []
-			for (var vi in this._vertices.slice()) {
-				a.push([this._vertices[vi][0] + 0, this._vertices[vi][1] + 0])
-			}
-			var b = block._vertices.slice()
-
-			// apply delta of shapes positions
-			for (var i = 0; i < a.length; i++) {
-				var vertex = a[i]
-				vertex[0] += dx
-				vertex[1] += dy
-			}
-
-			var rectangles = [a, b];
-			var minA, maxA, projected, i, i1, j, minB, maxB;
-
-			for (i = 0; i < rectangles.length; i++) {
-
-				// for each polygon, look at each edge of the polygon, and determine if it separates
-				// the two shapes
-				var rectangle = rectangles[i];
-				for (i1 = 0; i1 < rectangle.length; i1++) {
-
-					// grab 2 vertices to create an edge
-					var i2 = (i1 + 1) % rectangle.length;
-					var p1 = rectangle[i1];
-					var p2 = rectangle[i2];
-
-					// find the line perpendicular to this edge
-					var normal = { x: p2[1] - p1[1], y: p1[0] - p2[0] };
-
-					minA = maxA = undefined;
-					// for each vertex in the first shape, project it onto the line perpendicular to the edge
-					// and keep track of the min and max of these values
-					for (j = 0; j < a.length; j++) {
-						projected = normal.x * a[j][0] + normal.y * a[j][1];
-						if (minA == undefined || projected < minA) {
-							minA = projected;
-						}
-						if (maxA == undefined || projected > maxA) {
-							maxA = projected;
-						}
-					}
-
-					// for each vertex in the second shape, project it onto the line perpendicular to the edge
-					// and keep track of the min and max of these values
-					minB = maxB = undefined;
-					for (j = 0; j < b.length; j++) {
-						projected = normal.x * b[j][0] + normal.y * b[j][1];
-						if (minB == undefined || projected < minB) {
-							minB = projected;
-						}
-						if (maxB == undefined || projected > maxB) {
-							maxB = projected;
-						}
-					}
-
-					// if there is no overlap between the projects, the edge we are looking at separates the two
-					// polygons, and we know there is no overlap
-					if (maxA < minB || maxB < minA) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-
-	}
-
-	this.pento_create_block = function (x, y, block_size, color) {
-		return new Block(x, y, block_size, block_size, color)
-	}
 
 	class Shape {
 		constructor(id, type, color, is_mirrored, rotation) {
@@ -185,12 +9,12 @@ $(document).ready(function () {
 			this.color = color
 			this.rotation = rotation
 			this.is_mirrored = is_mirrored || false
+			this.writable = true
 
 			// shape internal grid and bounding box
 			this._internal_grid_size = [4, 4]
 			this._internal_grid_shifts = [1, 0]
-			this._internal_virtual_grid = []
-
+			this._internal_grid = []
 			this._init_grid()
 
 			// log changes for rollback
@@ -213,11 +37,11 @@ $(document).ready(function () {
 		 * @param {Bounding Box Width} bb_width 
 		 * @param {Bounding Box Height} bb_height 
 		 */
-		is_inside(bb_x, bb_y, bb_width, bb_height){
+		is_inside(bb_x, bb_y, bb_width, bb_height) {
 			var bounding_box = [bb_x, bb_y, bb_width, bb_height]
-			for (var block_index in this.blocks){
+			for (var block_index in this.blocks) {
 				var block = this.blocks[block_index]
-				if (!block.is_inside(bounding_box, this.x, this.y)){
+				if (!block.is_inside(bounding_box, this.x, this.y)) {
 					return false
 				}
 			}
@@ -233,7 +57,7 @@ $(document).ready(function () {
 		}
 
 		get_internal_grid() {
-			return this._internal_virtual_grid
+			return this._internal_grid
 		}
 
 		get_direction(other_shape) {
@@ -257,11 +81,11 @@ $(document).ready(function () {
 		 * Copy matrix
 		 * @param {Creates a deepcopy of a matrix} matrix 
 		 */
-		copy_matrix(matrix){
+		copy_matrix(matrix) {
 			var new_matrix = []
-			for(var i = 0; i < matrix.length; i++){
+			for (var i = 0; i < matrix.length; i++) {
 				var row = []
-				for (var e=0; e < matrix[i].length; e++){
+				for (var e = 0; e < matrix[i].length; e++) {
 					row.push(matrix[i][e])
 				}
 				new_matrix.push(row)
@@ -274,7 +98,7 @@ $(document).ready(function () {
 		 * Copy and rotate matrix 90 degrees clockwise
 		 * @param {*} matrix 
 		 */
-		copy_and_rotate(matrix){
+		copy_and_rotate(matrix) {
 			// copy
 			var a = this.copy_matrix(matrix)
 
@@ -293,26 +117,26 @@ $(document).ready(function () {
 			return a
 		}
 
-		get_right_fbc(matrix){
-			for(var i=matrix.length-1; i >= 0; i--){
+		get_right_fbc(matrix) {
+			for (var i = matrix.length - 1; i >= 0; i--) {
 				if (matrix[i].indexOf(1) != -1)
 					break;
 			}
 			return i
 		}
 
-		get_left_fbc(matrix){
-			for(var i=0; i < matrix.length; i++){
+		get_left_fbc(matrix) {
+			for (var i = 0; i < matrix.length; i++) {
 				if (matrix[i].indexOf(1) != -1)
 					break;
 			}
 			return i;
 		}
 
-		get_movement(look_left, fbc, fbc2, matrix){
+		get_movement(look_left, fbc, fbc2, matrix) {
 
 
-			return [0,0]
+			return [0, 0]
 		}
 
 		/**
@@ -320,16 +144,16 @@ $(document).ready(function () {
 		 * @param {shape to connect to} other_shape 
 		 * @param {direction of connection} direction 
 		 */
-		align_and_connect(other_shape, direction){
+		align_and_connect(other_shape, direction) {
 			// get copy of matrix for inplace operations and rotate if necessary
-			if (direction == "top" || direction == "bottom"){
+			if (direction == "top" || direction == "bottom") {
 				var matrix = this.copy_and_rotate(other_shape.get_internal_grid())
-			}else{
+			} else {
 				var matrix = this.copy_matrix(other_shape.get_internal_grid())
 			}
 
 			// index of left or right first blocking column respectively
-			var look_left = (direction == "top" || direction == "right") 
+			var look_left = (direction == "top" || direction == "right")
 			var fbc = look_left ? this.get_right_fbc(matrix) : this.get_left_fbc(matrix)
 			var fbc2 = look_left ? this.get_left_fbc(matrix) : this.get_right_fbc(matrix)
 
@@ -356,19 +180,19 @@ $(document).ready(function () {
 
 		_init_grid() {
 			for (var i = 0; i < this._internal_grid_size[0]; i++) {
-				this._internal_virtual_grid.push([])
+				this._internal_grid.push([])
 				for (var e = 0; e < this._internal_grid_size[1]; e++) {
-					this._internal_virtual_grid[i].push(0)
+					this._internal_grid[i].push(0)
 				}
 			}
 		}
 
 		_set_grid_value(row, col, value) {
-			this._internal_virtual_grid[row][col] = value
+			this._internal_grid[row][col] = value
 		}
 
 		_get_grid_value(row, col) {
-			return this._internal_virtual_grid[row][col]
+			return this._internal_grid[row][col]
 		}
 
 		_update_grid(block_x, block_y) {
@@ -378,18 +202,16 @@ $(document).ready(function () {
 			this._set_grid_value(row, col, 1)
 		}
 
-
-
 		/**
 		 * Rolls back N steps of modifications done to the shape (except initial placement) 
 		 * @param {int} steps 
 		 */
-		rollback(steps){
-			if (this.changes.length>0){
-				for(var i=(this.changes.length-1); i >= Math.max(0, this.changes.length-steps); i--){
+		rollback(steps) {
+			if (this.changes.length > 0) {
+				for (var i = (this.changes.length - 1); i >= Math.max(0, this.changes.length - steps); i--) {
 					this.undo_action(this.changes[i])
 				}
-				this.changes = this.changes.slice(0,Math.max(0, this.changes.length-steps))
+				this.changes = this.changes.slice(0, Math.max(0, this.changes.length - steps))
 			}
 		}
 
@@ -397,13 +219,13 @@ $(document).ready(function () {
 		 * Restores the state of the shape before the modification
 		 * @param {action object} action 
 		 */
-		undo_action(action){
-			switch(action["name"]){
+		undo_action(action) {
+			switch (action["name"]) {
 				case "move":
 					this.moveTo(action["x"], action["y"], false)
 					break;
 				case "rotate":
-					this.rotate(action["angle"],  false)
+					this.rotate(action["angle"], false)
 					break;
 			}
 		}
@@ -413,16 +235,17 @@ $(document).ready(function () {
 		 * @param {degree} angle 
 		 */
 		_get_true_angle(angle) {
-			return (this.rotation + angle) % 360
+			var true_angle = (this.rotation + angle) % 360
+			return true_angle
 		}
 
 		/**
 		 * Helper that updates the rotation of internal block model
 		 */
-		_rotate_blocks() {
+		_rotate_blocks(delta_angle) {
 			for (var i = 0; i < this.get_blocks().length; i++) {
 				var block = this.get_blocks()[i]
-				block.rotate(this.rotation)
+				block.rotate(delta_angle, this.rotation)
 			}
 		}
 
@@ -431,24 +254,48 @@ $(document).ready(function () {
 		 * @param {*} angle 
 		 */
 		rotate(angle, track) {
-			if (track != false){
-				this.changes.push({"name": "rotate", "angle": 360-angle})
+			if (track != false) {
+				this.changes.push({ "name": "rotate", "angle": 360 - angle })
 			}
 			this.rotation = this._get_true_angle(angle)
-			this._rotate_blocks()
+			this._rotate_blocks(angle)
 		}
 
 		moveTo(x, y, track) {
-			if (track != false){
-				this.changes.push({"name": "move", "x": this.x+0, "y": this.y+0})
+			if (track != false) {
+				this.changes.push({ "name": "move", "x": this.x + 0, "y": this.y + 0 })
 			}
 			this.x = x
 			this.y = y
 		}
 
+		close() {
+			this.writable = false
+
+			var x_sum = 0
+			var y_sum = 0
+
+			for (var block_index in this.blocks) {
+				var block_center = this.blocks[block_index].get_center()
+				x_sum += block_center[0]
+				y_sum += block_center[1]
+			}
+
+			var center_x = x_sum / this.blocks.length
+			var center_y = y_sum / this.blocks.length
+
+			// update blocks
+			for (var block_index in this.blocks) {
+				var block = this.blocks[block_index]
+				block.set_shape_center(40,40)
+			}
+		}
+
 		add_block(block) {
-			this.blocks.push(block)
-			this._update_grid(block.x, block.y)
+			if (this.writable) {
+				this.blocks.push(block)
+				this._update_grid(block.x, block.y)
+			}
 		}
 
 		get_blocks() {
@@ -535,6 +382,10 @@ $(document).ready(function () {
 				console.log("Unsupported shape type: " + type)
 				return;
 		}
+
+		// Important: Closing the shapes disabled editing and 
+		// calculates center point for rotations
+		new_shape.close()
 
 		// move and rotate
 		new_shape.moveTo(x, y)

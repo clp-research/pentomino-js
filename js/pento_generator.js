@@ -131,7 +131,7 @@ $(document).ready(function () {
         return val
     }
 
-    this.generate_params = function (action_type, shapes) {
+    this.generate_params = function (rand_shape, action_type, shapes) {
         var max = 400
         var min = 0
         var rotations = [45, 90, 135, 180, 225, 270, 315];
@@ -189,7 +189,7 @@ $(document).ready(function () {
 
             var action_index = Math.floor(Math.random() * actions.length)
             var random_action = actions[action_index]
-            var params = this.generate_params(random_action, shapes)
+            var params = this.generate_params(random_shape, random_action, shapes)
             this.pento_board_initial.execute_action(random_action, random_shape, params)
 
             // check whether shape and action are valid
@@ -218,10 +218,6 @@ $(document).ready(function () {
             }
         }
 
-        // initial final
-        this.pento_board_initial.draw()
-        this.make_board_screenshot(i+1, '#initial', "START", true)
-
         // target final
         this.make_board_screenshot(i+2, '#target', "END", false)
     }
@@ -246,8 +242,8 @@ $(document).ready(function () {
         var pento_types = pento_types.filter((shape_type) => SHAPES_FILTER.indexOf(shape_type) == -1)
 
         if (MONOSHAPES) {
-            //var pento_types = ['point']
-            var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
+            var pento_types = ['point']
+            //var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
         }
 
         if (pento_types.length == 0)
@@ -261,6 +257,7 @@ $(document).ready(function () {
         var generated_shapes = []
         var r = 0
         while (r < NUMBER_OF_SHAPES) {
+
             // generate random types
             var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
             var rand_color = colors[Math.floor(Math.random() * colors.length)];
