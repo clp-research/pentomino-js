@@ -387,7 +387,8 @@ $(document).ready(function () {
 		 */
 		isValidAction(action_name, shape, params) {
 			// make extra check for place as this is a one time action
-			if (this.get_actions().indexOf(action_name) != -1 || action_name == "place") {
+			if ( (this.get_actions().indexOf(action_name) != -1 || action_name == "place" ) && 
+				shape.is_inside(this.pento_grid_x, this.pento_grid_y, 400, 400)) {
 				switch (action_name) {
 					case "connect":
 						if (!params['other_shape'].is_connected(shape) && shape.name != params['other_shape']) {

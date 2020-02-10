@@ -3,18 +3,19 @@ $(document).ready(function () {
 
     // parameters
     // specific for generator
-    NUMBER_OF_SHAPES = 5
+    NUMBER_OF_SHAPES = 1
     NUMBER_OF_CONNECTIONS = 0
     NUMBER_OF_ROTATIONS = 0
+    NUMBER_OF_FLIPS = 0
     MONOCOLOR = false
     MONOSHAPES = false
     SHAPES_FILTER = []
 
     // specific for pentomino
-    this.pento_grid_rows = 16
-    this.pento_grid_cols = 16
-    this.pento_grid_col_min = 3
-    this.pento_grid_row_min = 3
+    this.pento_grid_rows = 19
+    this.pento_grid_cols = 19
+    this.pento_grid_col_min = 1
+    this.pento_grid_row_min = 1
 
     // load config
     this.pento_config = new document.PentoConfig()
@@ -41,14 +42,37 @@ $(document).ready(function () {
             + '" class="shape-type-' + item + '" type="checkbox" ' + checked + '/><br></div>')
     })
 
+
+    this.set_ui_value = function(id, default_value, is_check){
+        if (is_check){
+            $("input#"+id).prop("checked", localStorage.getItem(id) == default_value)
+        }else{
+            $("input#"+id).val(localStorage.getItem(id) || default_value)
+        }
+    }
+
+    this.get_ui_value = function(id, is_bool){
+        if (is_bool){
+            return $("input#"+id).is(":checked");
+        }else{
+            return parseInt($("input#"+id).val());
+        }
+    }
+
     // init stored data
-    $("input#nshapes").val(localStorage.getItem("nshapes") || 1)
-    //$("input#nchanges_rotations").val(localStorage.getItem("nchanges_rotations") || 0)
-    $("input#nchanges").val(localStorage.getItem("nchanges") || 1)
-    $("input#nrotations").val(localStorage.getItem("nrotations") || 0)
-    $("input#nconnections").val(localStorage.getItem("nconnections") || 0)
-    $("input#colors").prop("checked", localStorage.getItem("colors") == "true")
-    $("input#shapes").prop("checked", localStorage.getItem("shape_difficulty") == "true")
+    var fields = [
+            ("nshapes", 1),
+            ("nrotations",0),
+            ("nflips", 0),
+            ("nchanges", 1),
+            ("nconnections", 0),
+            ("colors", "true", true),
+            ("shapes", "true", true)
+        ]
+    
+        for (var i=0; i<fields.length; i++){
+            this.set_ui_value(fields[i][0], fields[i][1])
+        }
 
     this.toggle_shape_select = function () {
         var shapes = this.pento_config.get_pento_types()
@@ -62,13 +86,14 @@ $(document).ready(function () {
 
     this.calculate_actions = function () {
         // set global vars
+        NUMBER_OF_FLIPS = this.get_ui_value("nflips")
         NUMBER_OF_SHAPES = parseInt($("input#nshapes").val());
         NUMBER_OF_ROTATIONS = parseInt($("input#nrotations").val());
         NUMBER_OF_CONNECTIONS = parseInt($("input#nconnections").val());
         MONOCOLOR = $("input#colors").is(":checked");
         MONOSHAPES = $("input#shapes").is(":checked");
         NUMBER_OF_CHANGES = parseInt($("input#nchanges").val());
-        //NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
+        NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
 
         // store data
         //localStorage.setItem("nchanges_rotations", NUMBER_OF_CHANGES_ROTATIONS)

@@ -31,6 +31,18 @@ $(document).ready(function () {
 			this.create_vertices();
 		}
 
+		is_inside(bbox, offsetX, offsetY){
+			for(var vertex_index in this._vertices){
+				var vertex = this._vertices[vertex_index]
+				var point_x = vertex[0] + offsetX
+				var point_y = vertex[1] + offsetY
+				if (point_x < bbox[0] || point_x > bbox[0] + bbox[2] || point_y > bbox[1] + bbox[3] || point_y < bbox[1]){
+					return false
+				}
+			}
+			return true
+		}
+
 		/**
 		 * Returs a deepcopy of this block
 		 */
@@ -191,6 +203,25 @@ $(document).ready(function () {
 
 			// conntected shapes
 			this.connected = []
+		}
+
+		/**
+		 * Checks whether the shape is inside the bounding box or has overlaps (returns false if any part of the shape is
+		 * outside the bounding box)
+		 * @param {Bound Box x} bb_x 
+		 * @param {Bounding Box y} bb_y 
+		 * @param {Bounding Box Width} bb_width 
+		 * @param {Bounding Box Height} bb_height 
+		 */
+		is_inside(bb_x, bb_y, bb_width, bb_height){
+			var bounding_box = [bb_x, bb_y, bb_width, bb_height]
+			for (var block_index in this.blocks){
+				var block = this.blocks[block_index]
+				if (!block.is_inside(bounding_box, this.x, this.y)){
+					return false
+				}
+			}
+			return true
 		}
 
 		is_connected(other_shape) {
