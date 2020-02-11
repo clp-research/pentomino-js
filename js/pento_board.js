@@ -23,7 +23,7 @@ $(document).ready(function () {
 			// pento game parameters
 			this.show_grid = with_grid
 			this.pento_read_only = false
-			this.pento_lock_on_grid = true;
+			this.pento_lock_on_grid = false;
 			this.pento_prevent_collision = false;
 			this.pento_active_shape = null;
 			this.pento_with_tray = with_tray;
@@ -39,9 +39,10 @@ $(document).ready(function () {
 			this.init_grid(this.show_grid)
 
 			// register event handler
+			var self = this
 			$(canvas_id).on('dblclick', function (event) {
-				this.pento_active_shape = null
-				this.remove_arrows();
+				self.pento_active_shape = null
+				self.remove_arrows();
 			});
 
 			// init actions
@@ -183,9 +184,7 @@ $(document).ready(function () {
 		}
 
 		rotate_shape(angle) {
-			var true_angle = (this.pento_active_shape.rotate + angle) % 360
-			this.pento_active_shape.rotate = true_angle
-
+			this.pento_active_shape.rotate(angle)
 			this.pento_canvas_ref.drawLayers()
 		}
 
@@ -215,6 +214,7 @@ $(document).ready(function () {
 			var width = layer.block_size
 			var strokeWidth = 4
 			var rounding = layer.block_size / 2
+			var self = this
 
 			pento_canvas_ref.drawPath({
 				layer: true,
@@ -233,7 +233,7 @@ $(document).ready(function () {
 					arrowRadius: 10
 				},
 				click: function () {
-					document.rotate_shape(90)
+					self.rotate_shape(90)
 				}
 			});
 
@@ -253,7 +253,7 @@ $(document).ready(function () {
 					arrowRadius: 10
 				},
 				click: function () {
-					document.rotate_shape(-90)
+					self.rotate_shape(-90)
 				}
 			});
 		}

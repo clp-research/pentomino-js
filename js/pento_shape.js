@@ -332,75 +332,13 @@ $(document).ready(function () {
 			shape_copy.height = this.height
 			return shape_copy
 		}
-	}
 
-	this.pento_create_shape = function (id, x, y, type, color, is_mirrored, rotation) {
-		//create empty shape
-		var new_shape = this._new_pento_shape(id, type, color, is_mirrored)
-
-		switch (type) {
-			case "point":
-				this.pento_point(new_shape)
-				break
-			case "F":
-				this.pento_F(new_shape)
-				break
-			case "I":
-				this.pento_I(new_shape)
-				break
-			case "L":
-				this.pento_L(new_shape)
-				break
-			case "N":
-				this.pento_N(new_shape)
-				break
-			case "P":
-				this.pento_P(new_shape)
-				break
-			case "T":
-				this.pento_T(new_shape)
-				break;
-			case "U":
-				this.pento_U(new_shape)
-				break;
-			case "V":
-				this.pento_V(new_shape)
-				break
-			case "W":
-				this.pento_W(new_shape)
-				break
-			case "X":
-				this.pento_X(new_shape)
-				break
-			case "Y":
-				this.pento_Y(new_shape)
-				break
-			case "Z":
-				this.pento_Z(new_shape)
-				break
-			default:
-				console.log("Unsupported shape type: " + type)
-				return;
+		toString() {
+			return this.name
 		}
-
-		// Important: Closing the shapes disabled editing and 
-		// calculates center point for rotations
-		new_shape.close()
-
-		// move and rotate
-		new_shape.moveTo(x, y)
-		new_shape.rotate(rotation)
-
-		return new_shape
 	}
 
-	Shape.prototype.toString = function shapeToString() {
-		return this.name
-	}
 
-	this._new_pento_shape = function (id, type, color, is_mirrored, rotation) {
-		return new Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation)
-	}
 
 	// Draw point
 	this.pento_point = function (shape) {
@@ -600,6 +538,70 @@ $(document).ready(function () {
 			shape.add_block(this.pento_create_block(- shape.block_size, 2 * shape.block_size, shape.block_size, shape.color));
 		}
 
+	}
+
+	this._new_pento_shape = function (id, type, color, is_mirrored, rotation) {
+		return new Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation)
+	}
+
+	this.pento_create_shape = function (id, x, y, type, color, is_mirrored, rotation) {
+		//create empty shape
+		var new_shape = this._new_pento_shape(id, type, color, is_mirrored)
+
+		switch (type) {
+			case "point":
+				this.pento_point(new_shape)
+				break
+			case "F":
+				this.pento_F(new_shape)
+				break
+			case "I":
+				this.pento_I(new_shape)
+				break
+			case "L":
+				this.pento_L(new_shape)
+				break
+			case "N":
+				this.pento_N(new_shape)
+				break
+			case "P":
+				this.pento_P(new_shape)
+				break
+			case "T":
+				this.pento_T(new_shape)
+				break;
+			case "U":
+				this.pento_U(new_shape)
+				break;
+			case "V":
+				this.pento_V(new_shape)
+				break
+			case "W":
+				this.pento_W(new_shape)
+				break
+			case "X":
+				this.pento_X(new_shape)
+				break
+			case "Y":
+				this.pento_Y(new_shape)
+				break
+			case "Z":
+				this.pento_Z(new_shape)
+				break
+			default:
+				console.log("Unsupported shape type: " + type)
+				return;
+		}
+
+		// Important: Closing the shapes disabled editing and 
+		// calculates center point for rotations
+		new_shape.close()
+
+		// move and rotate
+		new_shape.moveTo(x, y)
+		new_shape.rotate(rotation)
+
+		return new_shape
 	}
 })
 

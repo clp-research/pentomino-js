@@ -23,7 +23,7 @@ $(document).ready(function () {
     // draw board frames/headers
     var PentoBoard = this.PentoBoard
     this.pento_board_target = new PentoBoard("#target", "Target", false, true);
-    this.pento_board_target.set("read_only", true)
+    //this.pento_board_target.set("read_only", true)
 
     this.pento_board_initial = new PentoBoard("#initial", "Initial", false, true);
     this.pento_board_initial.set("read_only", true)
@@ -44,10 +44,10 @@ $(document).ready(function () {
 
 
     this.set_ui_value = function(id, default_value, is_check){
-        if (is_check){
+        if (is_check === true){
             $("input#"+id).prop("checked", localStorage.getItem(id) == default_value)
         }else{
-            $("input#"+id).val(localStorage.getItem(id) || default_value)
+            $("input#"+id).val(localStorage.getItem(id) == null ? default_value: localStorage.getItem(id))
         }
     }
 
@@ -61,18 +61,18 @@ $(document).ready(function () {
 
     // init stored data
     var fields = [
-            ("nshapes", 1),
-            ("nrotations",0),
-            ("nflips", 0),
-            ("nchanges", 1),
-            ("nconnections", 0),
-            ("colors", "true", true),
-            ("shapes", "true", true)
-        ]
+        ["nshapes", 1],
+        ["nrotations",0],
+        ["nflips", 0],
+        ["nchanges", 1],
+        ["nconnections", 0],
+        ["colors", "true", true],
+        ["shapes", "true", true]
+    ]
     
-        for (var i=0; i<fields.length; i++){
-            this.set_ui_value(fields[i][0], fields[i][1])
-        }
+    for (var i=0; i<fields.length; i++){
+        this.set_ui_value(fields[i][0], fields[i][1], fields[i].length>2 ? fields[i][2]: null)
+    }
 
     this.toggle_shape_select = function () {
         var shapes = this.pento_config.get_pento_types()
@@ -87,7 +87,7 @@ $(document).ready(function () {
     this.calculate_actions = function () {
         // set global vars
         NUMBER_OF_FLIPS = this.get_ui_value("nflips")
-        NUMBER_OF_SHAPES = parseInt($("input#nshapes").val());
+        NUMBER_OF_SHAPES = this.get_ui_value("nshapes")
         NUMBER_OF_ROTATIONS = parseInt($("input#nrotations").val());
         NUMBER_OF_CONNECTIONS = parseInt($("input#nconnections").val());
         MONOCOLOR = $("input#colors").is(":checked");
@@ -96,7 +96,6 @@ $(document).ready(function () {
         NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
 
         // store data
-        //localStorage.setItem("nchanges_rotations", NUMBER_OF_CHANGES_ROTATIONS)
         localStorage.setItem("nchanges", NUMBER_OF_CHANGES)
         localStorage.setItem("nshapes", NUMBER_OF_SHAPES)
         localStorage.setItem("nrotations", NUMBER_OF_ROTATIONS)
@@ -298,8 +297,9 @@ $(document).ready(function () {
         this.pento_board_target.saveBoard()
     }
 
+    var self = this
     $("input").change(function () {
-        document.calculate_actions()
+        self.calculate_actions()
     });
 
     this.calculate_actions()
