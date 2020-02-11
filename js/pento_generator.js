@@ -1,15 +1,28 @@
 
+"use strict";
+
 $(document).ready(function () {
+
+    // fields the user can edit
+    var form_fields = [
+        ["nshapes", 1],
+        ["nrotations",0],
+        ["nflips", 0],
+        ["nchanges", 1],
+        ["nconnections", 0],
+        ["colors", "true", true],
+        ["shapes", "true", true],
+        ["readonly", "true", true]
+    ]
 
     // parameters
     // specific for generator
-    NUMBER_OF_SHAPES = 1
-    NUMBER_OF_CONNECTIONS = 0
-    NUMBER_OF_ROTATIONS = 0
-    NUMBER_OF_FLIPS = 0
-    MONOCOLOR = false
-    MONOSHAPES = false
-    SHAPES_FILTER = []
+    var config = {}
+    config["_shapes_filter"] = []  
+    for(var i=0; i < form_fields.length; i++){
+        var value = localStorage.getItem(form_fields[i])
+        config[form_fields[i][0]] = value === null ? form_fields[i][1]: value
+    }
 
     // specific for pentomino
     this.pento_grid_rows = 19
@@ -23,7 +36,7 @@ $(document).ready(function () {
     // draw board frames/headers
     var PentoBoard = this.PentoBoard
     this.pento_board_target = new PentoBoard("#target", "Target", false, true);
-    //this.pento_board_target.set("read_only", true)
+    this.pento_board_target.set("read_only", config["readonly"])
 
     this.pento_board_initial = new PentoBoard("#initial", "Initial", false, true);
     this.pento_board_initial.set("read_only", true)
@@ -45,7 +58,7 @@ $(document).ready(function () {
 
     this.set_ui_value = function(id, default_value, is_check){
         if (is_check === true){
-            $("input#"+id).prop("checked", localStorage.getItem(id) == default_value)
+            $("input#"+id).prop("checked", localStorage.getItem(id) === "true")
         }else{
             $("input#"+id).val(localStorage.getItem(id) == null ? default_value: localStorage.getItem(id))
         }
@@ -59,19 +72,8 @@ $(document).ready(function () {
         }
     }
 
-    // init stored data
-    var fields = [
-        ["nshapes", 1],
-        ["nrotations",0],
-        ["nflips", 0],
-        ["nchanges", 1],
-        ["nconnections", 0],
-        ["colors", "true", true],
-        ["shapes", "true", true]
-    ]
-    
-    for (var i=0; i<fields.length; i++){
-        this.set_ui_value(fields[i][0], fields[i][1], fields[i].length>2 ? fields[i][2]: null)
+    for (var i=0; i<form_fields.length; i++){
+        this.set_ui_value(form_fields[i][0], form_fields[i][1], form_fields[i].length>2 ? form_fields[i][2]: null)
     }
 
     this.toggle_shape_select = function () {
@@ -84,25 +86,22 @@ $(document).ready(function () {
         this.calculate_actions()
     }
 
+    this.store_inputs = function(){
+        for(var key in config){
+            localStorage.setItem(key, config[key])
+        }
+    }
+
     this.calculate_actions = function () {
-        // set global vars
-        NUMBER_OF_FLIPS = this.get_ui_value("nflips")
-        NUMBER_OF_SHAPES = this.get_ui_value("nshapes")
-        NUMBER_OF_ROTATIONS = parseInt($("input#nrotations").val());
-        NUMBER_OF_CONNECTIONS = parseInt($("input#nconnections").val());
-        MONOCOLOR = $("input#colors").is(":checked");
-        MONOSHAPES = $("input#shapes").is(":checked");
-        NUMBER_OF_CHANGES = parseInt($("input#nchanges").val());
-        NUMBER_OF_CHANGES_ROTATIONS = parseInt($("input#nchanges_rotations").val());
+        for(var key in config){
+            if (!key.startsWith("_")){
+                var is_bool = key == "colors"|| key == "readonly" || key == "shapes"
+                config[key] = this.get_ui_value(key,is_bool)
+            }   
+        }
 
         // store data
-        localStorage.setItem("nchanges", NUMBER_OF_CHANGES)
-        localStorage.setItem("nshapes", NUMBER_OF_SHAPES)
-        localStorage.setItem("nrotations", NUMBER_OF_ROTATIONS)
-        localStorage.setItem("nconnections", NUMBER_OF_CONNECTIONS)
-        localStorage.setItem("colors", MONOCOLOR)
-        localStorage.setItem("shape_difficulty", MONOSHAPES)
-
+        this.store_inputs()
         var shapes = this.pento_config.get_pento_types()
         shapes.forEach(function (item, index) {
             var value = $('input.shape-type-' + item).is(":checked") ? "1" : "0"
@@ -112,14 +111,17 @@ $(document).ready(function () {
         // update shape type filter
         $('input#ntype').each(function (index, item) {
             if (!$(item).is(":checked")) {
-                SHAPES_FILTER.push($(item).attr("shape_type"))
+                config["_shapes_filter"].push($(item).attr("shape_type"))
             } else {
-                SHAPES_FILTER = SHAPES_FILTER.filter((element) => element != $(item).attr("shape_type"))
+                config["_shapes_filter"] = config["_shapes_filter"].filter((element) => element != $(item).attr("shape_type"))
             }
         })
 
+        // update boards
+        this.pento_board_target.set("read_only", config["readonly"])
+
         // update counters
-        $(".complexity-actions").html(NUMBER_OF_SHAPES + NUMBER_OF_ROTATIONS + NUMBER_OF_CONNECTIONS)
+        $(".complexity-actions").html(config["nchanges"])
     }
 
     this.random_in_range = function (min, max) {
@@ -173,7 +175,7 @@ $(document).ready(function () {
 
     this.create_initial_state = function (shapes, nactions) {
         $('.snapshots').empty()
-        pento_generator_actions = {}
+        var pento_generator_actions = {}
 
         for (var shape_index in shapes) {
             var shape = shapes[shape_index]
@@ -207,7 +209,7 @@ $(document).ready(function () {
                 pento_generator_actions[random_shape.name].push(random_action)
 
                 var paramString = ""
-                for (key in params) {
+                for (var key in params) {
                     paramString += key + "=" + params[key] + ","
                 }
                 this.make_board_screenshot(i, '#initial', random_action + " (" + paramString + "id=" + random_shape.name + ")", true)
@@ -231,31 +233,30 @@ $(document).ready(function () {
         var columns = [...Array(this.pento_grid_cols).keys()];
         var rows = [...Array(this.pento_grid_rows).keys()];
 
-        if (!MONOCOLOR) {
+        if (!config["colors"]) {
             var colors = this.pento_config.get_pento_colors();
         } else {
             var colors = ['lightblue']
         }
 
         pento_types = this.pento_config.get_pento_types()
-        var pento_types = pento_types.filter((shape_type) => SHAPES_FILTER.indexOf(shape_type) == -1)
+        var pento_types = pento_types.filter((shape_type) => config["_shapes_filter"].indexOf(shape_type) == -1)
 
-        if (MONOSHAPES) {
-            var pento_types = ['point']
-            //var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
+        if (config["shapes"]) {
+            var pento_types = [pento_types[Math.floor(Math.random() * pento_types.length)]];
         }
 
         if (pento_types.length == 0)
             return;
 
         var rotations = [45, 90, 135, 180, 225, 270, 315];
-        //var rotations = [0]
         //var rotations = [...Array(360).keys()];
 
         var rotation_counter = 0
+        var flip_counter = 0
         var generated_shapes = []
         var r = 0
-        while (r < NUMBER_OF_SHAPES) {
+        while (r < config["nshapes"]) {
 
             // generate random types
             var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
@@ -265,13 +266,20 @@ $(document).ready(function () {
             var rand_col = Math.max(columns[Math.floor(Math.random() * columns.length)], this.pento_grid_col_min);
             var rand_row = Math.max(rows[Math.floor(Math.random() * rows.length)], this.pento_grid_row_min);
 
-            if (rotation_counter < NUMBER_OF_ROTATIONS) {
+            if (rotation_counter < config["nrotations"]) {
                 var rand_rot = rotations[Math.floor(Math.random() * rotations.length)];
                 rotation_counter += 1
             } else {
                 rand_rot = 0
             }
-            var do_mirror = false
+
+            if (flip_counter < config["nflips"]){
+                var do_mirror = true
+                flip_counter += 1
+            }else{
+                var do_mirror = false
+            }
+            
 
             // create and place
             var coords = this.pento_board_target.grid_cell_to_coordinates(rand_col, rand_row)
@@ -288,7 +296,7 @@ $(document).ready(function () {
         }
         this.pento_board_target.draw()
 
-        this.create_initial_state(generated_shapes, NUMBER_OF_CHANGES)
+        this.create_initial_state(generated_shapes, config["nchanges"])
         this.pento_board_initial.draw()
     }
 

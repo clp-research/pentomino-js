@@ -159,8 +159,7 @@ $(document).ready(function () {
 		}
 
 		check_collisions_of_shape(shape) {
-			var collisions = this.get_collisions(shape)
-			return collisions.length > 0
+			return this.get_collisions(shape) > 0
 		}
 
 		get_collisions(shape) {
@@ -176,11 +175,6 @@ $(document).ready(function () {
 
 			}
 			return hits
-		}
-
-		is_over_shape(layer) {
-			var collisions = this.get_collisions(layer)
-			return collisions.length > 0
 		}
 
 		rotate_shape(angle) {
@@ -324,12 +318,12 @@ $(document).ready(function () {
 				fromCenter: true,
 				mouseover: function (layer) {
 					if (!self.pento_read_only) {
-						self.set_active(layer)
+						self.set_active(shape)
 					}
 				},
 				click: function (layer) {
 					if (!self.pento_read_only) {
-						self.set_active(layer)
+						self.set_active(shape)
 					}
 				},
 				dragstart: function (layer) {
@@ -344,6 +338,8 @@ $(document).ready(function () {
 					// code to run as layer is being dragged
 					if (!self.pento_read_only) {
 						self.update_arrows(layer, true)
+						shape.x = layer.x
+						shape.y = layer.y
 					}
 				},
 				dragstop: function (layer) {
@@ -356,13 +352,16 @@ $(document).ready(function () {
 							self.lock_shape_on_grid(layer)
 						}
 
-						if (self.is_over_shape(layer) && self.pento_prevent_collision) {
+						if (self.check_collisions_of_shape(layer["shape"]) && self.pento_prevent_collision) {
 							layer.x = last_x;
 							layer.y = last_y;
+						}else{
+							shape.x = layer.x
+							shape.y = layer.y
 						}
 						self.update_arrows(layer, false)
-						self.set_active(layer)
-
+						self.set_active(layer.shape)
+						
 						self.fire_event("shape_moved", shape.name, { "x": layer.x, "y": layer.y })
 					}
 				}

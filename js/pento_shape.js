@@ -287,7 +287,7 @@ $(document).ready(function () {
 			// update blocks
 			for (var block_index in this.blocks) {
 				var block = this.blocks[block_index]
-				block.set_shape_center(40,40)
+				block.set_shape_center(0,0)
 			}
 		}
 
