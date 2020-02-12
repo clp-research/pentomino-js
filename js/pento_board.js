@@ -23,7 +23,7 @@ $(document).ready(function () {
 			// pento game parameters
 			this.show_grid = with_grid
 			this.pento_read_only = false
-			this.pento_lock_on_grid = false;
+			this.pento_lock_on_grid = true;
 			this.pento_prevent_collision = false;
 			this.pento_active_shape = null;
 			this.pento_with_tray = with_tray;
@@ -33,7 +33,7 @@ $(document).ready(function () {
 
 			// actions
 			//this.actions = ["move", "rotate", "connect", "flip"]
-			this.actions = ["move", "rotate"]
+			this.actions = ["move", "rotate", "flip"]
 
 			this.init_board()
 			this.init_grid(this.show_grid)
@@ -48,6 +48,13 @@ $(document).ready(function () {
 			// init actions
 			this.setup_canvas()
 			this.draw()
+		}
+
+		clear_selections(){
+			this.pento_active_shape = null
+			this.remove_arrows()
+
+			this.pento_canvas_ref.drawLayers()
 		}
 
 		setup_canvas() {
@@ -106,7 +113,6 @@ $(document).ready(function () {
 		init_board() {
 			this.destroy_board();
 
-			//this.draw_text(10, 10, this.title)
 			if (this.pento_with_tray) {
 				this.pento_canvas_ref.attr("height", 600);
 				this.draw_line(0, 400, 600, 400, 'black', 'separator')
@@ -147,8 +153,8 @@ $(document).ready(function () {
 		}
 
 		lock_shape_on_grid(layer) {
-			new_x = Math.floor((layer.x - this.pento_grid_x + layer.offsetX) / this.pento_block_size) * this.pento_block_size
-			new_y = Math.floor((layer.y - this.pento_grid_y + layer.offsetY) / this.pento_block_size) * this.pento_block_size
+			var new_x = Math.floor((layer.x - this.pento_grid_x + layer.offsetX) / this.pento_block_size) * this.pento_block_size
+			var new_y = Math.floor((layer.y - this.pento_grid_y + layer.offsetY) / this.pento_block_size) * this.pento_block_size
 			layer.x = new_x + this.pento_grid_x - layer.offsetX
 			layer.y = new_y + this.pento_grid_y - layer.offsetY
 			this.pento_canvas_ref.drawLayers()
@@ -189,10 +195,12 @@ $(document).ready(function () {
 		}
 
 		destroy_all_shapes() {
+			this.clear_selections()
+
 			for (var index in this.pento_shapes) {
 				var shape = this.pento_shapes[index]
 				this.destroy_shape(shape)
-			}
+			}	
 		}
 
 		redraw_arrows(pento_canvas_ref, layer) {
@@ -463,6 +471,15 @@ $(document).ready(function () {
 			this.pento_canvas_ref[0].toBlob(function (data) {
 				saveAs(data, self.title + '.png')
 			})
+		}
+
+		toJSON() {
+			return this.pento_shapes
+		}
+
+		fromJSON(shapes){
+			this.pento_shapes = shapes
+			this.pento_canvas_ref.drawLayers()
 		}
 	}
 

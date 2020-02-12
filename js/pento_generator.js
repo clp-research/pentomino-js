@@ -4,15 +4,17 @@
 $(document).ready(function () {
 
     // fields the user can edit
+    // insert new fields by tuple [id_of_html_element_without, default_value, is_bool?]
     var form_fields = [
         ["nshapes", 1],
         ["nrotations",0],
         ["nflips", 0],
         ["nchanges", 1],
         ["nconnections", 0],
-        ["colors", "true", true],
-        ["shapes", "true", true],
-        ["readonly", "true", true]
+        ["colors", false, true],
+        ["shapes", false, true],
+        ["readonly", false, true],
+        ["showgrid", true, true]
     ]
 
     // parameters
@@ -39,23 +41,35 @@ $(document).ready(function () {
     this.pento_board_target.set("read_only", config["readonly"])
 
     this.pento_board_initial = new PentoBoard("#initial", "Initial", false, true);
-    this.pento_board_initial.set("read_only", true)
+    this.pento_board_initial.set("read_only", config["readonly"])
 
-    // init form
-    var shapes = this.pento_config.get_pento_types()
-    shapes.forEach(function (item, index) {
-        var checked = localStorage.getItem("exclude_" + item)
-        if (checked == "1") {
-            checked = "checked=\"1\""
-        } else {
-            checked = ""
+    /**
+     * Initiates form
+     */
+    this.init_form = function(pento_config){
+
+        var shapes = pento_config.get_pento_types()
+        shapes.forEach(function (item, index) {
+            var checked = localStorage.getItem("exclude_" + item)
+            if (checked == "1") {
+                checked = "checked=\"1\""
+            } else {
+                checked = ""
+            }
+            $('.shape-select').append(
+                '<div class="one column"><label>' + item + '&nbsp;</label><input id="ntype" shape_type="' + item
+                + '" class="shape-type-' + item + '" type="checkbox" ' + checked + '/><br></div>')
+        })
+    
+        for (var i=0; i<form_fields.length; i++){
+            this.set_ui_value(form_fields[i][0], form_fields[i][1], form_fields[i].length>2 ? form_fields[i][2]: null)
         }
-        $('.shape-select').append(
-            '<div class="one column"><label>' + item + '&nbsp;</label><input id="ntype" shape_type="' + item
-            + '" class="shape-type-' + item + '" type="checkbox" ' + checked + '/><br></div>')
-    })
 
+    }
 
+    /**
+     * Set value of UI Widget
+     */
     this.set_ui_value = function(id, default_value, is_check){
         if (is_check === true){
             $("input#"+id).prop("checked", localStorage.getItem(id) === "true")
@@ -64,6 +78,9 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * Retrieve current value of UI Widget
+     */
     this.get_ui_value = function(id, is_bool){
         if (is_bool){
             return $("input#"+id).is(":checked");
@@ -72,10 +89,9 @@ $(document).ready(function () {
         }
     }
 
-    for (var i=0; i<form_fields.length; i++){
-        this.set_ui_value(form_fields[i][0], form_fields[i][1], form_fields[i].length>2 ? form_fields[i][2]: null)
-    }
-
+    /**
+     * Toggles selection of all shapes
+     */
     this.toggle_shape_select = function () {
         var shapes = this.pento_config.get_pento_types()
         shapes.forEach(function (item, index) {
@@ -86,13 +102,20 @@ $(document).ready(function () {
         this.calculate_actions()
     }
 
+    /**
+     * Saves valuesd of input widgets in local storage
+     */
     this.store_inputs = function(){
         for(var key in config){
             localStorage.setItem(key, config[key])
         }
     }
 
-    this.calculate_actions = function () {
+    /**
+     * Updates internal states and configurations
+     * based on User input
+     */
+    this.update = function () {
         for(var key in config){
             if (!key.startsWith("_")){
                 var is_bool = key == "colors"|| key == "readonly" || key == "shapes"
@@ -124,14 +147,16 @@ $(document).ready(function () {
         $(".complexity-actions").html(config["nchanges"])
     }
 
+    /**
+     * Retrieve random number rn with rn >= min and rn <= max
+     */
     this.random_in_range = function (min, max) {
-        var val = min - 1
-        while (val < min || val > max) {
-            val = Math.floor(Math.random() * max)
-        }
-        return val
+        return Math.floor(Math.random() * (max-min)) + min
     }
 
+    /**
+     * Generates random params
+     */
     this.generate_params = function (rand_shape, action_type, shapes) {
         var max = 400
         var min = 0
@@ -223,6 +248,9 @@ $(document).ready(function () {
         this.make_board_screenshot(i+2, '#target', "END", false)
     }
 
+    /**
+     * Generates target and initial state
+     */
     this.generate = function () {
 
         // remove all previously generated shapes
@@ -300,16 +328,21 @@ $(document).ready(function () {
         this.pento_board_initial.draw()
     }
 
-    this.save = function () {
-        this.pento_board_initial.saveBoard()
-        this.pento_board_target.saveBoard()
-    }
+    // Initiation
+    this.init_form(this.pento_config)
+    this.update()
+    this.generate()
 
     var self = this
     $("input").change(function () {
-        self.calculate_actions()
+        self.update()
     });
 
-    this.calculate_actions()
-    this.generate()
+    $('#target').mouseleave(function(){
+        self.pento_board_target.clear_selections()
+    })
+
+    $('#initial').mouseleave(function(){
+        self.pento_board_initial.clear_selections()
+    })
 })

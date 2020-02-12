@@ -37,14 +37,24 @@
 					</div>
 					<div class="row">
 						<div class="twelf columns">
+							<button class="save btn" onclick="save_board_as_image('initial')">Save as Image</button>
+							<button class="save btn" onclick="export_as_json('initial')">Export JSON</button>
+							<button class="save btn" onclick="import_json('initial')">Import JSON</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="twelf columns">
 							<h6>Target</h6>
 							<canvas id="target"></canvas>
 						</div>
 					</div>
 					<div class="row">
 						<div class="twelf columns">
-							<button class="generate btn" onclick="generate()">Generate</button>
-							<button class="save btn" onclick="save()">Save</button>
+							<button class="save btn" onclick="save_board_as_image('target')">Save as Image</button>
+							<button class="save btn" onclick="export_as_json('target')">Export JSON</button>
+
+							<button class="save btn" onclick="import_json('target')">Import JSON</button>
+							<input id="target_file" type="file" style="visibility: hidden;"/>
 						</div>
 					</div>
 				</div>
@@ -82,8 +92,12 @@
 						<input id="shapes" type="checkbox" />
 
 						<br>
-						<label class="config">Readonly</label>
+						<label class="config">Editable</label>
 						<input id="readonly" type="checkbox" />
+
+						<br>
+						<label class="config">Show Grid</label>
+						<input id="showgrid" type="checkbox" />
 
 						<hr>
 						<p>Available shapes<button class="toggle btn" onclick="toggle_shape_select()">Switch selection</button></p>
@@ -95,6 +109,7 @@
 					<div class="complexity-container">
 						<h6>Minimum Required Actions</h6>
 						<b class="complexity-actions">0</b>
+						<button class="generate btn" onclick="generate()">Generate</button>
 					</div>
 					<hr>
 				</div>
@@ -103,22 +118,22 @@
 		</div>
 
 	</div>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-		integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
-		crossorigin="anonymous"></script>
+	<!--External Dependencies-->
+	<!--Version 3.3.1-->
+	<script src="./js/jquery.min.js"></script>
 	<script src="./js/jcanvas.js"></script>
-	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.7.3/jcanvas.min.js"
-			integrity="sha384-amfY6Xr18yRWq6l+1TPfkoSGRCGLNhkU67i1uElI5+u4hC5G5lhbvUU75assw5Jm"
-			crossorigin="anonymous"></script-->
+	<script src='./js/FileSaver.js'></script>
+
+	<!--Pento Framework-->
 	<script src='./js/pento_config.js'></script>
 	<script src='./js/pento_block.js'></script>
 	<script src='./js/pento_shape.js'></script>
 	<script src='./js/pento_render.js'></script>
 	<script src='./js/pento_board.js'></script>
-	<script src='./js/FileSaver.js'></script>
-	<script src='./js/test.js'></script>
 	<script src='./js/pento_generator.js'></script>
+
+	<!--Editor specific file-->
+	<script src='./js/index.js'></script>
 </body>
 
 </html>
