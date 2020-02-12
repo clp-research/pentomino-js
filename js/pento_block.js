@@ -184,6 +184,8 @@ $(document).ready(function () {
 
 	}
 
+	document.Block = Block
+
 	document.pento_create_block = function (x, y, block_size, color) {
 		return new Block(x, y, block_size, block_size, color)
 	}

@@ -516,7 +516,23 @@ $(document).ready(function () {
 		}
 
 		fromJSON(shapes){
-			this.pento_shapes = shapes
+			this.destroy_all_shapes();
+
+			for(var s in shapes){
+				var shape = Object.assign(new document.Shape, shapes[s])
+
+				var blocks = []
+				for(var b in shape.get_blocks()){
+					var block_data = shape.get_blocks()[b]
+					var block = Object.assign(new document.Block, block_data)
+					blocks.push(block)
+				}
+				shape.blocks = blocks
+				shape.close()
+				
+				this.place_shape(shape)
+			}
+			
 			this.pento_canvas_ref.drawLayers()
 		}
 	}

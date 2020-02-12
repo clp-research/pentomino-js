@@ -140,14 +140,13 @@ $(document).ready(function(){
 		}
 		var mimeType = match[1];
 		var content = atob(match[2]);
-		var content_json = JSON.parse(content)
+		var json = JSON.parse(content)
 
-		alert(mimeType);
-		alert(content_json);
+        generator.pento_board_initial.fromJSON(json["initial"])
+        generator.pento_board_target.fromJSON(json["target"])
 	}
 
 	$('#target_file').change(handleFileSelect);
-	$('#initial_file').change(handleFileSelect);
 
 	//--- export and import boards
 	
@@ -159,15 +158,12 @@ $(document).ready(function(){
         this.pento_board_target.saveBoard()
 	}
 	
-	this.export_as_json = function(board){
-        var json_content = null
-        var file_name = board+'_data.json';
+	this.export_as_json = function(){
+        var json_content = {}
+        var file_name = 'pento_data.json';
 
-        if (board == 'target'){
-            json_content = this.pento_board_target.toJSON()
-        }else{
-            json_content = this.pento_board_target.toJSON()  
-        }
+        json_content["target"] = generator.pento_board_target.toJSON()
+        json_content["initial"] = generator.pento_board_initial.toJSON()  
 
         // Create a blob of the data
         var fileToSave = new Blob([JSON.stringify(json_content, null, 2)], {

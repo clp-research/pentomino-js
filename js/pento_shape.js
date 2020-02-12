@@ -338,7 +338,7 @@ $(document).ready(function () {
 		}
 	}
 
-
+	document.Shape = Shape
 
 	// Draw point
 	this.pento_point = function (shape) {
