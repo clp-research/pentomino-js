@@ -22,6 +22,10 @@ $(document).ready(function () {
 
 		constructor() { }
 
+		get_pento_shape_actions(){
+			return ['move', 'rotate']
+		}
+
 		get_pento_colors() {
 			return ['#EEAAAA', '#DDBB99', '#CCCC88', '#BBDD99', '#AAEEAA', '#DD99BB', '#CC88CC', '#99BBDD', '#AAAAEE', '#88CCCC', '#99DDBB']
 		}

@@ -33,14 +33,14 @@ $(document).ready(function () {
 
 			// actions
 			//this.actions = ["move", "rotate", "connect", "flip"]
-			this.actions = ["move", "rotate", "flip"]
+			this.actions = ["move", "rotate"]
 
 			this.init_board()
 			this.init_grid(this.show_grid)
 
 			// register event handler
 			var self = this
-			$(canvas_id).on('dblclick', function (event) {
+			$(canvas_id).on('mouseleave', function (event) {
 				self.pento_active_shape = null
 				self.remove_arrows();
 			});
@@ -48,13 +48,14 @@ $(document).ready(function () {
 			// init actions
 			this.setup_canvas()
 			this.draw()
+
 		}
 
 		clear_selections(){
 			this.pento_active_shape = null
 			this.remove_arrows()
 
-			this.pento_canvas_ref.drawLayers()
+			this.draw()
 		}
 
 		setup_canvas() {
@@ -64,8 +65,13 @@ $(document).ready(function () {
 
 		set(key, value) {
 			switch (key) {
-				case "read_only":
+				case "readonly":
 					this.pento_read_only = value
+					this.clear_selections()
+					break;
+				case "showgrid":
+					this.show_grid = value
+					this._update_grid();
 					break;
 				default:
 					console.log("unknown config option: " + key)
@@ -123,11 +129,21 @@ $(document).ready(function () {
 			this.pento_canvas_ref.drawLayers()
 		}
 
-		remove_grid() {
-			this.pento_canvas_ref.removeLayer('grid')
+		_update_grid(){
+			if(this.show_grid){
+				this.init_grid()
+			}else{
+				this.remove_grid();
+			}
 		}
 
-		init_grid(draw_grid_lines) {
+		remove_grid() {
+			this.pento_canvas_ref.removeLayer('grid')
+			this.pento_canvas_ref.removeLayerGroup('grid');
+			this.draw()
+		}
+
+		init_grid() {
 			this.pento_grid_width = this.pento_block_size * this.pento_grid_cols;
 			this.pento_grid_height = this.pento_block_size * this.pento_grid_rows;
 
@@ -139,7 +155,7 @@ $(document).ready(function () {
 				width: this.pento_board_width, height: this.pento_board_height
 			})
 
-			if (draw_grid_lines) {
+			if (this.show_grid) {
 				for (var i = 0; i <= this.pento_grid_rows; i++) {
 					this.draw_line(this.pento_grid_x, this.pento_grid_y + i * this.pento_block_size,
 						this.pento_grid_x + this.pento_grid_width, this.pento_grid_y + i * this.pento_block_size, this.pento_grid_color);
@@ -235,7 +251,23 @@ $(document).ready(function () {
 					arrowRadius: 10
 				},
 				click: function () {
-					self.rotate_shape(90)
+					self.rotate_shape(5)
+				},
+				mousedown: async function(){
+					self._multi_rotation = true
+					var reduction = 0.1
+					var sleep_time = 400
+					while(self._multi_rotation){
+						self.rotate_shape(5)
+						await new Promise(r => setTimeout(r, sleep_time));
+
+						if (sleep_time>=80){
+							sleep_time -= sleep_time*reduction
+						}	
+					}
+				},
+				mouseup: function(){
+					self._multi_rotation = false
 				}
 			});
 
@@ -255,7 +287,13 @@ $(document).ready(function () {
 					arrowRadius: 10
 				},
 				click: function () {
-					self.rotate_shape(-90)
+					self.rotate_shape(-5)
+				},
+				mousedown: function(){
+
+				},
+				mouseup: function(){
+					
 				}
 			});
 		}

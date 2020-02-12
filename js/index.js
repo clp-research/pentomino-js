@@ -13,9 +13,114 @@ $(document).ready(function(){
 	var shape2 = this.pento_create_shape(1,30,91, 'I', 'red', false, 0)
 	console.log("Shape Collision Test: "+ (shape1.hits(shape2) == shape2.hits(shape1)))
 
-	//--- initiate generator
+	//--- Define variables
+	// fields the user can edit
+    // insert new fields by tuple [id_of_html_element_without, default_value, is_bool?]
+    var form_fields = [
+        ["nshapes", 1],
+        ["nrotations",0],
+        ["nflips", 0],
+        ["nchanges", 1],
+        ["nconnections", 0],
+        ["colors", false, true],
+        ["shapes", false, true],
+        ["readonly", false, true],
+        ["showgrid", true, true]
+    ]
 
-	//--- register handler
+    // parameters
+    // specific for generator
+    var config = {}
+    config["_shapes_filter"] = []  
+    for(var i=0; i < form_fields.length; i++){
+        var value = localStorage.getItem(form_fields[i])
+        config[form_fields[i][0]] = value === null ? form_fields[i][1]: value
+	}
+	
+	var pento_config = new document.PentoConfig()
+
+	//--- initiate generator
+	var generator = new document.PentoGenerator(form_fields, config, pento_config)
+
+	//-- generator utility
+	/**
+     * Updates internal states and configurations
+     * based on User input
+     */
+    var update = function (config, pento_config) {
+        for(var key in config){
+            if (!key.startsWith("_")){
+                var is_bool = key == "colors"|| key == "readonly" || key == "shapes" || key == "showgrid"
+                config[key] = get_ui_value(key,is_bool)
+            }   
+        }
+
+        // store data
+        store_inputs()
+        var shapes = pento_config.get_pento_types()
+        shapes.forEach(function (item, index) {
+            var value = $('input.shape-type-' + item).is(":checked") ? "1" : "0"
+            localStorage.setItem("exclude_" + item, value)
+        })
+
+        // update shape type filter
+        $('input#ntype').each(function (index, item) {
+            if (!$(item).is(":checked")) {
+                config["_shapes_filter"].push($(item).attr("shape_type"))
+            } else {
+                config["_shapes_filter"] = config["_shapes_filter"].filter((element) => element != $(item).attr("shape_type"))
+            }
+        })
+
+		// update boards
+		generator.update()
+
+        // update counters
+        $(".complexity-actions").html(config["nchanges"])
+	}
+	
+	var make_board_screenshot = function (index, canvas_id, action, do_prepend) {
+        var element = '<canvas class="snapshot center" id="snapshot_' + index + '" width="300px" height="300px"></canvas>'
+        if (do_prepend) {
+            $('.snapshots').prepend(element)
+        } else {
+            $('.snapshots').append(element)
+        }
+
+
+        //grab the context from your destination canvas
+        var destCtx = $('#snapshot_' + index)[0].getContext('2d');
+
+        //call its drawImage() function passing it the source canvas directly
+        destCtx.drawImage($(canvas_id)[0], 0, 0, 300, 300);
+
+        destCtx.font = "11px Arial";
+        destCtx.fillText(action, 4, 300 - 4);
+    }
+
+	//--- generator event handeling
+	generator.register_handler("initial_updated", function(data){
+		var paramString = ""
+		var params = data["params"]
+		var random_shape = data["shape"]
+		var random_action = data["action"]
+
+		for (var key in params) {
+			paramString += key + "=" + params[key] + ","
+		}
+		make_board_screenshot(i, '#initial', random_action + " (" + paramString + "id=" + random_shape.name + ")", true)
+	})
+
+	generator.register_handler("generation_finished", function(data){
+		make_board_screenshot(data["index"]+2, '#target', "END", false)
+	})
+
+	//--- User event handeling
+    $("input").change(function () {
+        update(config, pento_config)
+	});
+	
+	//--- File handeling
 	function handleFileSelect (e) {
 		var files = e.target.files;
 		if (files.length < 1) {
@@ -76,5 +181,83 @@ $(document).ready(function(){
 
     this.import_json = function (board) {
 		$("#"+board+"_file").click();
+	}
+	
+        /**
+     * Initiates form
+     */
+    var init_form = function(pento_config){
+
+        var shapes = pento_config.get_pento_types()
+        shapes.forEach(function (item, index) {
+            var checked = localStorage.getItem("exclude_" + item)
+            if (checked == "1") {
+                checked = "checked=\"1\""
+            } else {
+                checked = ""
+            }
+            $('.shape-select').append(
+                '<div class="one column"><label>' + item + '&nbsp;</label><input id="ntype" shape_type="' + item
+                + '" class="shape-type-' + item + '" type="checkbox" ' + checked + '/><br></div>')
+        })
+    
+        for (var i=0; i<form_fields.length; i++){
+            set_ui_value(form_fields[i][0], form_fields[i][1], form_fields[i].length>2 ? form_fields[i][2]: null)
+        }
+
     }
+
+    /**
+     * Set value of UI Widget
+     */
+    var set_ui_value = function(id, default_value, is_check){
+        if (is_check === true){
+            $("input#"+id).prop("checked", localStorage.getItem(id) === "true")
+        }else{
+            $("input#"+id).val(localStorage.getItem(id) == null ? default_value: localStorage.getItem(id))
+        }
+    }
+
+    /**
+     * Retrieve current value of UI Widget
+     */
+    var get_ui_value = function(id, is_bool){
+        if (is_bool){
+            return $("input#"+id).is(":checked");
+        }else{
+            return parseInt($("input#"+id).val());
+        }
+	}
+
+	    /**
+     * Toggles selection of all shapes
+     */
+    var toggle_shape_select = function (pento_config) {
+        var shapes = pento_config.get_pento_types()
+        shapes.forEach(function (item, index) {
+            var shape_widget = $('input.shape-type-' + item)
+            var toggle = shape_widget.is(":checked") ? false : true
+            shape_widget.prop("checked", toggle);
+        })
+        udapte()
+    }
+
+    /**
+     * Saves valuesd of input widgets in local storage
+     */
+    var store_inputs = function(){
+        for(var key in config){
+            localStorage.setItem(key, config[key])
+        }
+	}
+	
+	this.generate = function(){
+		generator.generate()
+	}
+	
+	//--- start
+	init_form(pento_config)
+	update(config, pento_config)
+
+	generator.generate()
 })
