@@ -26,10 +26,10 @@ $(document).ready(function () {
         }
 
         update(){
-            this.pento_board_target.set("readonly", this.config["readonly"])
+            this.pento_board_target.set("readonly", !this.config["readonly"])
             this.pento_board_target.set("showgrid", this.config["showgrid"])
 
-            this.pento_board_initial.set("readonly", this.config["readonly"])
+            this.pento_board_initial.set("readonly", !this.config["readonly"])
             this.pento_board_initial.set("showgrid", this.config["showgrid"])
         }
 

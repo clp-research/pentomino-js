@@ -3,6 +3,13 @@ $(document).ready(function () {
 
 	this.PentoBoard = class PentoBoard {
 
+		/**
+		 * 
+		 * @param {id of html canvas} canvas_id 
+		 * @param {} title 
+		 * @param {*} with_tray 
+		 * @param {*} with_grid 
+		 */
 		constructor(canvas_id, title, with_tray, with_grid) {
 			this.canvas_id = canvas_id
 			this.pento_canvas_ref = $(canvas_id);
@@ -529,7 +536,7 @@ $(document).ready(function () {
 				}
 				shape.blocks = blocks
 				shape.close()
-				
+
 				this.place_shape(shape)
 			}
 			
