@@ -51,13 +51,37 @@ $(document).ready(function () {
 				self.clear_selections()
 			});
 
+			$(document).keydown(function (event) {
+				var dx = 2;
+				var dy = 2;
+				switch(event.keyCode) {
+					case 37:
+						self.move_active(-dx, 0)
+						break;
+					case 38:
+						self.move_active(0, -dy)
+						break;
+					case 39:
+						self.move_active(dx, 0)
+						break;
+					case 40:
+						self.move_active(0, dy)
+						break;  
+				} 
+				event.preventDefault();
+				self.draw()
+			});
+
 			// init actions
 			this.setup_canvas()
 			this.draw()
 
 		}
 
-		clear_selections(){
+		clear_selections() {
+			if (this.pento_active_shape != null){
+				this.pento_active_shape.set_deactive()
+			}
 			this.pento_active_shape = null
 			this.remove_arrows()
 
@@ -95,7 +119,7 @@ $(document).ready(function () {
 			this.pento_canvas_ref.drawLine({
 				layer: true,
 				name: name,
-				groups:['grid'],
+				groups: ['grid'],
 				strokeStyle: color,
 				strokeWidth: 1,
 				x1: x, y1: y,
@@ -135,10 +159,10 @@ $(document).ready(function () {
 			this.pento_canvas_ref.drawLayers()
 		}
 
-		_update_grid(){
-			if(this.show_grid){
+		_update_grid() {
+			if (this.show_grid) {
 				this.init_grid()
-			}else{
+			} else {
 				this.remove_grid();
 			}
 		}
@@ -222,7 +246,7 @@ $(document).ready(function () {
 			for (var index in this.pento_shapes) {
 				var shape = this.pento_shapes[index]
 				this.destroy_shape(shape)
-			}	
+			}
 		}
 
 		redraw_arrows(pento_canvas_ref, layer) {
@@ -260,22 +284,22 @@ $(document).ready(function () {
 				click: function () {
 					self.rotate_shape(rotation)
 				},
-				mousedown: async function(){
+				mousedown: async function () {
 					self._multi_rotation = true
 					var reduction = 0.05
 					var sleep_time = 400
 					await new Promise(r => setTimeout(r, sleep_time));
 
-					while(self._multi_rotation && !self._multi_rotation_2){
+					while (self._multi_rotation && !self._multi_rotation_2) {
 						self.rotate_shape(rotation)
 						await new Promise(r => setTimeout(r, sleep_time));
 
-						if (sleep_time>=80){
-							sleep_time -= sleep_time*reduction
-						}	
+						if (sleep_time >= 80) {
+							sleep_time -= sleep_time * reduction
+						}
 					}
 				},
-				mouseup: function(){
+				mouseup: function () {
 					self._multi_rotation = false
 				}
 			});
@@ -298,22 +322,22 @@ $(document).ready(function () {
 				click: function () {
 					self.rotate_shape(-rotation)
 				},
-				mousedown: async function(){
+				mousedown: async function () {
 					self._multi_rotation_2 = true
 					var reduction = 0.05
 					var sleep_time = 400
 					await new Promise(r => setTimeout(r, sleep_time));
-					
-					while(self._multi_rotation_2 && !self._multi_rotation){
+
+					while (self._multi_rotation_2 && !self._multi_rotation) {
 						self.rotate_shape(-rotation)
 						await new Promise(r => setTimeout(r, sleep_time));
 
-						if (sleep_time>=80){
-							sleep_time -= sleep_time*reduction
-						}	
+						if (sleep_time >= 80) {
+							sleep_time -= sleep_time * reduction
+						}
 					}
 				},
-				mouseup: function(){
+				mouseup: function () {
 					self._multi_rotation_2 = false
 				}
 			});
@@ -345,10 +369,14 @@ $(document).ready(function () {
 			}
 		}
 
-		set_active(layer) {
-			this.pento_canvas_ref.moveLayer(layer.name, -1);
-			this.pento_active_shape = layer
-			this.redraw_arrows(this.pento_canvas_ref, layer)
+		set_active(shape) {
+			if (this.pento_active_shape != null){
+				this.pento_active_shape.set_deactive()
+			}
+			this.pento_canvas_ref.moveLayer(shape.name, -1);
+			this.pento_active_shape = shape
+			this.redraw_arrows(this.pento_canvas_ref, shape)
+			shape.set_active()
 		}
 
 		get_offsets(type) {
@@ -376,7 +404,7 @@ $(document).ready(function () {
 				name: shape.name,
 				block_size: this.pento_block_size,
 				draggable: !this.pento_read_only,
-				x: shape.x, y:shape.y,
+				x: shape.x, y: shape.y,
 				offsetX: offsetX,
 				offsetY: offsetY,
 				width: 80,
@@ -422,13 +450,13 @@ $(document).ready(function () {
 						if (self.check_collisions_of_shape(layer["shape"]) && self.pento_prevent_collision) {
 							layer.x = last_x;
 							layer.y = last_y;
-						}else{
+						} else {
 							shape.x = layer.x
 							shape.y = layer.y
 						}
 						self.update_arrows(layer, false)
 						self.set_active(layer.shape)
-						
+
 						self.fire_event("shape_moved", shape.name, { "x": layer.x, "y": layer.y })
 					}
 				}
@@ -454,7 +482,7 @@ $(document).ready(function () {
 		 */
 		isValidAction(action_name, shape, params) {
 			// make extra check for place as this is a one time action
-			if ( (this.get_actions().indexOf(action_name) != -1 || action_name == "place" ) && 
+			if ((this.get_actions().indexOf(action_name) != -1 || action_name == "place") &&
 				shape.is_inside(this.pento_grid_x, this.pento_grid_y, 400, 400)) {
 				switch (action_name) {
 					case "connect":
@@ -510,6 +538,18 @@ $(document).ready(function () {
 			}
 		}
 
+		/**
+		 * Move active shape by a delta x, y
+		 * @param {*} dx 
+		 * @param {*} dy 
+		 */
+		move_active(dx, dy) {
+			if (this.pento_active_shape) {
+				var coords = this.pento_active_shape.get_coords()
+				this.pento_active_shape.moveTo(coords[0] + dx, coords[1] + dy)
+			}
+		}
+
 		// event functions
 		register_event_handler(handler) {
 			this.event_handlers.push(handler)
@@ -537,25 +577,25 @@ $(document).ready(function () {
 			return this.pento_shapes
 		}
 
-		fromJSON(shapes){
+		fromJSON(shapes) {
 			this.destroy_all_shapes();
 
-			for(var s in shapes){
+			for (var s in shapes) {
 				var shape = Object.assign(new document.Shape, shapes[s])
 
 				var blocks = []
-				for(var b in shape.get_blocks()){
+				for (var b in shape.get_blocks()) {
 					var block_data = shape.get_blocks()[b]
 					var block = Object.assign(new document.Block, block_data)
 					blocks.push(block)
 				}
 				shape.blocks = blocks
-				shape.close()
 
+				shape.close()
 				this.place_shape(shape)
 			}
-			
-			this.pento_canvas_ref.drawLayers()
+
+			this.draw()
 		}
 	}
 

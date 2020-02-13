@@ -10,6 +10,7 @@ $(document).ready(function () {
 			this.rotation = rotation
 			this.is_mirrored = is_mirrored || false
 			this.writable = true
+			this.active = false
 
 			// shape internal grid and bounding box
 			this._internal_grid_size = [4, 4]
@@ -27,6 +28,18 @@ $(document).ready(function () {
 
 			// conntected shapes
 			this.connected = []
+		}
+		
+		is_active(){
+			return this.active
+		}
+
+		set_active(){
+			this.active = true
+		}
+
+		set_deactive(){
+			this.active = false
 		}
 
 		/**
@@ -46,6 +59,10 @@ $(document).ready(function () {
 				}
 			}
 			return true
+		}
+
+		get_coords(){
+			return [this.x, this.y]
 		}
 
 		is_connected(other_shape) {
@@ -269,6 +286,18 @@ $(document).ready(function () {
 			this.y = y
 		}
 
+		/**
+		 * Open for changes
+		 */
+		open(){
+			this.writable = true
+		}
+
+		/**
+		 * Finalizes the shape
+		 * No further modifications are allowed after
+		 * this function is called
+		 */
 		close() {
 			this.writable = false
 
@@ -306,8 +335,8 @@ $(document).ready(function () {
 		 * @param {block y} y 
 		 */
 		get_adjacent_blocks(x, y) {
-			var row = y / this.block_size + this._internal_grid_shifts[1]
-			var col = x / this.block_size + this._internal_grid_shifts[0]
+			var row = Math.round(y / this.block_size) + this._internal_grid_shifts[1]
+			var col = Math.round(x / this.block_size) + this._internal_grid_shifts[0]
 			var adjacent_matrix = [0,0,0,0]
 
 			// top

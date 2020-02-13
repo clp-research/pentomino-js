@@ -125,7 +125,7 @@ $(document).ready(function () {
     //--- User event handeling
     $("input").change(function () {
         update(config, pento_config)
-    });
+    }); 
 
     //--- File handeling
     function handleFileSelect(e) {

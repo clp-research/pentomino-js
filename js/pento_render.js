@@ -7,8 +7,11 @@ $(document).ready(function () {
 	 * @param {*} offsetX 
 	 * @param {*} offsetY 
 	 */
-	var draw_block = function (ctx, block, offsetX, offsetY) {
-
+	var draw_block = function (ctx, block, offsetX, offsetY, active) {
+		if (active){
+			ctx.shadowColor = 'gray';
+			ctx.shadowBlur = 10;	
+		}
 		ctx.fillStyle = block.color;
 		ctx.strokeStyle = "lightgray"
 		ctx.lineWidth = 1
@@ -88,7 +91,7 @@ $(document).ready(function () {
 		// Draw blocks
 		for (var i = 0; i < shape.get_blocks().length; i++) {
 			var block = shape.get_blocks()[i]
-			draw_block(ctx, block, shape.x + params.offsetX, shape.y + params.offsetY, false);
+			draw_block(ctx, block, shape.x + params.offsetX, shape.y + params.offsetY, shape.is_active());
 		}
 	}
 
