@@ -16,6 +16,14 @@ $(document).ready(function () {
 			this.create_vertices();
 		}
 
+		get_x(){
+			return this._vertices[0][0]
+		}
+
+		get_y(){
+			return this._vertices[0][1]
+		}
+
 		get_center(){
 			var x_sum = 0
 			var y_sum = 0
@@ -59,6 +67,20 @@ $(document).ready(function () {
 				[this.x + this.width, this.y + this.height],
 				[this.x, this.y + this.height]
 			]
+
+			this._edge_style = [1,1,1,1]
+		}
+
+		get_vertices(){
+			return this._vertices
+		}
+
+		get_edge_style(row){
+			return this._edge_style[row]
+		}
+
+		set_edge_style(row, style){
+			this._edge_style[row] = style
 		}
 
 		get_vertex(row, col) {
@@ -89,7 +111,7 @@ $(document).ready(function () {
 		 */
 		rotate(delta_angle, new_angle) {
 			// move to center
-			this._move(this.shape_center_x, this.shape_center_y)
+			this._move(-this.shape_center_x, -this.shape_center_y)
 
 			// do rotation of vertices
 			for (var i = 0; i < this._vertices.length; i++) {
@@ -101,7 +123,7 @@ $(document).ready(function () {
 			}
 
 			// move back to original position
-			this._move(-this.shape_center_x, -this.shape_center_y)
+			this._move(this.shape_center_x, this.shape_center_y)
 
 			// store current rotation
 			this.rotation = new_angle

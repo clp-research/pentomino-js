@@ -168,8 +168,8 @@ $(document).ready(function () {
 
 			// connect grids so that the resulting matrix doesnt contain a two (after adding both together)
 			// move shapes close together
-			var direction = this.get_direction(other_shape)
-			this.align_and_connect(other_shape, direction)
+			//var direction = this.get_direction(other_shape)
+			//this.align_and_connect(other_shape, direction)
 
 			// register connection
 			//this.connected.push(other_shape.name)
@@ -196,8 +196,8 @@ $(document).ready(function () {
 		}
 
 		_update_grid(block_x, block_y) {
-			var row = (block_x / this.block_size) + this._internal_grid_shifts[0]
-			var col = (block_y / this.block_size) + this._internal_grid_shifts[0]
+			var row = (block_y / this.block_size) + this._internal_grid_shifts[1]
+			var col = (block_x / this.block_size) + this._internal_grid_shifts[0]
 
 			this._set_grid_value(row, col, 1)
 		}
@@ -287,8 +287,50 @@ $(document).ready(function () {
 			// update blocks
 			for (var block_index in this.blocks) {
 				var block = this.blocks[block_index]
-				block.set_shape_center(0,0)
+				block.set_shape_center(center_x, center_y)
+
+				// update block styles
+				var adjacent_blocks = this.get_adjacent_blocks(block.get_x(), block.get_y())
+				for (var i = 0; i < adjacent_blocks.length; i++) {
+					if (adjacent_blocks[i] === 0) {
+						block.set_edge_style(i, 3)
+					}
+				}
 			}
+		}
+
+		/**
+		 * Retrieve a matrix (top, right, bottom, left) which represents
+		 * adjacent blocks with 1 (0 if no block is adjacent on a side)
+		 * @param {block x} x 
+		 * @param {block y} y 
+		 */
+		get_adjacent_blocks(x, y) {
+			var row = y / this.block_size + this._internal_grid_shifts[1]
+			var col = x / this.block_size + this._internal_grid_shifts[0]
+			var adjacent_matrix = [0,0,0,0]
+
+			// left
+			if (col - 1 >= 0) {
+				adjacent_matrix[3] = this._internal_grid[row][col - 1]
+			}
+
+			// top
+			if (row - 1 >= 0) {
+				adjacent_matrix[0] = this._internal_grid[row - 1][col]
+			}
+
+			// right
+			if (col + 1 < this._internal_grid[row].length) {
+				adjacent_matrix[1] = this._internal_grid[row][col + 1]
+			}
+
+			// bottom
+			if (row + 1 < this._internal_grid.length) {
+				adjacent_matrix[2] = this._internal_grid[row + 1][col]
+			}
+
+			return adjacent_matrix
 		}
 
 		add_block(block) {

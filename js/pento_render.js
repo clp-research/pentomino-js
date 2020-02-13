@@ -1,17 +1,38 @@
 $(document).ready(function () {
 
-	// draw a block (smallest unit of pentomino shape)
+	/**
+	 * draw a block (smallest unit of pentomino shape)
+	 * @param {*} ctx 
+	 * @param {*} block 
+	 * @param {*} offsetX 
+	 * @param {*} offsetY 
+	 */
 	var draw_block = function (ctx, block, offsetX, offsetY) {
 
 		ctx.fillStyle = block.color;
 		ctx.strokeStyle = block.border_color
-		
 		ctx.moveTo(block.get_vertex(0,0)+ offsetX, block.get_vertex(0,1)+ offsetY);
-		ctx.lineTo(block.get_vertex(1,0)+ offsetX, block.get_vertex(1,1)+ offsetY);
-		ctx.lineTo(block.get_vertex(2,0)+ offsetX, block.get_vertex(2,1)+ offsetY);
-		ctx.lineTo(block.get_vertex(3,0)+ offsetX, block.get_vertex(3,1)+ offsetY);
-		ctx.lineTo(block.get_vertex(0,0)+ offsetX, block.get_vertex(0,1)+ offsetY)
+
+		for(var y=1; y < block.get_vertices().length; y++){
+			draw_line(ctx, block, y, offsetX, offsetY)
+		}
+		draw_line(ctx, block, 0, offsetX, offsetY)
 		ctx.fill();
+	}
+
+	/**
+	 * Draws a line on the board
+	 * @param {*} ctx 
+	 * @param {*} block 
+	 * @param {*} y 
+	 * @param {*} offsetX 
+	 * @param {*} offsetY 
+	 */
+	var draw_line = function(ctx, block, y, offsetX, offsetY){
+		ctx.lineWidth = block.get_edge_style(y)
+		var to_x = block.get_vertex(y,0)+ offsetX
+		var to_y = block.get_vertex(y,1)+ offsetY
+		ctx.lineTo(to_x, to_y);
 	}
 
 	var draw_shape = function (ctx, shape, params) {

@@ -48,8 +48,7 @@ $(document).ready(function () {
 			// register event handler
 			var self = this
 			$(canvas_id).on('mouseleave', function (event) {
-				self.pento_active_shape = null
-				self.remove_arrows();
+				self.clear_selections()
 			});
 
 			// init actions
@@ -296,11 +295,21 @@ $(document).ready(function () {
 				click: function () {
 					self.rotate_shape(-5)
 				},
-				mousedown: function(){
+				mousedown: async function(){
+					self._multi_rotation = true
+					var reduction = 0.1
+					var sleep_time = 400
+					while(self._multi_rotation){
+						self.rotate_shape(5)
+						await new Promise(r => setTimeout(r, sleep_time));
 
+						if (sleep_time>=80){
+							sleep_time -= sleep_time*reduction
+						}	
+					}
 				},
 				mouseup: function(){
-					
+					self._multi_rotation = false
 				}
 			});
 		}
@@ -421,6 +430,7 @@ $(document).ready(function () {
 			});
 
 			this.pento_shapes[shape.name] = shape
+			this.draw()
 		}
 
 		grid_cell_to_coordinates(col, row) {
