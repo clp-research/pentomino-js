@@ -293,7 +293,7 @@ $(document).ready(function () {
 				var adjacent_blocks = this.get_adjacent_blocks(block.get_x(), block.get_y())
 				for (var i = 0; i < adjacent_blocks.length; i++) {
 					if (adjacent_blocks[i] === 0) {
-						block.set_edge_style(i, 3)
+						block.set_edge_style(i, 2)
 					}
 				}
 			}
@@ -310,24 +310,24 @@ $(document).ready(function () {
 			var col = x / this.block_size + this._internal_grid_shifts[0]
 			var adjacent_matrix = [0,0,0,0]
 
-			// left
-			if (col - 1 >= 0) {
-				adjacent_matrix[3] = this._internal_grid[row][col - 1]
-			}
-
 			// top
 			if (row - 1 >= 0) {
-				adjacent_matrix[0] = this._internal_grid[row - 1][col]
+				adjacent_matrix[1] = this._internal_grid[row - 1][col]
 			}
 
 			// right
 			if (col + 1 < this._internal_grid[row].length) {
-				adjacent_matrix[1] = this._internal_grid[row][col + 1]
+				adjacent_matrix[2] = this._internal_grid[row][col + 1]
 			}
 
 			// bottom
 			if (row + 1 < this._internal_grid.length) {
-				adjacent_matrix[2] = this._internal_grid[row + 1][col]
+				adjacent_matrix[3] = this._internal_grid[row + 1][col]
+			}
+
+			// left
+			if (col - 1 >= 0) {
+				adjacent_matrix[0] = this._internal_grid[row][col - 1]
 			}
 
 			return adjacent_matrix

@@ -236,7 +236,8 @@ $(document).ready(function () {
 			var x = layer.x + offsetX
 			var y = layer.y + offsetY
 			var width = layer.block_size
-			var strokeWidth = 4
+			var strokeWidth = 5
+			var rotation = 10
 			var rounding = layer.block_size / 2
 			var self = this
 
@@ -257,14 +258,16 @@ $(document).ready(function () {
 					arrowRadius: 10
 				},
 				click: function () {
-					self.rotate_shape(5)
+					self.rotate_shape(rotation)
 				},
 				mousedown: async function(){
 					self._multi_rotation = true
-					var reduction = 0.1
+					var reduction = 0.05
 					var sleep_time = 400
-					while(self._multi_rotation){
-						self.rotate_shape(5)
+					await new Promise(r => setTimeout(r, sleep_time));
+
+					while(self._multi_rotation && !self._multi_rotation_2){
+						self.rotate_shape(rotation)
 						await new Promise(r => setTimeout(r, sleep_time));
 
 						if (sleep_time>=80){
@@ -293,14 +296,16 @@ $(document).ready(function () {
 					arrowRadius: 10
 				},
 				click: function () {
-					self.rotate_shape(-5)
+					self.rotate_shape(-rotation)
 				},
 				mousedown: async function(){
-					self._multi_rotation = true
-					var reduction = 0.1
+					self._multi_rotation_2 = true
+					var reduction = 0.05
 					var sleep_time = 400
-					while(self._multi_rotation){
-						self.rotate_shape(5)
+					await new Promise(r => setTimeout(r, sleep_time));
+					
+					while(self._multi_rotation_2 && !self._multi_rotation){
+						self.rotate_shape(-rotation)
 						await new Promise(r => setTimeout(r, sleep_time));
 
 						if (sleep_time>=80){
@@ -309,7 +314,7 @@ $(document).ready(function () {
 					}
 				},
 				mouseup: function(){
-					self._multi_rotation = false
+					self._multi_rotation_2 = false
 				}
 			});
 		}

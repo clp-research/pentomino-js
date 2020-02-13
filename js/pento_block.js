@@ -68,7 +68,7 @@ $(document).ready(function () {
 				[this.x, this.y + this.height]
 			]
 
-			this._edge_style = [1,1,1,1]
+			this._edge_style = [0.5,0.5,0.5,0.5]
 		}
 
 		get_vertices(){
