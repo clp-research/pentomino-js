@@ -122,54 +122,29 @@ $(document).ready(function () {
         make_board_screenshot(data["index"] + 2, '#target', "END", false)
     })
 
-    //--- User event handeling
-    $("input").change(function () {
-        update(config, pento_config)
-    }); 
-
-    //--- File handeling
-    function handleFileSelect(e) {
-        var files = e.target.files;
-        if (files.length < 1) {
-            alert('select a file...');
-            return;
-        }
-        var file = files[0];
-        var reader = new FileReader();
-        reader.onload = onFileLoaded;
-        reader.readAsDataURL(file);
-    }
-
-    function onFileLoaded(e) {
-        var match = /^data:(.*);base64,(.*)$/.exec(e.target.result);
-        if (match == null) {
-            throw 'Could not parse result'; // should not happen
-        }
-        var content = atob(match[2]);
-        var json = JSON.parse(content)
-
-        generator.pento_board_initial.fromJSON(json["initial"])
-        generator.pento_board_target.fromJSON(json["target"])
-    }
-
-    $('#target_file').change(handleFileSelect);
-
     //--- export and import boards
+
+    this.export_all = function(){
+        var rand_prefix = Math.floor(Math.random() * 10000).toString()
+
+        this.save_boards_as_image(rand_prefix)
+        this.export_as_json(rand_prefix)
+    }
 
     /**
      * Makes an image copy of the boards and triggers download
      */
-    this.save_boards_as_image = function () {
+    this.save_boards_as_image = function (rand_prefix) {
         generator.pento_board_initial.clear_selections()
         generator.pento_board_target.clear_selections()
         
-        generator.pento_board_initial.saveBoard()
-        generator.pento_board_target.saveBoard()
+        generator.pento_board_initial.saveBoard(rand_prefix)
+        generator.pento_board_target.saveBoard(rand_prefix)
     }
 
-    this.export_as_json = function () {
+    this.export_as_json = function (rand_prefix) {
         var json_content = {}
-        var file_name = 'pento_data.json';
+        var file_name = (rand_prefix == null ? "": rand_prefix)+'_pento_data.json';
 
         json_content["target"] = generator.pento_board_target.toJSON()
         json_content["initial"] = generator.pento_board_initial.toJSON()
@@ -265,4 +240,36 @@ $(document).ready(function () {
     update(config, pento_config)
 
     generator.generate()
+
+    //--- User event handeling
+    $("input").change(function () {
+        update(config, pento_config)
+    }); 
+
+    //--- File handeling
+    function handleFileSelect(e) {
+        var files = e.target.files;
+        if (files.length < 1) {
+            alert('select a file...');
+            return;
+        }
+        var file = files[0];
+        var reader = new FileReader();
+        reader.onload = onFileLoaded;
+        reader.readAsDataURL(file);
+    }
+
+    function onFileLoaded(e) {
+        var match = /^data:(.*);base64,(.*)$/.exec(e.target.result);
+        if (match == null) {
+            throw 'Could not parse result'; // should not happen
+        }
+        var content = atob(match[2]);
+        var json = JSON.parse(content)
+
+        generator.pento_board_initial.fromJSON(json["initial"])
+        generator.pento_board_target.fromJSON(json["target"])
+    }
+
+    $('#target_file').change(handleFileSelect);
 })

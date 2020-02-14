@@ -68,7 +68,7 @@ $(document).ready(function () {
 						self.move_active(0, dy)
 						break;  
 				} 
-				event.preventDefault();
+				//event.preventDefault();
 				self.draw()
 			});
 
@@ -210,10 +210,18 @@ $(document).ready(function () {
 			return x >= this.pento_grid_x && x <= this.pento_grid_x + this.pento_grid_width && y >= this.pento_grid_y && y <= this.pento_grid_y + this.pento_grid_height
 		}
 
-		check_collisions_of_shape(shape) {
-			return this.get_collisions(shape) > 0
+		/**
+		 * Is true when at least one shape collides with this shape
+		 * @param {shape to check for} shape 
+		 */
+		has_collisions(shape) {
+			return this.get_collisions(shape).length > 0
 		}
 
+		/**
+		 * Returns a list of shapes colliding with shape
+		 * @param {shape to check for} shape 
+		 */
 		get_collisions(shape) {
 			var hits = []
 			for (var key in this.pento_shapes) {
@@ -447,7 +455,7 @@ $(document).ready(function () {
 							self.lock_shape_on_grid(layer)
 						}
 
-						if (self.check_collisions_of_shape(layer["shape"]) && self.pento_prevent_collision) {
+						if (self.has_collisions(layer["shape"]) && self.pento_prevent_collision) {
 							layer.x = last_x;
 							layer.y = last_y;
 						} else {
@@ -491,22 +499,22 @@ $(document).ready(function () {
 						}
 						break;
 					case "place":
-						if (!this.check_collisions_of_shape(shape)) {
+						if (!this.has_collisions(shape)) {
 							return true
 						}
 						break;
 					case "move":
-						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
+						if (!this.has_collisions(shape) && !shape.has_connections()) {
 							return true
 						}
 						break;
 					case "rotate":
-						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
+						if (!this.has_collisions(shape) && !shape.has_connections()) {
 							return true
 						}
 						break;
 					case "flip":
-						if (!this.check_collisions_of_shape(shape) && !shape.has_connections()) {
+						if (!this.has_collisions(shape) && !shape.has_connections()) {
 							return true
 						}
 						break;
@@ -566,10 +574,10 @@ $(document).ready(function () {
 		}
 
 		// utility
-		saveBoard() {
+		saveBoard(shared_name) {
 			var self = this
 			this.pento_canvas_ref[0].toBlob(function (data) {
-				saveAs(data, self.title + '.png')
+				saveAs(data, (shared_name == null ? "": shared_name) + "_"+ self.title +'.png')
 			})
 		}
 
@@ -596,6 +604,13 @@ $(document).ready(function () {
 			}
 
 			this.draw()
+		}
+
+		hashCode() {
+			var s = this.toJSON().toString()
+			for(var i = 0, h = 0; i < s.length; i++)
+				h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+			return h;
 		}
 	}
 
