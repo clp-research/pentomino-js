@@ -23,6 +23,29 @@ $(document).ready(function () {
             // events and event handler
             this.events = ["target_updated", "initial_updated", "generation_finished"]
             this.event_handler = [[],[],[]]
+
+            // prefix for current generation
+            this.prefix_max = 10000
+            this.prefix_log = []
+        }
+
+        /**
+         * Generates a prefix for data stored in this generation session
+         */
+        generate_prefix(){
+            var new_prefix = Math.floor(Math.random() * this.prefix_max).toString()
+            if (this.prefix_log.indexOf(new_prefix)!=-1){
+                this.generate_prefix()
+            }else{
+                this.prefix_log.push(new_prefix)
+            }
+        }
+
+        /**
+         * Retrieves the latest prefix
+         */
+        get_prefix(){
+            return this.prefix_log[this.prefix_log.length-1]
         }
 
         update(){
@@ -220,10 +243,15 @@ $(document).ready(function () {
                     this.pento_board_target.destroy_shape(new_shape)
                 }
             }
+            // draw current board
             this.pento_board_target.draw()
 
+            // make an initial state and draw it on the second canvas
             this.create_initial_state(generated_shapes, this.config["nchanges"])
             this.pento_board_initial.draw()
+
+            // change prefix for export
+            this.generate_prefix()
         }
     }
 

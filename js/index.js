@@ -124,9 +124,8 @@ $(document).ready(function () {
 
     //--- export and import boards
 
-    this.export_all = function(){
-        var rand_prefix = Math.floor(Math.random() * 10000).toString()
-
+    this.export_all = function () {
+        var rand_prefix = generator.get_prefix()
         this.save_boards_as_image(rand_prefix)
         this.export_as_json(rand_prefix)
     }
@@ -137,14 +136,14 @@ $(document).ready(function () {
     this.save_boards_as_image = function (rand_prefix) {
         generator.pento_board_initial.clear_selections()
         generator.pento_board_target.clear_selections()
-        
+
         generator.pento_board_initial.saveBoard(rand_prefix)
         generator.pento_board_target.saveBoard(rand_prefix)
     }
 
     this.export_as_json = function (rand_prefix) {
         var json_content = {}
-        var file_name = (rand_prefix == null ? "": rand_prefix)+'_pento_data.json';
+        var file_name = (rand_prefix == null ? "" : rand_prefix) + '_pento_data.json';
 
         json_content["target"] = generator.pento_board_target.toJSON()
         json_content["initial"] = generator.pento_board_initial.toJSON()
@@ -210,8 +209,8 @@ $(document).ready(function () {
     }
 
     /**
- * Toggles selection of all shapes
- */
+     * Toggles selection of all shapes
+     */
     this.toggle_shape_select = function () {
         var shapes = pento_config.get_pento_types()
         shapes.forEach(function (item, index) {
@@ -244,7 +243,7 @@ $(document).ready(function () {
     //--- User event handeling
     $("input").change(function () {
         update(config, pento_config)
-    }); 
+    });
 
     //--- File handeling
     function handleFileSelect(e) {
