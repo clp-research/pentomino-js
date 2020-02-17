@@ -30,6 +30,10 @@ $(document).ready(function () {
 			this.connected = []
 		}
 		
+		/**
+		 * Returns true if the shape is currently
+		 * active and can be modified
+		 */
 		is_active(){
 			return this.active
 		}
@@ -61,22 +65,42 @@ $(document).ready(function () {
 			return true
 		}
 
+		/**
+		 * Returns (x,y) position
+		 */
 		get_coords(){
 			return [this.x, this.y]
 		}
 
+		/**
+		 * Checks whether these shapes are connected
+		 * @param {shape} other_shape 
+		 */
 		is_connected(other_shape) {
 			return this.connected.indexOf(other_shape.name) != -1
 		}
 
+		/**
+		 * Checks whether this shape is connected to any other 
+		 * shape
+		 */
 		has_connections() {
 			return this.connected.length > 0
 		}
 
+		/**
+		 * Return the internal grid matrix
+		 */
 		get_internal_grid() {
 			return this._internal_grid
 		}
 
+		/**
+		 * Estimates the relative position of the 
+		 * other shape compare to this shape and
+		 * returns a direction of connection
+		 * @param {shape to connect to} other_shape 
+		 */
 		get_direction(other_shape) {
 			var delta_x = other_shape.x - this.x
 			var delta_y = other_shape.y - this.y
@@ -134,6 +158,11 @@ $(document).ready(function () {
 			return a
 		}
 
+		/**
+		 * Returns the index of the first blocking column
+		 * from the right
+		 * @param {internal matrix} matrix 
+		 */
 		get_right_fbc(matrix) {
 			for (var i = matrix.length - 1; i >= 0; i--) {
 				if (matrix[i].indexOf(1) != -1)
@@ -142,6 +171,11 @@ $(document).ready(function () {
 			return i
 		}
 
+		/**
+		 * Retrieves the index of the first blocking column
+		 * from the left
+		 * @param {internal matrix} matrix 
+		 */
 		get_left_fbc(matrix) {
 			for (var i = 0; i < matrix.length; i++) {
 				if (matrix[i].indexOf(1) != -1)
@@ -195,6 +229,9 @@ $(document).ready(function () {
 			return "group" + this.id + other_shape.id
 		}
 
+		/**
+		 * Creates the datastructure for the internal grid
+		 */
 		_init_grid() {
 			for (var i = 0; i < this._internal_grid_size[0]; i++) {
 				this._internal_grid.push([])
@@ -204,14 +241,30 @@ $(document).ready(function () {
 			}
 		}
 
+		/**
+		 * Sets the value at (row, col) 
+		 * @param {row} row 
+		 * @param {col} col 
+		 * @param {value for cell} value 
+		 */
 		_set_grid_value(row, col, value) {
 			this._internal_grid[row][col] = value
 		}
 
+		/**
+		 * Retrieves value from (row, col)
+		 * @param {row} row 
+		 * @param {col} col 
+		 */
 		_get_grid_value(row, col) {
 			return this._internal_grid[row][col]
 		}
 
+		/**
+		 * Marks the position of a block on the internal grid with 1
+		 * @param {x} block_x 
+		 * @param {y} block_y 
+		 */
 		_update_grid(block_x, block_y) {
 			var row = (block_y / this.block_size) + this._internal_grid_shifts[1]
 			var col = (block_x / this.block_size) + this._internal_grid_shifts[0]
@@ -242,7 +295,7 @@ $(document).ready(function () {
 					this.moveTo(action["x"], action["y"], false)
 					break;
 				case "rotate":
-					this.rotate(action["angle"], false)
+					this.rotate(360 - action["angle"], false)
 					break;
 			}
 		}
@@ -272,15 +325,21 @@ $(document).ready(function () {
 		 */
 		rotate(angle, track) {
 			if (track != false) {
-				this.changes.push({ "name": "rotate", "angle": 360 - angle })
+				this.changes.push({ "name": "rotate", "angle": angle })
 			}
 			this.rotation = this._get_true_angle(angle)
 			this._rotate_blocks(angle)
 		}
 
+		/**
+		 * Moves shape to a fixed position
+		 * @param {x} x 
+		 * @param {y} y 
+		 * @param {if this action should be tracked (can't be undone otherwise)} track 
+		 */
 		moveTo(x, y, track) {
 			if (track != false) {
-				this.changes.push({ "name": "move", "x": this.x + 0, "y": this.y + 0 })
+				this.changes.push({ "name": "move", "x": this.x, "y": this.y})
 			}
 			this.x = x
 			this.y = y
@@ -362,6 +421,10 @@ $(document).ready(function () {
 			return adjacent_matrix
 		}
 
+		/**
+		 * Adds a block to the shape if it's writable
+		 * @param {block object} block 
+		 */
 		add_block(block) {
 			if (this.writable) {
 				this.blocks.push(block)
@@ -369,10 +432,17 @@ $(document).ready(function () {
 			}
 		}
 
+		/**
+		 * Returns all blocks of the shape
+		 */
 		get_blocks() {
 			return this.blocks
 		}
 
+		/**
+		 * Checks whether the shapes hit each other
+		 * @param {shape to compare} other_shape 
+		 */
 		hits(other_shape) {
 			// calculate delta between shapes
 			var dx = this.x - other_shape.x
@@ -411,7 +481,9 @@ $(document).ready(function () {
 
 	document.Shape = Shape
 
-	// Draw point
+	/**
+	 * Draw point (one block shape)
+	 */
 	this.pento_point = function (shape) {
 		var block = this.pento_create_block(0, 0, shape.block_size, shape.color);
 		shape.add_block(block)

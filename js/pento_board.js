@@ -459,8 +459,7 @@ $(document).ready(function () {
 							layer.x = last_x;
 							layer.y = last_y;
 						} else {
-							shape.x = layer.x
-							shape.y = layer.y
+							shape.moveTo(layer.x, layer.y)
 						}
 						self.update_arrows(layer, false)
 						self.set_active(layer.shape)
@@ -582,7 +581,39 @@ $(document).ready(function () {
 		}
 
 		toJSON() {
-			return this.pento_shapes
+			var shapes = Object.assign({}, this.pento_shapes)
+
+			for (var shape_index in shapes){
+				var shape = shapes[shape_index]
+
+				var sum_changes = [
+					{"name": "move", "x": 0, "y":0},
+					{"name":"rotate", "angle": 0}
+				]
+				for(var i=1; i < shape.changes.length; i++){
+					var change = shape.changes[i]
+					if (change["name"] == "move"){
+						sum_changes[0]["x"] = change["x"]
+						sum_changes[0]["y"] = change["y"]
+					}else if (change["name"] == "rotate"){
+						sum_changes[1]["angle"] += change["angle"]
+					}
+				}
+				
+				if (sum_changes[1]["angle"] == 0){
+					sum_changes = sum_changes.slice(0,1)
+				}else{
+					sum_changes[1]["angle"] = 360 % sum_changes[1]["angle"]
+				}
+
+				if (sum_changes[0]["x"] == 0 && sum_changes[0]["y"] == 0){
+					sum_changes = sum_changes.slice(0,0)
+				}
+
+				shape.changes = sum_changes
+			}
+			
+			return shapes
 		}
 
 		fromJSON(shapes) {
