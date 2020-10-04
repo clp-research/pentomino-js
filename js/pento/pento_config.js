@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	
-	class DefaultDict {
+	this.DefaultDict = class DefaultDict {
 		constructor(default_value) {
 			this.dict = {};
 			this.default_value = default_value;
@@ -16,11 +16,9 @@ $(document).ready(function () {
 			}
 			return this.dict[key];
 		}
-	}
+	};
 	
-	
-	class PentoConfig {
-
+	this.PentoConfig = class PentoConfig {
 		constructor() {
 			this.color_map = {
 				'#EEAAAA': 'light red',
@@ -50,15 +48,12 @@ $(document).ready(function () {
 			for (let c in this.color_map) {
 				colors.push(c);
 			}
-			return colors//['#EEAAAA', '#DDBB99', '#CCCC88', '#BBDD99', '#AAEEAA', '#DD99BB', '#CC88CC', '#99BBDD', '#AAAAEE', '#88CCCC', '#99DDBB']
+			return colors
 		}
 
 		get_pento_types() {
 			return ['F', 'I', 'L', 'N', 'P', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 		}
-
-	}
-
-	this.PentoConfig = PentoConfig
+	};
 })
 

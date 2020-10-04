@@ -5,10 +5,9 @@
 // make Furhat look at pieces
 // insert actual furhat speech
 
-// fix glitch after generation??
 // fix import
 
-$(document).ready(function(){
+$(document).ready(function() {
 
 	// parameters
 	this.TASK = null; // file containing initial and target board in json format
@@ -16,16 +15,16 @@ $(document).ready(function(){
 	
 	// create a generator
 	var config_params = {
-		"nshapes": 3,
-		"nrotations": 0,
-		"nflips": 0,
-		"nchanges": 3,
-		"nconnections": 0,
-		"colors": false,
-		"shapes": false,
-		"readonly": false,
-		"showgrid": true,
-		"_shapes_filter": [] // use all shape types
+		'nshapes': 3,
+		'nrotations': 0,
+		'nflips': 0,
+		'nchanges': 3,
+		'nconnections': 0,
+		'colors': false,
+		'shapes': false,
+		'readonly': false,
+		'showgrid': true,
+		'_shapes_filter': [] // use all shape types
 		};
 	
 	// create a configuration
@@ -40,7 +39,7 @@ $(document).ready(function(){
 	}
 	
 	this.select_import = function() {
-		$("#target_file").click();
+		$('#target_file').click();
 	}
 	
 	//--- File handling
@@ -48,7 +47,7 @@ $(document).ready(function(){
 		var files = e.target.files;
 		if (files.length < 1) {
 			alert('select a file...');
-			return;
+			return
 		}
 		var file = files[0];
 		var reader = new FileReader();
@@ -64,8 +63,8 @@ $(document).ready(function(){
 		var content = atob(match[2]);
 		var json = JSON.parse(content);
 
-		generator.pento_board_initial.fromJSON(json["initial"]);
-		generator.pento_board_target.fromJSON(json["target"]);
+		generator.pento_board_initial.fromJSON(json['initial']);
+		generator.pento_board_target.fromJSON(json['target']);
 	}
 
 	$('#target_file').change(handleFileSelect);
@@ -77,7 +76,7 @@ $(document).ready(function(){
 	// handle user moving a piece (fired on dragstop)
 	var move_handler = {
 		handle: function(event) {
-			if (event.type == "shape_moved") {
+			if (event.type == 'shape_moved') {
 				instr_giver.give_instr();
 			}
 		}
@@ -85,7 +84,7 @@ $(document).ready(function(){
 	// handle user rotating a piece
 	var rotation_handler = {
 		handle: function(event) {
-			if (event.type == "shape_rotated") {
+			if (event.type == 'shape_rotated') {
 				instr_giver.give_instr();
 			}
 		}

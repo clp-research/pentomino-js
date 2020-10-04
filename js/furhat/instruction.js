@@ -2,21 +2,21 @@ $(document).ready(function () {
 
 	// Colors used  in 
 
-	class Instruction {
+	this.Instruction = class Instruction {
 		constructor(shape, type, params) {
-			this.shape_name	= shape
-			this.type		= type
-			this.params		= params
+			this.shape_name	= shape;
+			this.type		= type;
+			this.params		= params;
 		}
 		
 		// to string / to_speech function?
 	
 		toString() {
-			if (this.type == "move")
+			if (this.type == 'move')
 				return `Move the ${this._get_color()} ${this._get_shape()} ${this._get_distance()} ${this._get_move_direction()}`
-			if (this.type == "rotate")
+			if (this.type == 'rotate')
 				return `Rotate the ${this._get_color()} ${this._get_shape()} ${this._get_rotation()}`
-			return "unknown instruction type"
+			return 'unknown instruction type'
 		}
 		
 		
@@ -34,30 +34,28 @@ $(document).ready(function () {
 		
 		//TODO: improve
 		_get_distance() {
-			let block_size = document.config.block_size
+			let block_size = document.config.block_size;
 			if (this.params.x > 0) return this.params.x / block_size
 			if (this.params.x < 0) return (-this.params.x) / block_size
 			if (this.params.y > 0) return this.params.y / block_size
 			if (this.params.y < 0) return (-this.params.y) / block_size
-			return "error"
+			return 'error'
 		}
 		
 		_get_move_direction() {
-			if (this.params.x > 0) return "to the right"
-			if (this.params.x < 0) return "to the left"
-			if (this.params.y > 0) return "down"
-			if (this.params.y < 0) return "up"
-			return "far away"
+			if (this.params.x > 0) return 'to the right'
+			if (this.params.x < 0) return 'to the left'
+			if (this.params.y > 0) return 'down'
+			if (this.params.y < 0) return 'up'
+			return 'far away'
 		}
 
 		_get_rotation() {
-			//TODO: 
-			if (this.params.angle < 180) return `${this.params.angle} degrees to the left`;
-			else if (this.params.angle > 180) return `${360 - this.params.angle} degrees to the right`
-			return `180 degrees`
+			if (this.params.angle > 180) return `${360-this.params.angle} degrees to the right`
+			else if (this.params.angle > 0) return `${this.params.angle} degrees to the left`
+			else if (this.params.angle > -180) return `${Math.abs(this.params.angle)} degrees to the left`
+			else return `${360 + this.params.angle} degrees to the right`
 		}
-	}
-	
-	document.Instruction = Instruction
+	};
 })
 

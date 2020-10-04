@@ -1,8 +1,8 @@
 $(document).ready(function () {
-	class InstructionGiver {
+	this.InstructionGiver = class InstructionGiver {
 		constructor(initial_board, target_board) {
-			this.board = initial_board
-			this.target = target_board
+			this.board = initial_board;
+			this.target = target_board;
 		}
 		
 		// generate an instruction for the user to complete the puzzle
@@ -12,7 +12,7 @@ $(document).ready(function () {
 			let new_instr = this._generate_instr();
 			// no move to make left
 			if (new_instr == null) {
-				console.log("done");
+				console.log('done');
 				return false
 				}
 			console.log(new_instr.toString());
@@ -26,7 +26,7 @@ $(document).ready(function () {
 		}
 		
 		// looks for shape which is not in target position and target rotation
-		// returns shape and parameter to adjust ("x", "y", "rotate")
+		// returns shape and parameter to adjust ('x', 'y', 'rotate')
 		_generate_instr() {
 			for (var shape in this.board.pento_shapes) {
 				// get corresponding shapes
@@ -36,22 +36,20 @@ $(document).ready(function () {
 				// check whether positions and rotations are equal
 				let x_offset = target_shape.x-current_shape.x;
 				if (x_offset != 0) {
-					return new document.Instruction(current_shape.name, "move", {"x": x_offset})
+					return new document.Instruction(current_shape.name, 'move', {'x': x_offset})
 					}
 					
 				let y_offset = target_shape.y-current_shape.y;
 				if (y_offset != 0) {
-					return new document.Instruction(current_shape.name, "move", {"y": y_offset})
+					return new document.Instruction(current_shape.name, 'move', {'y': y_offset})
 					}
-					
+
 				let rotation_offset = target_shape.rotation-current_shape.rotation;
 				if (rotation_offset != 0) {
-					return new document.Instruction(current_shape.name, "rotate", {"angle": rotation_offset})
+					return new document.Instruction(current_shape.name, 'rotate', {'angle': rotation_offset})
 					}
 			}
 			return null
 		}
-	}
-	
-	document.InstructionGiver = InstructionGiver
+	};
 })
