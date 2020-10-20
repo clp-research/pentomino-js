@@ -12,9 +12,18 @@ $(document).ready(function () {
 			let new_instr = this._generate_instr();
 			// no move to make left
 			if (new_instr == null) {
-				console.log('done');
+// Alternatively, use http requests to make Furhat speak the instructions. Server skill needs to be running and CORS headers set to allow any source (or specifically the pentomino ui) to post requests
+//				let url = 'http://localhost:54321/furhat/actions/say?utterance=well done!'
+//				fetch(url, {method: 'POST'})
+				console.log('done')
 				return false
 				}
+				
+//			let url = `http://localhost:54321/furhat/actions/say?utterance=${new_instr.toString()}`
+//			fetch(url, {method: 'POST'})
+//			.then(response => response.json())
+//			.then(data => console.log(data));
+			
 			console.log(new_instr.toString());
 			return true;
 		}
