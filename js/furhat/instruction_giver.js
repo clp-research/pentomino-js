@@ -8,7 +8,7 @@ $(document).ready(function () {
 		// generate an instruction for the user to complete the puzzle
 		// returns true if an instruction was given, false if not (i.e. the goal is reached)
 		give_instr() {
-			//TODO: what to do here?
+			//TODO
 			let new_instr = this._generate_instr();
 			// no move to make left
 			if (new_instr == null) {

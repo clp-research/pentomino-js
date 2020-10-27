@@ -1,0 +1,1372 @@
+{
+  "target": {
+    "X0#CC88CC": {
+      "id": 0,
+      "x": 140,
+      "y": 280,
+      "type": "X",
+      "color": "#CC88CC",
+      "rotation": 0,
+      "is_mirrored": false,
+      "writable": false,
+      "active": false,
+      "_internal_grid_size": [
+        4,
+        4
+      ],
+      "_internal_grid_shifts": [
+        1,
+        0
+      ],
+      "_internal_grid": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "changes": [],
+      "name": "X0#CC88CC",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              0,
+              20
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              0,
+              20
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              0,
+              40
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              20,
+              60
+            ],
+            [
+              0,
+              60
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            2
+          ]
+        },
+        {
+          "x": -20,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              -20,
+              20
+            ],
+            [
+              0,
+              20
+            ],
+            [
+              0,
+              40
+            ],
+            [
+              -20,
+              40
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            2
+          ]
+        },
+        {
+          "x": 20,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              20,
+              20
+            ],
+            [
+              40,
+              20
+            ],
+            [
+              40,
+              40
+            ],
+            [
+              20,
+              40
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "block_size": 20,
+      "connected": []
+    },
+    "Y1#DD99BB": {
+      "id": 1,
+      "x": 80,
+      "y": 280,
+      "type": "Y",
+      "color": "#DD99BB",
+      "rotation": 0,
+      "is_mirrored": false,
+      "writable": false,
+      "active": false,
+      "_internal_grid_size": [
+        4,
+        4
+      ],
+      "_internal_grid_shifts": [
+        1,
+        0
+      ],
+      "_internal_grid": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ]
+      ],
+      "changes": [],
+      "name": "Y1#DD99BB",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              0,
+              20
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              0,
+              20
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            0.5,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              0,
+              40
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              20,
+              60
+            ],
+            [
+              0,
+              60
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 60,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              0,
+              60
+            ],
+            [
+              20,
+              60
+            ],
+            [
+              20,
+              80
+            ],
+            [
+              0,
+              80
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            2
+          ]
+        },
+        {
+          "x": -20,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              -20,
+              20
+            ],
+            [
+              0,
+              20
+            ],
+            [
+              0,
+              40
+            ],
+            [
+              -20,
+              40
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            2
+          ]
+        }
+      ],
+      "block_size": 20,
+      "connected": []
+    },
+    "Z2#DDBB99": {
+      "id": 2,
+      "x": 340,
+      "y": 140,
+      "type": "Z",
+      "color": "#DDBB99",
+      "rotation": 0,
+      "is_mirrored": false,
+      "writable": false,
+      "active": false,
+      "_internal_grid_size": [
+        4,
+        4
+      ],
+      "_internal_grid_shifts": [
+        1,
+        0
+      ],
+      "_internal_grid": [
+        [
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "changes": [],
+      "name": "Z2#DDBB99",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              0,
+              20
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              0,
+              20
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              0,
+              40
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              20,
+              60
+            ],
+            [
+              0,
+              60
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            0.5,
+            2,
+            2
+          ]
+        },
+        {
+          "x": 20,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              20,
+              0
+            ],
+            [
+              40,
+              0
+            ],
+            [
+              40,
+              20
+            ],
+            [
+              20,
+              20
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "x": -20,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              -20,
+              40
+            ],
+            [
+              0,
+              40
+            ],
+            [
+              0,
+              60
+            ],
+            [
+              -20,
+              60
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            2
+          ]
+        }
+      ],
+      "block_size": 20,
+      "connected": []
+    }
+  },
+  "initial": {
+    "X1#CC88CC": {
+      "id": 1,
+      "x": 140,
+      "y": 280,
+      "type": "X",
+      "color": "#CC88CC",
+      "rotation": 45,
+      "is_mirrored": false,
+      "writable": false,
+      "active": false,
+      "_internal_grid_size": [
+        4,
+        4
+      ],
+      "_internal_grid_shifts": [
+        1,
+        0
+      ],
+      "_internal_grid": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "changes": [],
+      "name": "X1#CC88CC",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 45,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              24.142135623730947,
+              1.715728752538098
+            ],
+            [
+              38.2842712474619,
+              15.857864376269049
+            ],
+            [
+              24.14213562373095,
+              30
+            ],
+            [
+              10,
+              15.857864376269049
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 45,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              10,
+              15.857864376269049
+            ],
+            [
+              24.14213562373095,
+              30
+            ],
+            [
+              10,
+              44.14213562373095
+            ],
+            [
+              -4.142135623730951,
+              30
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 45,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              -4.142135623730951,
+              30
+            ],
+            [
+              10,
+              44.14213562373095
+            ],
+            [
+              -4.1421356237309475,
+              58.2842712474619
+            ],
+            [
+              -18.2842712474619,
+              44.14213562373095
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            2
+          ]
+        },
+        {
+          "x": -20,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 45,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              -4.142135623730951,
+              1.7157287525381015
+            ],
+            [
+              10,
+              15.857864376269049
+            ],
+            [
+              -4.142135623730951,
+              30
+            ],
+            [
+              -18.284271247461902,
+              15.857864376269053
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            2
+          ]
+        },
+        {
+          "x": 20,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#CC88CC",
+          "border_color": "black",
+          "rotation": 45,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              24.14213562373095,
+              30
+            ],
+            [
+              38.2842712474619,
+              44.14213562373095
+            ],
+            [
+              24.14213562373095,
+              58.2842712474619
+            ],
+            [
+              10,
+              44.14213562373095
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            2,
+            2,
+            2
+          ]
+        }
+      ],
+      "block_size": 20,
+      "connected": []
+    },
+    "Y2#DD99BB": {
+      "id": 2,
+      "x": 80,
+      "y": 280,
+      "type": "Y",
+      "color": "#DD99BB",
+      "rotation": 0,
+      "is_mirrored": false,
+      "writable": false,
+      "active": false,
+      "_internal_grid_size": [
+        4,
+        4
+      ],
+      "_internal_grid_shifts": [
+        1,
+        0
+      ],
+      "_internal_grid": [
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ]
+      ],
+      "changes": [],
+      "name": "Y2#DD99BB",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              -1.687538997430238e-14,
+              0
+            ],
+            [
+              19.999999999999986,
+              0
+            ],
+            [
+              19.999999999999986,
+              19.999999999999993
+            ],
+            [
+              -7.993605777301127e-15,
+              20
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              -7.993605777301127e-15,
+              20
+            ],
+            [
+              19.999999999999986,
+              19.999999999999993
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            0.5,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              0,
+              40
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              20.000000000000014,
+              60
+            ],
+            [
+              1.5987211554602254e-14,
+              60
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 60,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              1.5987211554602254e-14,
+              60
+            ],
+            [
+              20.000000000000014,
+              60
+            ],
+            [
+              20.00000000000002,
+              80
+            ],
+            [
+              2.398081733190338e-14,
+              80
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            2
+          ]
+        },
+        {
+          "x": -20,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#DD99BB",
+          "border_color": "black",
+          "rotation": 0,
+          "shape_center_x": 6,
+          "shape_center_y": 38,
+          "_vertices": [
+            [
+              -20.000000000000014,
+              20.000000000000007
+            ],
+            [
+              -7.993605777301127e-15,
+              20
+            ],
+            [
+              0,
+              40
+            ],
+            [
+              -20,
+              40.000000000000014
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            2
+          ]
+        }
+      ],
+      "block_size": 20,
+      "connected": []
+    },
+    "Z3#DDBB99": {
+      "id": 3,
+      "x": 256,
+      "y": 258,
+      "type": "Z",
+      "color": "#DDBB99",
+      "rotation": 270,
+      "is_mirrored": false,
+      "writable": false,
+      "active": false,
+      "_internal_grid_size": [
+        4,
+        4
+      ],
+      "_internal_grid_shifts": [
+        1,
+        0
+      ],
+      "_internal_grid": [
+        [
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "changes": [
+        {
+          "name": "move",
+          "x": 123,
+          "y": 96
+        },
+        {
+          "name": "rotate",
+          "angle": 90
+        }
+      ],
+      "name": "Z3#DDBB99",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 270,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              -19.999999999999996,
+              40.00000000000001
+            ],
+            [
+              -20.000000000000004,
+              20.000000000000007
+            ],
+            [
+              -1.7763568394002505e-15,
+              20
+            ],
+            [
+              1.7763568394002505e-15,
+              40
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 20,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 270,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              1.7763568394002505e-15,
+              40
+            ],
+            [
+              -1.7763568394002505e-15,
+              20
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              20,
+              40
+            ]
+          ],
+          "_edge_style": [
+            2,
+            0.5,
+            2,
+            0.5
+          ]
+        },
+        {
+          "x": 0,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 270,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              20,
+              40
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              40,
+              19.999999999999993
+            ],
+            [
+              40,
+              39.99999999999999
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            0.5,
+            2,
+            2
+          ]
+        },
+        {
+          "x": 20,
+          "y": 0,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 270,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              -20.000000000000004,
+              20.000000000000007
+            ],
+            [
+              -20.000000000000007,
+              7.105427357601002e-15
+            ],
+            [
+              -5.329070518200751e-15,
+              3.552713678800501e-15
+            ],
+            [
+              -1.7763568394002505e-15,
+              20
+            ]
+          ],
+          "_edge_style": [
+            0.5,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "x": -20,
+          "y": 40,
+          "width": 20,
+          "height": 20,
+          "color": "#DDBB99",
+          "border_color": "black",
+          "rotation": 270,
+          "shape_center_x": 10,
+          "shape_center_y": 30,
+          "_vertices": [
+            [
+              20.000000000000007,
+              60
+            ],
+            [
+              20,
+              40
+            ],
+            [
+              40,
+              39.99999999999999
+            ],
+            [
+              40.00000000000001,
+              59.99999999999999
+            ]
+          ],
+          "_edge_style": [
+            2,
+            2,
+            0.5,
+            2
+          ]
+        }
+      ],
+      "block_size": 20,
+      "connected": []
+    }
+  }
+}

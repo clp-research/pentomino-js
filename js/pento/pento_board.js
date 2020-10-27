@@ -236,10 +236,6 @@ $(document).ready(function () {
 			this.pento_canvas_ref.drawLayers();
 		}
 
-		is_over_grid(x, y) {
-			return x >= this.pento_grid_x && x <= this.pento_grid_x + this.pento_grid_width && y >= this.pento_grid_y && y <= this.pento_grid_y + this.pento_grid_height
-		}
-
 		/**
 		 * Is true when at least one shape collides with this shape
 		 * @param {shape to check for} shape 
@@ -494,13 +490,9 @@ $(document).ready(function () {
 						var layer_x = layer.x + layer.width / 2;
 						var layer_y = layer.y + layer.height / 2;
 
-//						if (self.is_over_grid(layer_x, layer_y) && self.pento_lock_on_grid) {
-//							self.lock_shape_on_grid(layer)
-//						}
 						if (self.pento_lock_on_grid) {
 							self.lock_shape_on_grid(layer);
 						}
-						
 
 						if (self.has_collisions(layer['shape']) && self.pento_prevent_collision) {
 							layer.x = last_x;

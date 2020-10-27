@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Pentomino Select</title>
+	<meta name="description" content="Pento preliminary study - follower ui">
+	<meta name="author" content="clpresearch">
+
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+	<div class="container">
+		<h5>Click on the decribed piece on the left board!</h5>
+		<hr>
+		<div class="row">
+			<div class="eight columns">
+				<!-- 20 rows and columns with block size 20 -->
+					<canvas id="selection_board" width="400" height="400" style="border:1px solid #000000;"></canvas>
+					<input id="task_file" type="file"/>
+			</div>
+			<div class="four columns">
+					<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
+					<!--<img class="img center" src="img/pento_F.png"/>-->
+					<hr>
+				<a class="button" id="save_exit">Save & Exit</a>
+				 <!--style="visibility: hidden;"-->
+			</div>
+		</div>
+		<hr>
+
+	</div>
+
+	<script src='./js/jquery.min.js'></script>
+	<script src='./js/jcanvas.min.js'></script>
+	
+	<script src='./js/pento/pento_config.js'></script>
+	<script src='./js/pento/pento_block.js'></script>
+	<script src='./js/pento/pento_shape.js'></script>
+	<script src='./js/pento/pento_render.js'></script>
+	<script src='./js/pento/pento_selection_board.js'></script>
+	<script src='./js/pento/pento_generator.js'></script>
+	
+	<script src='./js/preliminary/prelim_study_ui.js'></script>
+</body>
+
+</html>
+

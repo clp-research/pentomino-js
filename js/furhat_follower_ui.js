@@ -1,7 +1,5 @@
 //TODO:
 // import target and initial board
-// function to compute instruction & make furhat give instruction
-// !!!place function, at user move?
 // make Furhat look at pieces
 // insert actual furhat speech
 
@@ -10,7 +8,6 @@
 $(document).ready(function() {
 
 	// parameters
-	this.TASK = null; // file containing initial and target board in json format
 	this.WITH_GRID = true;
 	
 	// create a generator
@@ -92,6 +89,5 @@ $(document).ready(function() {
 	
 	generator.pento_board_initial.register_event_handler(move_handler);
 	generator.pento_board_initial.register_event_handler(rotation_handler);
-	
 	
 })

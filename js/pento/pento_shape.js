@@ -97,7 +97,7 @@ $(document).ready(function () {
 
 		/**
 		 * Estimates the relative position of the 
-		 * other shape compare to this shape and
+		 * other shape compared to this shape and
 		 * returns a direction of connection
 		 * @param {shape to connect to} other_shape 
 		 */
@@ -106,7 +106,7 @@ $(document).ready(function () {
 			var delta_y = other_shape.y - this.y;
 			var directions = ['top', 'left', 'bottom', 'right'];
 
-			// select direction based on relativ position difference
+			// select direction based on relative position difference
 			if (delta_x >= 0 && delta_y <= 0) {
 				return directions[0]
 			} else if (delta_x <= 0 && delta_y >= 0) {
@@ -359,14 +359,16 @@ $(document).ready(function () {
 			var x_sum = 0;
 			var y_sum = 0;
 
-			for (var block_index in this.blocks) {
-				var block_center = this.blocks[block_index].get_center();
-				x_sum += block_center[0];
-				y_sum += block_center[1];
-			}
-
-			var center_x = x_sum / this.blocks.length;
-			var center_y = y_sum / this.blocks.length;
+//			for (var block_index in this.blocks) {
+//				var block_center = this.blocks[block_index].get_center();
+//				x_sum += block_center[0];
+//				y_sum += block_center[1];
+//			}
+//			// this leads to nice turning, but doesn't align shape with grid
+//			var center_x = x_sum / this.blocks.length;
+//			var center_y = y_sum / this.blocks.length;
+			let center_x = 20;
+			let center_y = 20;
 
 			// update blocks
 			for (var block_index in this.blocks) {
