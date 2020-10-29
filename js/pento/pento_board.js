@@ -9,19 +9,19 @@ $(document).ready(function () {
 		 * @param {*} with_tray 
 		 * @param {*} with_grid 
 		 */
-		constructor(canvas_id, title, with_tray, with_grid) {
+		constructor(canvas_id, title, with_tray, with_grid, config) {
 			this.canvas_id = canvas_id;
 			this.pento_canvas_ref = $(canvas_id);
 			this.pento_canvas_ref.clearCanvas();
 
 			this.title = title;
-			this.config = new document.PentoConfig();
+			this.config = config;
 			this.pento_shapes = {};
 
 			// pento grid parameters
 			this.pento_grid_cols = 20;
 			this.pento_grid_rows = 20;
-			this.pento_block_size = document.config.block_size;
+			this.pento_block_size = this.config.block_size;
 			this.pento_grid_color = 'gray';
 			this.pento_grid_x = 0;
 			this.pento_grid_y = 0;
@@ -301,7 +301,7 @@ $(document).ready(function () {
 			var y = layer.y + offsetY;
 			var width = layer.block_size;
 			var strokeWidth = 5;
-			var rotation = document.config.rotation_step;
+			var rotation = this.config.rotation_step;
 			var rounding = layer.block_size / 2;
 			var self = this;
 
@@ -452,8 +452,8 @@ $(document).ready(function () {
 				x: shape.x, y: shape.y,
 				offsetX: offsetX,
 				offsetY: offsetY,
-				width: 80,
-				height: 80,
+				width: this.pento_block_size * shape.get_grid_width(),
+				height: this.pento_block_size * shape.get_grid_width(),
 				shape: shape,
 				fromCenter: true,
 				mouseover: function (layer) {

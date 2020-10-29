@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 	this.Shape = class Shape {
-		constructor(id, type, color, is_mirrored, rotation) {
+		constructor(id, type, color, is_mirrored, rotation, block_size) {
 			this.id = id;
 			this.x = 0;
 			this.y = 0;
@@ -24,7 +24,7 @@ $(document).ready(function () {
 			// generate name
 			this.name = this.type + this.id + this.color;
 			this.blocks = [];
-			this.block_size = 20;
+			this.block_size = block_size;
 
 			// conntected shapes
 			this.connected = [];
@@ -93,6 +93,20 @@ $(document).ready(function () {
 		 */
 		get_internal_grid() {
 			return this._internal_grid
+		}
+		
+		/**
+		 * Return width of shape (number of horizontal blocks)
+		 */
+		get_grid_width() {
+			return this._internal_grid_size[0]
+		}
+		
+		/**
+		 * Return height of shape (number of vertical blocks)
+		 */
+		get_grid_height() {
+			return this._internal_grid_size[1]
 		}
 
 		/**
@@ -367,8 +381,8 @@ $(document).ready(function () {
 //			// this leads to nice turning, but doesn't align shape with grid
 //			var center_x = x_sum / this.blocks.length;
 //			var center_y = y_sum / this.blocks.length;
-			let center_x = 20;
-			let center_y = 20;
+			var center_x = 20;
+			var center_y = 20;
 
 			// update blocks
 			for (var block_index in this.blocks) {
@@ -465,16 +479,39 @@ $(document).ready(function () {
 		 */
 		copy(new_id) {
 			var shape_copy = document.pento_create_shape(new_id, this.x, this.y, this.type, this.color,
-				this.is_mirrored, this.rotation);
+				this.is_mirrored, this.rotation, this.block_size);
 			shape_copy.width = this.width;
 			shape_copy.height = this.height;
 			return shape_copy
+		}
+		
+		/**
+		 * Adapts the shape's coordinates to a differently sized board.
+		 * @param {new block size} block_size
+		 * @param {new board size / old board size} pos_factor
+		 */
+		scale(block_size, pos_factor) {
+			// change block sizes
+			this.block_size = block_size;
+			// scale coordinates
+			this.x *= pos_factor;
+			this.y *= pos_factor;
+			// scale each block
+			var blocks = [];
+			for (var b of this.get_blocks()) {
+				blocks.push(new document.Block(	b.x * pos_factor,
+												b.y * pos_factor,
+												block_size,
+												block_size,
+												b.color));
+			}
+			this.blocks = blocks;
 		}
 
 		toString() {
 			return this.name
 		}
-	}
+	};
 
 	/**
 	 * Draw point (one block shape)
@@ -670,13 +707,13 @@ $(document).ready(function () {
 
 	};
 
-	this._new_pento_shape = function (id, type, color, is_mirrored, rotation) {
-		return new this.Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation)
+	this._new_pento_shape = function (id, type, color, is_mirrored, rotation, block_size) {
+		return new this.Shape(id, type, color, is_mirrored, rotation == null ? 0 : rotation, block_size)
 	};
 
-	this.pento_create_shape = function (id, x, y, type, color, is_mirrored, rotation) {
+	this.pento_create_shape = function (id, x, y, type, color, is_mirrored, rotation, block_size) {
 		//create empty shape
-		var new_shape = this._new_pento_shape(id, type, color, is_mirrored);
+		var new_shape = this._new_pento_shape(id, type, color, is_mirrored, block_size);
 
 		switch (type) {
 			case 'point':

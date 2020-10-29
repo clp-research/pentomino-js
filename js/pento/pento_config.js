@@ -19,7 +19,7 @@ $(document).ready(function () {
 	};
 	
 	this.PentoConfig = class PentoConfig {
-		constructor() {
+		constructor(board_size=400, n_blocks=20) {
 			this.color_map = {
 				'#EEAAAA': 'light red',
 				'#DDBB99': 'beige',
@@ -34,7 +34,9 @@ $(document).ready(function () {
 				'#FFB366': 'orange'
 			};
 			
-			this.block_size		= 20;
+			this.board_size		= board_size;
+			this.n_blocks		= n_blocks;
+			this.block_size		= board_size / n_blocks;
 			this.rotation_step	= 45;
 		}
 

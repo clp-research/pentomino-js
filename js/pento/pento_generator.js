@@ -17,8 +17,8 @@ $(document).ready(function () {
 			this.pento_grid_row_min = 1;
 
 			// draw board frames/headers
-			this.pento_board_target = new document.PentoBoard('#target', 'Target', false, true);
-			this.pento_board_initial = new document.PentoBoard('#initial', 'Initial', false, true);
+			this.pento_board_target = new document.PentoBoard('#target', 'Target', false, true, this.pento_config);
+			this.pento_board_initial = new document.PentoBoard('#initial', 'Initial', false, true, this.pento_config);
 
 			// events and event handler
 			this.events = ['target_updated', 'initial_updated', 'generation_finished'];
@@ -233,7 +233,8 @@ $(document).ready(function () {
 
 				// create and place
 				var coords = this.pento_board_target.grid_cell_to_coordinates(rand_col, rand_row);
-				var new_shape = document.pento_create_shape(r, coords[0], coords[1], rand_type, rand_color, do_mirror, rand_rot);
+				var block_size = this.pento_board_target.pento_block_size;
+				var new_shape = document.pento_create_shape(r, coords[0], coords[1], rand_type, rand_color, do_mirror, rand_rot, block_size);
 
 				if (this.pento_board_target.isValidAction('place', new_shape, {})) {
 					this.pento_board_target.place_shape(new_shape);

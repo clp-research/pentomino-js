@@ -680,7 +680,7 @@
     }
   },
   "initial": {
-    "X1#CC88CC": {
+    "X0#CC88CC": {
       "id": 1,
       "x": 140,
       "y": 280,
@@ -725,7 +725,7 @@
         ]
       ],
       "changes": [],
-      "name": "X1#CC88CC",
+      "name": "X0#CC88CC",
       "blocks": [
         {
           "x": 0,
@@ -906,7 +906,7 @@
       "block_size": 20,
       "connected": []
     },
-    "Y2#DD99BB": {
+    "Y1#DD99BB": {
       "id": 2,
       "x": 80,
       "y": 280,
@@ -951,7 +951,7 @@
         ]
       ],
       "changes": [],
-      "name": "Y2#DD99BB",
+      "name": "Y1#DD99BB",
       "blocks": [
         {
           "x": 0,
@@ -1132,7 +1132,7 @@
       "block_size": 20,
       "connected": []
     },
-    "Z3#DDBB99": {
+    "Z2#DDBB99": {
       "id": 3,
       "x": 256,
       "y": 258,
@@ -1187,7 +1187,7 @@
           "angle": 90
         }
       ],
-      "name": "Z3#DDBB99",
+      "name": "Z2#DDBB99",
       "blocks": [
         {
           "x": 0,

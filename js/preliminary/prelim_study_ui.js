@@ -1,18 +1,17 @@
 //TODO:
 // - find out how to play spoken instructions
-// - onload
+// - task json format
 //	-> verbal confirmation
-//  -> build elephant
 //	-> load new selection?
 // - collect data / save in csv
 
 $(document).ready(function() {
 	
-	// global configuration
-	this.config = new document.PentoConfig();
-	// global board for piece selection
 	let WITH_GRID = false;
-	this.selection_board = new document.PentoSelectionBoard('#selection_board', 'Selection',  WITH_GRID);
+	
+	this.selection_board = new document.PentoSelectionBoard('#selection_board', 'Selection',  WITH_GRID, new document.PentoConfig());
+	// board which is automatically filled as pieces are selected
+	this.task_board = new document.PentoSelectionBoard('#task_board', 'Task', WITH_GRID, new document.PentoConfig(board_size=300), read_only=true,);
 
 	// File handling
 	function handleFileSelect(e) {
@@ -36,7 +35,9 @@ $(document).ready(function() {
 		var json = JSON.parse(content);
 
 		document.selection_board.fromJSON(json['initial']);
-		// hide the input field
+		document.task_board.fromJSON(json['target']);
+		document.task_board.toggle_visibility(false);
+		// hide the input field after initial setup
 		//TODO: make this a dir / find a nicer solution
 		$('#task_file').css('visibility', 'hidden');
 	}
@@ -47,4 +48,14 @@ $(document).ready(function() {
 	});
 
 	$('#task_file').change(handleFileSelect);
+	
+	var selection_handler = {
+		handle: function(event) {
+			if (event.type == 'shape_selected')
+				//TODO: Check here whether correct shape was selected
+				// if a shape is correctly selected, show it on the task board
+				document.task_board.toggle_visibility(true, event.object_id);
+		}
+	};
+	this.selection_board.register_event_handler(selection_handler);
 })

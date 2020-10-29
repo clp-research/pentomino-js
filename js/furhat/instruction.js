@@ -1,12 +1,11 @@
 $(document).ready(function () {
 
-	// Colors used  in 
-
 	this.Instruction = class Instruction {
-		constructor(shape, type, params) {
+		constructor(shape, type, params, config) {
 			this.shape_name	= shape;
 			this.type		= type;
 			this.params		= params;
+			this.config		= config;
 		}
 		
 		// to string / to_speech function?
@@ -24,7 +23,7 @@ $(document).ready(function () {
 		_get_color() {
 			// last 7 digits of the name are a hex color code
 			let color_str = this.shape_name.slice(-7);
-			return document.config.color_map[color_str]
+			return this.config.color_map[color_str]
 		}
 		
 		_get_shape() {
@@ -34,7 +33,7 @@ $(document).ready(function () {
 		
 		//TODO: improve
 		_get_distance() {
-			let block_size = document.config.block_size;
+			let block_size = this.config.block_size;
 			if (this.params.x > 0) return this.params.x / block_size
 			if (this.params.x < 0) return (-this.params.x) / block_size
 			if (this.params.y > 0) return this.params.y / block_size

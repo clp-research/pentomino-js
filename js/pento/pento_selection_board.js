@@ -7,30 +7,32 @@ $(document).ready(function () {
 		 * @param {*} with_tray
 		 * @param {*} with_grid
 		 */
-		constructor(canvas_id, title, with_grid) {
-			this.canvas_id = canvas_id;
-			this.pento_canvas_ref = $(canvas_id);
+		constructor(canvas_id, title, with_grid, config, read_only=false) {
+			this.canvas_id 			= canvas_id;
+			this.pento_canvas_ref	= $(canvas_id);
 			this.pento_canvas_ref.clearCanvas();
 
-			this.title = title;
-			this.config = new document.PentoConfig();
-			this.pento_shapes = {};
+			this.title 				= title;
+			this.config				= config;
+			this.pento_shapes		= {};
 
 			// pento grid parameters
-			this.pento_grid_cols = 20;
-			this.pento_grid_rows = 20;
-			this.pento_block_size = document.config.block_size;
-			this.pento_grid_color = 'gray';
-			this.pento_grid_x = 0;
-			this.pento_grid_y = 0;
+			this.pento_grid_cols	= config.n_blocks;
+			this.pento_grid_rows	= config.n_blocks;
+			this.width				= config.board_size;
+			this.height				= config.board_size;
+			this.pento_block_size	= config.block_size;
+			this.pento_grid_color	= 'gray';
+			this.pento_grid_x		= 0;
+			this.pento_grid_y		= 0;
 
 			// pento game parameters
-			this.show_grid = with_grid;
-			this.pento_read_only = false;
-			this.pento_active_shape = null;
+			this.show_grid 			= with_grid;
+			this.pento_read_only	= read_only;
+			this.pento_active_shape	= null;
 
 			// event handler
-			this.event_handlers = [];
+			this.event_handlers		= [];
 
 			this.init_board();
 			this.init_grid(this.show_grid);
@@ -55,8 +57,8 @@ $(document).ready(function () {
 		}
 
 		setup_canvas() {
-			$(this.canvas_id).prop('width', this.pento_grid_cols * this.pento_block_size);
-			$(this.canvas_id).prop('height', this.pento_grid_cols * this.pento_block_size);
+			$(this.canvas_id).prop('width', this.width);
+			$(this.canvas_id).prop('height', this.height);
 		}
 
 //		set(key, value) {
@@ -118,26 +120,23 @@ $(document).ready(function () {
 		}
 
 		init_grid() {
-			this.pento_grid_width = this.pento_block_size * this.pento_grid_cols;
-			this.pento_grid_height = this.pento_block_size * this.pento_grid_rows;
-
 			this.pento_canvas_ref.addLayer({
 				type: 'rectangle',
 				name: 'grid',
 				fillStyle: 'white',
 				x: this.pento_grid_x, y: this.pento_grid_y,
-				width: this.pento_grid_width, height: this.pento_grid_height
+				width: this.width, height: this.height
 			});
 
 			if (this.show_grid) {
 				for (var i = 0; i <= this.pento_grid_rows; i++) {
 					this.draw_line(this.pento_grid_x, this.pento_grid_y + i * this.pento_block_size,
-						this.pento_grid_x + this.pento_grid_width, this.pento_grid_y + i * this.pento_block_size, this.pento_grid_color);
+						this.pento_grid_x + this.width, this.pento_grid_y + i * this.pento_block_size, this.pento_grid_color);
 				}
 
 				for (var i = 0; i <= this.pento_grid_cols; i++) {
 					this.draw_line(this.pento_grid_x + i * this.pento_block_size, this.pento_grid_y + 0,
-						this.pento_grid_x + i * this.pento_block_size, this.pento_grid_y + this.pento_grid_height, this.pento_grid_color);
+						this.pento_grid_x + i * this.pento_block_size, this.pento_grid_y + this.height, this.pento_grid_color);
 				}
 			}
 		}
@@ -194,8 +193,8 @@ $(document).ready(function () {
 				x: shape.x, y: shape.y,
 				offsetX: offsetX,
 				offsetY: offsetY,
-				width: 80,
-				height: 80,
+				width: this.pento_block_size * shape.get_grid_width(),
+				height: this.pento_block_size * shape.get_grid_width(),
 				shape: shape,
 				fromCenter: true,
 				mouseover: function (layer) {
@@ -208,13 +207,33 @@ $(document).ready(function () {
 						// remove the shape from the selection board
 						//TODO: verbal confirmation + build task board
 						self.destroy_shape(shape);
+						self.fire_event('shape_selected', self.pento_active_shape.name, {});
 					}
 				}
 			});
 			this.pento_shapes[shape.name] = shape;
 			this.draw();
 		}
-
+		
+		/**
+		 * Switch the visibility of a single shape
+		 * @param {true = visible, false = invisible} visible
+		 * @param {shape name or null for all shapes} shape
+		 */
+		toggle_visibility(visible, shape=null) {
+			if (shape == null) {
+				this.pento_canvas_ref.setLayers({
+					visible: visible
+				})
+				.drawLayers();
+			} else {
+				this.pento_canvas_ref.setLayer(shape, {
+					visible: visible
+				})
+				.drawLayers();
+			}
+		}
+		
 		// event functions
 		register_event_handler(handler) {
 			this.event_handlers.push(handler);
@@ -230,20 +249,12 @@ $(document).ready(function () {
 			this.event_handlers.forEach(handler => handler.handle(event));
 		}
 
-		fromJSON(shapes) {
+		fromJSON(shapes, saved_board_size=400) {
 			this.destroy_all_shapes();
-
 			for (var s in shapes) {
 				var shape = Object.assign(new document.Shape, shapes[s]);
-
-				var blocks = [];
-				for (var b in shape.get_blocks()) {
-					var block_data = shape.get_blocks()[b];
-					var block = Object.assign(new document.Block, block_data);
-					blocks.push(block);
-				}
-				shape.blocks = blocks;
-
+				// adapt shapes to this board's settings
+				shape.scale(this.pento_block_size, this.width/saved_board_size);
 				shape.close();
 				this.place_shape(shape);
 			}

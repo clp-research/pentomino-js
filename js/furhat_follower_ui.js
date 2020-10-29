@@ -24,12 +24,10 @@ $(document).ready(function() {
 		'_shapes_filter': [] // use all shape types
 		};
 	
-	// create a configuration
-	this.config = new document.PentoConfig();
 	// pass empty array as first param (form_fields) since we're using fixed
 	// settings here
 	// generator uses id '#initial' for the initial board (which shows up on the screen)
-	var generator = new document.PentoGenerator([], config_params, this.config);
+	var generator = new document.PentoGenerator([], config_params, new document.PentoConfig());
 	
 	this.select_generate = function() {
 		generator.generate();

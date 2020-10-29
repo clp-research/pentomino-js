@@ -128,6 +128,18 @@ $(document).ready(function () {
 			// store current rotation
 			this.rotation = new_angle;
 		}
+		
+		/**
+		 * Resizes the block and adapts its coordinates to match a new board size.
+		 * @param {new size} block_size
+		 * @param {new board size / old board size} pos_factor
+		 */
+		scale(block_size, pos_factor) {
+			this.width = block_size;
+			this.height = block_size;
+			this.x *= pos_factor;
+			this.y *= pos_factor;
+		}
 
 		/**
 		 * Calculates an overlap of two polygons using their vertices and the SAT method (Separating Axis Theorem)

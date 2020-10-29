@@ -3,6 +3,7 @@ $(document).ready(function () {
 		constructor(initial_board, target_board) {
 			this.board = initial_board;
 			this.target = target_board;
+			this.config = target_board.config;
 		}
 		
 		// generate an instruction for the user to complete the puzzle
@@ -45,17 +46,17 @@ $(document).ready(function () {
 				// check whether positions and rotations are equal
 				let x_offset = target_shape.x-current_shape.x;
 				if (x_offset != 0) {
-					return new document.Instruction(current_shape.name, 'move', {'x': x_offset})
+					return new document.Instruction(current_shape.name, 'move', {'x': x_offset}, this.config)
 					}
 					
 				let y_offset = target_shape.y-current_shape.y;
 				if (y_offset != 0) {
-					return new document.Instruction(current_shape.name, 'move', {'y': y_offset})
+					return new document.Instruction(current_shape.name, 'move', {'y': y_offset}, this.config)
 					}
 
 				let rotation_offset = target_shape.rotation-current_shape.rotation;
 				if (rotation_offset != 0) {
-					return new document.Instruction(current_shape.name, 'rotate', {'angle': rotation_offset})
+					return new document.Instruction(current_shape.name, 'rotate', {'angle': rotation_offset}, this.config)
 					}
 			}
 			return null
