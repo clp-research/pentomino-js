@@ -4,7 +4,7 @@
 $(document).ready(function () {
 
 	this.PentoGenerator = class PentoGenerator {
-		constructor(form_fields, config, pento_config) {
+		constructor(form_fields, config, pento_config, target_name='target', initial_name='initial') {
 			// reference to configuration objects
 			this.form_fields = form_fields;
 			this.config = config;
@@ -17,8 +17,10 @@ $(document).ready(function () {
 			this.pento_grid_row_min = 1;
 
 			// draw board frames/headers
-			this.pento_board_target = new document.PentoBoard('#target', 'Target', false, true, this.pento_config);
-			this.pento_board_initial = new document.PentoBoard('#initial', 'Initial', false, true, this.pento_config);
+			let with_tray = false;
+			let with_grid = true;
+			this.pento_board_target = new document.PentoBoard(`#${target_name}`, 'Target', with_tray, with_grid, this.pento_config);
+			this.pento_board_initial = new document.PentoBoard(`#${initial_name}`, 'Initial', with_tray, with_grid, this.pento_config);
 
 			// events and event handler
 			this.events = ['target_updated', 'initial_updated', 'generation_finished'];
@@ -49,10 +51,10 @@ $(document).ready(function () {
 		}
 
 		update() {
-			this.pento_board_target.set('readonly', !this.config['readonly']);
+			this.pento_board_target.set('readonly', this.config['readonly']);
 			this.pento_board_target.set('showgrid', this.config['showgrid']);
 
-			this.pento_board_initial.set('readonly', !this.config['readonly']);
+			this.pento_board_initial.set('readonly', this.config['readonly']);
 			this.pento_board_initial.set('showgrid', this.config['showgrid']);
 		}
 

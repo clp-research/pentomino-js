@@ -33,6 +33,7 @@ $(document).ready(function () {
 			this.pento_prevent_collision = false;
 			this.pento_active_shape = null;
 			this.pento_with_tray = with_tray;
+			this.remove_at_rightclick = false;
 
 			// event handler
 			this.event_handlers = [];
@@ -120,6 +121,9 @@ $(document).ready(function () {
 				case 'showgrid':
 					this.show_grid = value;
 					this._update_grid();
+					break;
+				case 'remove_at_rightclick':
+					this.remove_at_rightclick = value;
 					break;
 				default:
 					console.log('unknown config option: ' + key);
@@ -505,6 +509,11 @@ $(document).ready(function () {
 
 						self.fire_event('shape_moved', shape.name, { 'x': layer.x, 'y': layer.y });
 					}
+				},
+				contextmenu: function (layer) {
+					if (self.remove_at_rightclick) {
+						self.destroy_shape(shape);
+					}
 				}
 			});
 			this.pento_shapes[shape.name] = shape;
@@ -670,6 +679,8 @@ $(document).ready(function () {
 				shape.blocks = blocks;
 
 				shape.close();
+				// apply given rotation
+				shape.rotate(shape.rotation);
 				this.place_shape(shape);
 			}
 			this.draw();

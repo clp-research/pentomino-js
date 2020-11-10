@@ -61,21 +61,6 @@ $(document).ready(function () {
 			$(this.canvas_id).prop('height', this.height);
 		}
 
-//		set(key, value) {
-//			switch (key) {
-//				case 'readonly':
-//					this.pento_read_only = value;
-//					this.clear_selections();
-//					break;
-//				case 'showgrid':
-//					this.show_grid = value;
-//					this._update_grid();
-//					break;
-//				default:
-//					console.log('unknown config option: ' + key);
-//			}
-//		}
-
 		draw() {
 			this.pento_canvas_ref.drawLayers();
 		}
@@ -142,7 +127,7 @@ $(document).ready(function () {
 		}
 
 		destroy_shape(shape) {
-			var name = shape.name;
+			var name = shape.name || shape;
 			this.pento_canvas_ref.removeLayer(name).drawLayers();
 			delete this.pento_shapes[name];
 		}
@@ -181,8 +166,6 @@ $(document).ready(function () {
 		place_shape(shape) {
 			var offsetX = this.get_offsets(shape.type)[0];
 			var offsetY = this.get_offsets(shape.type)[1];
-			var last_x;
-			var last_y;
 			var self = this;
 
 			this.pento_canvas_ref.drawPentoShape({
@@ -205,7 +188,6 @@ $(document).ready(function () {
 				click: function (layer) {
 					if (!self.pento_read_only) {
 						// remove the shape from the selection board
-						//TODO: verbal confirmation + build task board
 						self.destroy_shape(shape);
 						self.fire_event('shape_selected', self.pento_active_shape.name, {});
 					}
@@ -213,6 +195,27 @@ $(document).ready(function () {
 			});
 			this.pento_shapes[shape.name] = shape;
 			this.draw();
+		}
+		
+		/**
+		 * Returns true if shape is present on the board.
+		 * @param {shape to check for} shape
+		 */
+		_has_shape(shape) {
+			return (Object.keys(this.pento_shapes).indexOf(shape) != -1)
+		}
+		
+				
+		/**
+		 * For task boards:
+		 * check if selected shape is present, if applicable, make it visible on the board
+		 * @param {selected shape} shape
+		 */
+		handle_selection(shape) {
+			if (this._has_shape(shape)) {
+				// show shape on the task board
+				this.toggle_visibility(true, shape);
+			}
 		}
 		
 		/**
@@ -232,6 +235,22 @@ $(document).ready(function () {
 				})
 				.drawLayers();
 			}
+		}
+		
+		/**
+		 * Returns a shape that has not been selected yet (= is still invisible)
+		 */
+		get_next_shape() {
+			for (let l of this.pento_canvas_ref.getLayers()) {
+				if (l.name != 'grid' && !l.visible) {
+					return l;
+				}
+			}
+			return null;
+		}
+		
+		get_shapes() {
+			return this.pento_shapes;
 		}
 		
 		// event functions
@@ -256,16 +275,11 @@ $(document).ready(function () {
 				// adapt shapes to this board's settings
 				shape.scale(this.pento_block_size, this.width/saved_board_size);
 				shape.close();
+				// apply given rotation
+				shape.rotate(shape.rotation);
 				this.place_shape(shape);
 			}
 			this.draw();
-		}
-
-		hashCode() {
-			var s = this.toJSON().toString();
-			for (var i = 0, h = 0; i < s.length; i++)
-				h = Math.imul(31, h) + s.charCodeAt(i) | 0;
-			return h
 		}
 	};
 })

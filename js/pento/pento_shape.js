@@ -713,7 +713,7 @@ $(document).ready(function () {
 
 	this.pento_create_shape = function (id, x, y, type, color, is_mirrored, rotation, block_size) {
 		//create empty shape
-		var new_shape = this._new_pento_shape(id, type, color, is_mirrored, block_size);
+		var new_shape = this._new_pento_shape(id, type, color, is_mirrored, rotation, block_size);
 
 		switch (type) {
 			case 'point':

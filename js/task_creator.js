@@ -1,34 +1,18 @@
 $(document).ready(function () {
-	//--- Self Test for collision detection system
-	console.log('-----Self Test-----');
-	var block1 = this.pento_create_block(10, 20, 20, 'blue');
-	var block2 = this.pento_create_block(11, 21, 20, 'red');
-	var block3 = this.pento_create_block(0, 0, 20, 'red');
-
-	var collision = block1.hits(block2);
-	var collision2 = block3.hits(block2);
-	console.log('Block Collision Test: ' + (collision2 == collision));
-
-	var shape1 = this.pento_create_shape(0, 10, 10, 'I', 'blue', false, 0, 20);
-	var shape2 = this.pento_create_shape(1, 30, 91, 'I', 'red', false, 0, 20);
-	console.log('Shape Collision Test: ' + (shape1.hits(shape2) == shape2.hits(shape1)));
 
 	//--- Define variables
 	// fields the user can edit
 	// insert new fields by tuple [id_of_html_element_without, default_value, is_bool?]
 	var form_fields = [
 		['nshapes', 1],
-		['nrotations', 0],
-		['nflips', 0],
-		['nchanges', 1],
-		['nconnections', 0],
+		['nchanges', 0], // no changes in generation since we do them manually
 		['colors', false, true],
 		['shapes', false, true],
-		['readonly', false, true],
-		['showgrid', true, true]
+		['showgrid', true, true],
+		['readonly', false, true]
 	];
 
-	// parameters
+	// save settings
 	// specific for generator
 	var config = {};
 	config['_shapes_filter'] = [];
@@ -38,9 +22,12 @@ $(document).ready(function () {
 	}
 
 	var pento_config = new document.PentoConfig();
+	// target board contains the task goal, initial board the start positions
+	let target_name = 'board';
+	let initial_name = 'initial';
 
 	//--- initiate generator
-	var generator = new document.PentoGenerator(form_fields, config, pento_config);
+	var generator = new document.PentoGenerator(form_fields, config, pento_config, target_name=target_name, initial_name=initial_name);
 
 	//-- generator utility
 	/**
@@ -51,7 +38,8 @@ $(document).ready(function () {
 		for (var key in config) {
 			if (!key.startsWith('_')) {
 				var is_bool = (key == 'colors' || key == 'readonly' || key == 'shapes' || key == 'showgrid');
-				config[key] = get_ui_value(key, is_bool);
+				let user_set_value = get_ui_value(key, is_bool);
+				config[key] = user_set_value ? user_set_value : config[key];
 			}
 		}
 
@@ -74,57 +62,11 @@ $(document).ready(function () {
 
 		// update boards
 		generator.update();
-
-		// update counters
-		$('.complexity-actions').html(config['nchanges']);
 	}
-
-	/**
-	 *
-	 * @param {index of screenshot} index
-	 * @param {canvas to copy} canvas_id
-	 * @param {action to display} action
-	 * @param {if screenshot should be prepended or appended} do_prepend
-	 */
-	var make_board_screenshot = function (index, canvas_id, action, do_prepend) {
-		var element = '<canvas class=\'snapshot center\' id=\'snapshot_' + index + '\' width=\'300px\' height=\'300px\'></canvas>';
-		if (do_prepend) {
-			$('.snapshots').prepend(element);
-		} else {
-			$('.snapshots').append(element);
-		}
-
-
-		//grab the context from your destination canvas
-		var destCtx = $('#snapshot_' + index)[0].getContext('2d');
-
-		//call its drawImage() function passing it the source canvas directly
-		destCtx.drawImage($(canvas_id)[0], 0, 0, 300, 300);
-
-		destCtx.font = '11px Arial';
-		destCtx.fillText(action, 4, 300 - 4);
-	};
-
-	//--- generator event handeling
-	generator.register_handler('initial_updated', function (data) {
-		var paramString = '';
-		var params = data['params'];
-		var random_shape = data['shape'];
-		var random_action = data['action'];
-
-		for (var key in params) {
-			paramString += key + '=' + params[key] + ',';
-		}
-		make_board_screenshot(i, '#initial', random_action + ' (' + paramString + 'id=' + random_shape.name + ')', true);
-	});
-
-	generator.register_handler('generation_finished', function (data) {
-		make_board_screenshot(data['index'] + 2, '#target', 'END', false);
-	});
 
 	//--- export and import boards
 
-	this.export_all = function () {
+	this.save_task = function () {
 		var rand_prefix = generator.get_prefix();
 		this.save_boards_as_image(rand_prefix);
 		this.export_as_json(rand_prefix);
@@ -143,10 +85,11 @@ $(document).ready(function () {
 
 	this.export_as_json = function (rand_prefix) {
 		var json_content = {};
-		var file_name = (rand_prefix == null ? '' : rand_prefix) + '_pento_data.json';
+		var file_name = (rand_prefix == null ? '' : rand_prefix) + '_pento_task.json';
 
-		json_content['target'] = generator.pento_board_target.toJSON();
+		
 		json_content['initial'] = generator.pento_board_initial.toJSON();
+		json_content['task'] = generator.pento_board_target.toJSON();
 
 		// Create a blob of the data
 		var fileToSave = new Blob([JSON.stringify(json_content, null, 2)], {
@@ -157,10 +100,6 @@ $(document).ready(function () {
 		// Save the file
 		saveAs(fileToSave, file_name);
 	};
-
-	this.import_json = function () {
-		$('#target_file').click();
-	}
 
 	/**
 	* Initiates form
@@ -222,7 +161,7 @@ $(document).ready(function () {
 	}
 
 	/**
-	 * Saves valuesd of input widgets in local storage
+	 * Saves values of input widgets in local storage
 	 */
 	var store_inputs = function () {
 		for (var key in config) {
@@ -232,43 +171,18 @@ $(document).ready(function () {
 
 	this.generate = function () {
 		generator.generate();
+		// Shapes in task board are removable at right-click
+		generator.pento_board_target.set("remove_at_rightclick", true);
 	};
 
 	//--- start
 	init_form(pento_config);
 	update(config, pento_config);
 
-	generator.generate();
-
 	//--- User event handeling
 	$('input').change(function () {
 		update(config, pento_config);
 	});
 
-	//--- File handeling
-	function handleFileSelect(e) {
-		var files = e.target.files;
-		if (files.length < 1) {
-			alert('select a file...');
-			return;
-		}
-		var file = files[0];
-		var reader = new FileReader();
-		reader.onload = onFileLoaded;
-		reader.readAsDataURL(file);
-	}
-
-	function onFileLoaded(e) {
-		var match = /^data:(.*);base64,(.*)$/.exec(e.target.result);
-		if (match == null) {
-			throw 'Could not parse result'; // should not happen
-		}
-		var content = atob(match[2]);
-		var json = JSON.parse(content);
-
-		generator.pento_board_initial.fromJSON(json['initial']);
-		generator.pento_board_target.fromJSON(json['target']);
-	}
-
-	$('#target_file').change(handleFileSelect);
 })
+
