@@ -1,11 +1,12 @@
 $(document).ready(function () {
 	this.PentoSelectionBoard = class PentoSelectionBoard {
 		/**
-		 *
+		 * Constructor
 		 * @param {id of html canvas} canvas_id
-		 * @param {} title
-		 * @param {*} with_tray
-		 * @param {*} with_grid
+		 * @param {name of the board} title
+		 * @param {true for visible grid} with_grid
+		 * @param {PentoConfig instance} config
+		 * @param {true to stop changes. default:false} read_only
 		 */
 		constructor(canvas_id, title, with_grid, config, read_only=false) {
 			this.canvas_id 			= canvas_id;
@@ -34,7 +35,6 @@ $(document).ready(function () {
 			// event handler
 			this.event_handlers		= [];
 
-			this.init_board();
 			this.init_grid(this.show_grid);
 
 			// register event handler
@@ -47,7 +47,52 @@ $(document).ready(function () {
 			this.setup_canvas();
 			this.draw();
 		}
+		
+		get canvas() {
+			return this.pento_canvas_ref[0];
+		}
+		
 
+		get shapes() {
+			return this.pento_shapes;
+		}
+		
+		/**
+		 * @return a shape that has not been selected yet (= is still invisible)
+		 */
+		get next_shape() {
+			for (let l of this.pento_canvas_ref.getLayers()) {
+				if (l.name != 'grid' && !l.visible) {
+					return l;
+				}
+			}
+			return null;
+		}
+		
+		/**
+		 * @return shape with given name
+		 */
+		get_shape(name) {
+			return this.shapes[name];
+		}
+		
+		/**
+		 * @return offsets for (x,y) coordinates to position drawing in the middle of the shape area
+		 */
+		get_offsets(type) {
+			switch (type) {
+				case 'I':
+					return [0, 0]
+				case 'T': case 'F':
+					return [0, 0]
+				default:
+					return [0, 0]
+			}
+		}
+
+		/**
+		 * Unselect the currently active shape
+		 */
 		clear_selections() {
 			if (this.pento_active_shape != null){
 				this.pento_active_shape.set_deactive();
@@ -55,12 +100,18 @@ $(document).ready(function () {
 			this.pento_active_shape = null;
 			this.draw();
 		}
-
+		
+		/**
+		 * Adapt the JCanvas to the boards dimension
+		 */
 		setup_canvas() {
 			$(this.canvas_id).prop('width', this.width);
 			$(this.canvas_id).prop('height', this.height);
 		}
 
+		/**
+		 * Draw the canvas contents to the screen
+		 */
 		draw() {
 			this.pento_canvas_ref.drawLayers();
 		}
@@ -79,17 +130,10 @@ $(document).ready(function () {
 				x2: x2, y2: y2
 			});
 		}
-//
-//		destroy_board() {
-//			this.pento_canvas_ref.removeLayer('game_board');
-//		}
-
-		init_board() {
-			//this.destroy_board();
-			//this.pento_canvas_ref.attr('height', 400);
-			this.pento_canvas_ref.drawLayers();
-		}
-
+		
+		/**
+		 * Draw or remove the grid.
+		 */
 		_update_grid() {
 			if (this.show_grid) {
 				this.init_grid();
@@ -97,13 +141,19 @@ $(document).ready(function () {
 				this.remove_grid();
 			}
 		}
-
+		
+		/**
+		 * Delete the 'grid' layer from the canvas and redraw
+		 */
 		remove_grid() {
 			this.pento_canvas_ref.removeLayer('grid');
 			this.pento_canvas_ref.removeLayerGroup('grid');
 			this.draw();
 		}
-
+		
+		/**
+		 * Add a grid layer to the canvas. Does not redraw automatically.
+		 */
 		init_grid() {
 			this.pento_canvas_ref.addLayer({
 				type: 'rectangle',
@@ -126,21 +176,32 @@ $(document).ready(function () {
 			}
 		}
 
+		/**
+		 * Remove a shape from canvas and internal structure.
+		 * @param {shape name or PentoShape object to remove} shape
+		 */
 		destroy_shape(shape) {
 			var name = shape.name || shape;
 			this.pento_canvas_ref.removeLayer(name).drawLayers();
-			delete this.pento_shapes[name];
+			delete this.shapes[name];
 		}
-
+		
+		/**
+		 * Remove all shapes
+		 */
 		destroy_all_shapes() {
 			this.clear_selections();
 
-			for (var index in this.pento_shapes) {
-				var shape = this.pento_shapes[index];
+			for (var index in this.shapes) {
+				var shape = this.shapes[index];
 				this.destroy_shape(shape);
 			}
 		}
-
+		
+		/**
+		 * Move shape to foreground and highlight it
+		 * @param {PentoShape to set active} shape
+		 */
 		set_active(shape) {
 			if (this.pento_active_shape != null){
 				this.pento_active_shape.set_deactive();
@@ -150,19 +211,10 @@ $(document).ready(function () {
 			shape.set_active();
 		}
 
-		get_offsets(type) {
-			// returns offsets for (x,y) coordinates to position
-			// drawing in the middle of the shape area
-			switch (type) {
-				case 'I':
-					return [0, 0]
-				case 'T': case 'F':
-					return [0, 0]
-				default:
-					return [0, 0]
-			}
-		}
-
+		/**
+		 * Place and draw a shape on the canvas.
+		 * {PentoShape to place} shape
+		 */
 		place_shape(shape) {
 			var offsetX = this.get_offsets(shape.type)[0];
 			var offsetY = this.get_offsets(shape.type)[1];
@@ -193,23 +245,22 @@ $(document).ready(function () {
 					}
 				}
 			});
-			this.pento_shapes[shape.name] = shape;
+			this.shapes[shape.name] = shape;
 			this.draw();
 		}
 		
 		/**
 		 * Returns true if shape is present on the board.
-		 * @param {shape to check for} shape
+		 * @param {shape name to check for} shape
 		 */
 		_has_shape(shape) {
-			return (Object.keys(this.pento_shapes).indexOf(shape) != -1)
+			return (Object.keys(this.shapes).indexOf(shape) != -1)
 		}
 		
-				
 		/**
 		 * For task boards:
 		 * check if selected shape is present, if applicable, make it visible on the board
-		 * @param {selected shape} shape
+		 * @param {name of selected shape} shape
 		 */
 		handle_selection(shape) {
 			if (this._has_shape(shape)) {
@@ -223,41 +274,36 @@ $(document).ready(function () {
 		 * @param {true = visible, false = invisible} visible
 		 * @param {shape name or null for all shapes} shape
 		 */
-		toggle_visibility(visible, shape=null) {
+		toggle_visibility(is_visible, shape=null) {
 			if (shape == null) {
 				this.pento_canvas_ref.setLayers({
-					visible: visible
+					visible: is_visible
 				})
 				.drawLayers();
 			} else {
 				this.pento_canvas_ref.setLayer(shape, {
-					visible: visible
+					visible: is_visible
 				})
 				.drawLayers();
 			}
 		}
 		
+		// ----- event functions -----
+		
 		/**
-		 * Returns a shape that has not been selected yet (= is still invisible)
-		 */
-		get_next_shape() {
-			for (let l of this.pento_canvas_ref.getLayers()) {
-				if (l.name != 'grid' && !l.visible) {
-					return l;
-				}
-			}
-			return null;
-		}
-		
-		get_shapes() {
-			return this.pento_shapes;
-		}
-		
-		// event functions
+		 * Add an event handler
+		 * @param {handler object with 'handle' attribute: function(event){}} handler
+		*/
 		register_event_handler(handler) {
 			this.event_handlers.push(handler);
 		}
-
+		
+		/**
+		 * Pass event to event handlers
+		 * @param {info for event handlers} event_type
+		 * @param {info for event handlers} event_object_id
+		 * @param {info for event handlers} event_changes
+		 */
 		fire_event(event_type, event_object_id, event_changes) {
 			var event = {
 				'type': event_type,
@@ -268,6 +314,11 @@ $(document).ready(function () {
 			this.event_handlers.forEach(handler => handler.handle(event));
 		}
 
+		/**
+		 * Import canvas config from data read from a json file
+		 * @param {json object containing shape objects} shapes
+		 * @param {size of canvas described by the json file. default: 400} saved_board_size
+		 */
 		fromJSON(shapes, saved_board_size=400) {
 			this.destroy_all_shapes();
 			for (var s in shapes) {

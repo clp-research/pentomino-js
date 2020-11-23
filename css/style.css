@@ -114,3 +114,20 @@ button{
 .complexity-container button{
     float: right;
 }
+
+#progress_bg{
+	width:100%;
+	background-color:gainsboro;
+}
+
+#progress_bar{
+	width:0%;
+	background-color:darkgrey;
+	text-align: center;
+	line-height: 30px;
+	color:white;
+}
+
+#timer{
+	float:right;
+}

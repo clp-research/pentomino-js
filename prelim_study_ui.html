@@ -17,32 +17,28 @@
 
 <body>
 	<div class="container">
-		<h5>Click on the decribed piece on the left board!</h5>
+		<h5>Click on the decribed piece on the left board! <div id="timer">00:00</div></h5>
 		<hr>
 		<div class="row">
-			<div class="eight columns">
+			<div class="seven columns">
 				<!-- 20 rows and columns with block size 20 -->
 					<canvas id="selection_board" width="400" height="400" style="border:1px solid #000000;"></canvas>
-					<input id="task_file" type="file"/>
+					<br>
+					<input id="task_file" type="file" multiple/>
 			</div>
-			<div class="four columns">
-					<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
-					<!--<img class="img center" src="img/pento_F.png"/>-->
-					<hr>
+			<div class="five columns">
+				<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
+				<hr>
+				<br>
+				<a class="button" id="start">Start</a>
+				<a class="button" id="next" style="visibility: hidden;">Next</a>
 				<a class="button" id="save_exit">Save & Exit</a>
-				 <!--style="visibility: hidden;"-->
 			</div>
 		</div>
 		<hr>
-		
-		<!-- audio files for instructions -->
-		<!--<div id="audio_container">
-			<audio id="start_audio">
-				<source src="./resources/audio/sound1.wav" type="audio/wav">
-				Your browser does not support the audio element.
-			</audio>
-		</div> -->
-
+		<div id="progress_bg">
+			<div id="progress_bar">0%</div>
+		</div>
 	</div>
 
 	<script src='./js/jquery.min.js'></script>

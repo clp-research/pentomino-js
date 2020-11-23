@@ -1,60 +1,99 @@
 $(document).ready(function () {
-
+	/**
+	 * Class to generate instructions and collect data of the task following process.
+	 *
+	 * @author clpresearch / Karla Friedrichs
+	 */
+	 
 	this.InstructionManager = class InstructionManager {
-		constructor(selection_board, task_board, savefile) {
+		/**
+		 * Constructor
+		 * Tasks can be created using the 'task creator' interface.
+		 *
+		 * @param {board pieces are selected from} selection_board
+		 * @param {board to represent task} task_board
+		 */
+		constructor(selection_board, task_board, track_interval=200) {
 			this.selection_board		= selection_board;
 			this.task_board 			= task_board;
-			this.savefile 				= savefile;
-			// for each instruction, log mouse movement, time, selected piece
+			// for each task and each instruction, log mouse movement, time, selected piece
 			this.follower_data 			= {};
+			this.task_name; // name of current task (e.g. file name)
 			// for current instruction
 			this.shape; // shape name
+			this.instruction; // audio of current instruction
 			this.current_start_time 	= Date.now();
-			this.track 					= false;
+			this.track_id; // interval id if tracking is running
+			this.track_interval			= track_interval; // how often is mouse position checked (milliseconds)
 			this.current_mouse_movement = [];
 		}
 		
-//		init_audio() {
-//			// insertAdjacentElement um audios hinzuzufügen
-//			var audio_container = document.getElementById('audio_container');
-//			console.log(this.task_board.get_shapes());
-//			for (const s in this.task_board.get_shapes()) {
-//				let audio_name = `./resources/audio/${s}.wav`;
-//				let audio_element =
-//				audio_container.insertAdjacentElement('beforeend', new Audio(audio_name));
-//			}
-//			//setAttribute um src hinzuzufügen, abhängig von shape names auf dem Task board
-//		}
-		
-		give_instruction(audio=true) {
+		/**
+		 * Registers the start of a new task
+		 * @param {optional task name, number is used otherwise} name
+		 */
+		new_task(name=null) {
+			this.task_name = name || Object.keys(this.follower_data).length.toString();
+			this.follower_data[this.task_name] = {};
+		}
+
+		/**
+		 * Generate a new instruction.
+		 * @param {true to play instruction as audio, false for console output. default: true} audio
+		 * @return true if instruction was generated, false if task is complete
+		 */
+		generate_instruction(audio=true) {
 			// generate / speak/write instruction
-			let next_shape = this.task_board.get_next_shape();
+			let next_shape = this.task_board.next_shape;
 			if (!next_shape) {
-				console.log("Done");
 				return false;
 			} else {
 				this.shape = next_shape.name;
-				this.current_start_time = Date.now();
-				this._start_mouse_track();
+				// save the target shape coordinates
+				let target = this.selection_board.get_shape(this.shape);
+				this.follower_data[this.task_name][this.shape] = {
+					'target_x': target.x,
+					'target_y': target.y
+				}
 				if (audio) {
 					// get audio for instruction and play it
-					console.log(this.shape);
+					// remove '#' from shape name to get file name
+					let instr_file = `./resources/audio/${this.shape.slice(0,2)}${this.shape.slice(3)}.mp3`;
+					this.instruction = new Audio(instr_file);
+					// start instruction as soon as audio is loaded sufficiently
+					this.instruction.oncanplaythrough = (event) => {
+						this.instruction.play();
+						this._start_instruction(); // start tracking etc.
+					};
 				} else {
-					console.log(this.shape);
+					console.log(`Please select ${this.shape}`);
+					this._start_instruction(); // start tracking etc.
 				}
 				return true;
 			}
 		}
 		
+		/**
+		 * Start data collection for current instruction
+		 */
+		_start_instruction() {
+			this.current_start_time = Date.now();
+			this._start_mouse_track();
+		}
+		
+		/**
+		 Stop data collection for current instruction and handle the follower action.
+		 @param {name of shape selected by follower} selected_shape
+		 */
 		complete_instruction(selected_shape) {
-			this.follower_data[this.shape] = {selected: selected_shape};
+			this.follower_data[this.task_name][this.shape]['selected'] = selected_shape;
 			this._stop_mouse_track(); // saves mouse movement
 			// correct shape selected
 			if (this.shape == selected_shape) {
-				this.follower_data[this.shape]['correct'] = true;
+				this.follower_data[this.task_name][this.shape]['correct'] = true;
 			// incorrect shape selected, correct one is removed anyway
 			} else {
-				this.follower_data[this.shape]['correct'] = false;
+				this.follower_data[this.task_name][this.shape]['correct'] = false;
 				console.log('That was not the correct shape. Let me select the right one for you.')
 				// remove shape from selection board
 				this.selection_board.destroy_shape(this.shape);
@@ -64,40 +103,70 @@ $(document).ready(function () {
 			this.task_board.handle_selection(this.shape);
 		}
 		
-		save_data() {
+		/**
+		 * Emit a 'well done' message
+		 * @param {pass true to enable audio. default: true} audio
+		 */
+		well_done(audio=true) {
+			if (audio) {
+				let well_done_file = './resources/audio/done.mp3';
+				let well_done_audio = new Audio(well_done_file);
+				well_done_audio.oncanplaythrough = (event) => {
+					well_done_audio.play();
+				}
+			} else {
+				console.log("Well done!");
+			}
+		}
+		
+		/**
+		 * Write collected data to savefile
+		 * @param {file to save to} filename
+		 */
+		save_data(filename) {
 			// Create a blob of the data
 			let file_contents = new Blob([JSON.stringify(this.follower_data, null, 2)], {type: 'application/json'});
 			// Save to file
-			saveAs(file_contents, this.savefile);
+			saveAs(file_contents, filename);
 		}
-		
-		track_mouse(mousePos) {
-			if (this.track) {
-				this.current_mouse_movement.push({time: this._time_passed(),
-												x: mousePos.x,
-												y: mousePos.y});
-			}
-		}
-
+	
+		/**
+		 * @return time passed since start of current instruction in milliseconds
+		 */
 		_time_passed() {
 			return Date.now() - this.current_start_time;
 		}
 		
+		/**
+		 * Start tracking mouse coordinates as it is moved
+		 */
 		_start_mouse_track() {
 			// log mouse position at time 0
 			//let start_mousePos = document.get_mouse_pos();
 			//this.current_mouse_movement = [{time: 0, start_mousePos.x, start_mousePos.y}];
 			this.current_mouse_movement = [];
-			this.track_mouse(document.get_mouse_pos());
-			this.track = true;
+			// start tracking loop
+			var self = this;
+			this.track_id = setInterval(function() {
+				let mousePos = document.get_mouse_pos();
+				// save a single time-coordinate pair of the current mouse position
+				self.current_mouse_movement.push({time: self._time_passed(),
+												x: mousePos.x,
+												y: mousePos.y});
+				}, this.track_interval);
 		}
 		
-		_stop_mouse_track(){
-			this.track = false;
+		/**
+		 * Stop mouse tracking and store tracking info for current piece
+		 */
+		_stop_mouse_track() {
+			if (this.track_id) {
+				this.track_id = clearInterval(this.track_id);
+			}
 			if (!this.shape) {
 				console.log('Error: No shape selected in instruction manager at stop_mouse_track');
 			} else {
-				this.follower_data[this.shape]['movement'] = this.current_mouse_movement;
+				this.follower_data[this.task_name][this.shape]['movement'] = this.current_mouse_movement;
 			}
 		}
 		

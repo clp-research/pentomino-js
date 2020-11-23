@@ -1,5 +1,7 @@
 $(document).ready(function () {
-	
+	/**
+	 * Dictionary class that returns a default value if nonexistant keys are accessed
+	 */
 	this.DefaultDict = class DefaultDict {
 		constructor(default_value) {
 			this.dict = {};
@@ -18,7 +20,17 @@ $(document).ready(function () {
 		}
 	};
 	
+	/**
+	 * Class to store possible PentoShape colors, shapes and actions.
+	 */
 	this.PentoConfig = class PentoConfig {
+		/**
+		 * Constructor
+		 * Board size and number of blocks per row/column determines block size
+		 *
+		 * @param {width/height of square board in pixels, default: 400} board_size
+		 * @param {number of blocks in a row or column, default: 20} n_blocks
+		 */
 		constructor(board_size=400, n_blocks=20) {
 			this.color_map = {
 				'#EEAAAA': 'light red',
@@ -40,10 +52,16 @@ $(document).ready(function () {
 			this.rotation_step	= 45;
 		}
 
+		/**
+		 * @return array of actions that can be performed on a PentoShape
+		 */
 		get_pento_shape_actions(){
 			return ['move', 'rotate']
 		}
 
+		/**
+		 * @return array of possible PentoShape colors
+		 */
 		get_pento_colors() {
 			// get keys of color map
 			let colors = new Array();
@@ -53,6 +71,9 @@ $(document).ready(function () {
 			return colors
 		}
 
+		/**
+		 * @return array of PentoShape types
+		 */
 		get_pento_types() {
 			return ['F', 'I', 'L', 'N', 'P', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 		}
