@@ -4,21 +4,28 @@ $(document).ready(function() {
 	var SELECTION_BOARD_NAME	= 'selection_board';
 	var TASK_BOARD_NAME			= 'task_board';
 	
-	this.selection_board = new document.PentoSelectionBoard(`#${SELECTION_BOARD_NAME}`, SELECTION_BOARD_NAME, WITH_GRID, new document.PentoConfig());
-	// board which is automatically filled as pieces are selected
-	this.task_board = new document.PentoSelectionBoard(`#${TASK_BOARD_NAME}`, TASK_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=300), read_only=true,);
+	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json',
+								   './resources/tasks_single_piece/2909_pento_task.json',
+								   './resources/tasks_single_piece/3060_pento_task.json',
+								   './resources/tasks_single_piece/5234_pento_task.json']
+	// for testing
+//	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
+	var current_file = 0; // increment as tasks are loaded
 	
-	// --- Tasks / Instruction giving ---
+	
+	let selboard_size_str = $(`#${SELECTION_BOARD_NAME}`).css('width');
+	let selboard_size = Number(selboard_size_str.slice(0, selboard_size_str.length-2));
+	this.selection_board = new document.PentoSelectionBoard(`#${SELECTION_BOARD_NAME}`, SELECTION_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=selboard_size));
+	// board which is automatically filled as pieces are selected
+	let taskboard_size_str = $(`#${TASK_BOARD_NAME}`).css('width');
+	let taskboard_size = Number(taskboard_size_str.slice(0, taskboard_size_str.length-2));
+	this.task_board = new document.PentoSelectionBoard(`#${TASK_BOARD_NAME}`, TASK_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=taskboard_size), read_only=true,);
+	
 	this.instruction_manager = new document.InstructionManager(this.selection_board, this.task_board);
 	
-	/**
-	 * Changes the display to a mostly static interface and emits a success message
-	 */
-	function finishRun() {
-		stopTimer(timerId);
-		$('#next').css('visibility', 'hidden');
-		updateProgressBar(100);
-		document.instruction_manager.well_done();
+	// Helper function to pause the study for a moment
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 	
 	// --- Mouse tracking at mouse move ---
@@ -45,83 +52,58 @@ $(document).ready(function() {
 	};
 	// Update the mouse position every time the mouse is moved
 	this.onmousemove = handle_mouse_move;
-	
-	// --- File handling ---
-	var files = [];
-	var current_file = 0;
-	
+
 	/**
-	 * Handle file selection. Selected filenames are stored in array 'files'.
-	 */
-	function handleFileSelect(e) {
-		files = e.target.files;
-		if (files.length < 1) {
-			alert('select a file...');
-		}
-	}
-	
-	/**
-	 * Read next file if unprocessed file is left.
+	 * Read next file if unprocessed file is left. Parse contents as JSON, construct boards and start task.
 	 * @return true if a file was processed, false if no file left
 	 */
 	function loadNewFile() {
-		if (files.length > current_file) {
+		if (FILES.length > current_file) {
 			// load new task
-			var reader = new FileReader();
-			reader.onload = onFileLoaded;
-			reader.readAsDataURL(files[current_file]);
+			$.ajax({url:FILES[current_file],
+					dataType:'json',
+					complete: function(data, msg) {
+						let json = data.responseJSON;
+						document.selection_board.fromJSON(json['initial']);
+						document.task_board.fromJSON(json['task']);
+						// enable selecting pieces on the board
+						document.selection_board.pento_read_only = false;
+						// make all pieces on task board invisible
+						document.task_board.toggle_visibility(false);
+						// register new task
+						document.instruction_manager.new_task(FILES[current_file -1].name);
+						// give first instruction
+						document.instruction_manager.generate_instruction();
+						}
+					});
+			startTimer();
 			// increment file counter
 			current_file += 1;
 			return true;
 		}
 		return false;
 	}
-
-	/**
-	 * When file was loaded, parse contents as JSON, construct boards and start task.
-	 * @param {loaded file} e
-	 */
-	function onFileLoaded(e) {
-		var match = /^data:(.*);base64,(.*)$/.exec(e.target.result);
-		if (match == null) {
-			throw 'Could not parse result'; // should not happen
-		}
-		var content = atob(match[2]);
-		var json = JSON.parse(content);
-		
-		// Set up the boards. This has to happen after the boards are loaded
-		document.selection_board.fromJSON(json['initial']);
-		document.task_board.fromJSON(json['task']);
-		// enable selecting pieces on the board
-		document.selection_board.pento_read_only = false;
-		// make all pieces on task board invisible
-		document.task_board.toggle_visibility(false);
-		// register new task
-		document.instruction_manager.new_task(files[current_file -1].name);
-		// give first instruction
-		document.instruction_manager.generate_instruction();
-	}
 	
 	// --- Timer ---
 	var timerId;
 	/**
 	 * Sets up a timer and starts an update loop
-	 * @return id of timer loop, use stopTimer(id) to stop the timer
+	 * Saves the id of timer loop in global timerId; use stopTimer(id) to stop the timer
 	 */
 	function startTimer() {
 		var start_time = Date.now()
 		var m; // minutes since start
 		var s; // seconds since start
 		// id is used to stop timer later
-		return setInterval(updateTimer, 500, start_time);
+		document.timerId = setInterval(updateTimer, 500, start_time);
 	}
 	
 	/**
 	 * Stops the update loop for a timer
 	 * @param {id returned by startTimer function} timerId
 	 */
-	function stopTimer(timerId) {
-		clearInterval(timerId);
+	function stopTimer() {
+		clearInterval(document.timerId);
 	}
 	
 	/**
@@ -160,42 +142,7 @@ $(document).ready(function() {
 		$('#progress_bar').html(`${completion}%`);
 	}
 	
-	// --- Input / Button events ---
-	
-	// files were selected
-	$('#task_file').change(handleFileSelect);
-	
-	// start the first task
-	$('#start').click(function() {
-		// hide the input field after initial setup
-		$('#task_file').css('visibility', 'hidden');
-		// hide this button
-		$('#start').css('visibility', 'hidden');
-		
-		// id is used to stop the timer later
-		timerId = startTimer();
-		
-		var tasks_remaining = loadNewFile();
-		if (!tasks_remaining) {
-			finishRun();
-		} else {
-			// show 'next' button instead
-			$('#next').css('visibility', 'visible');
-		}
-	});
-	
-	$('#next').click(function() {
-		updateProgressBar(Math.floor(100 * current_file / files.length));
-		var tasks_remaining = loadNewFile();
-		if (!tasks_remaining) {
-			finishRun();
-		}
-	})
-	
-	// save the collected data
-	$('#save_exit').click(function() {
-		document.instruction_manager.save_data();
-	});
+	// Buttons
 	
 	var selection_handler = {
 		handle: function(event) {
@@ -204,10 +151,13 @@ $(document).ready(function() {
 				// and make correct pieces visible on the task board
 				if (document.instruction_manager) {
 					document.instruction_manager.complete_instruction(event.object_id);
-					// Test if task is completed, if not giv new instruction
+					// Try to give new instruction, is task is already finished,
+					// show questionnaire
 					if (!document.instruction_manager.generate_instruction()) {
 						// make selection_board read-only
 						document.selection_board.pento_read_only = true;
+						stopTimer();
+						document.open_popup(questionnaire);
 					}
 				} else {
 					// simply make the shape disappear
@@ -216,4 +166,92 @@ $(document).ready(function() {
 		}
 	};
 	this.selection_board.register_event_handler(selection_handler);
+	
+	// --- Pop-ups ---
+	var welcome			= document.getElementById('welcome');
+	var audiotest		= document.getElementById('audiotest');
+	var consent			= document.getElementById('consent');
+	var questionnaire	= document.getElementById('questionnaire');
+	var demographic		= document.getElementById('demographic');
+	var endscreen		= document.getElementById('endscreen');
+	
+	// open popup element
+	this.open_popup = function(popup) {
+		popup.showModal();
+		}
+		
+	// move on to audiotest
+	$('#welcome_done').click(function() {
+		welcome.close();
+		document.open_popup(audiotest);
+	});
+	
+	// move on to consent form
+	$('#audiotest_done').click(function() {
+		audiotest.close();
+		document.open_popup(consent);
+	});
+	
+	// consent given, start first task and timer
+	$('#consent_done').click(function() {
+		consent.close();
+		var tasks_remaining = loadNewFile();
+		if (!tasks_remaining) {
+			alert('Error, no tasks could be loaded!');
+			document.open_popup(endscreen);
+		}
+	});
+	
+	// submit task questionnaire, load new task or move to demographic questionnaire
+	$('#questionnaire_done').click(async function() {
+		// get and save the questionnary answer
+		// This requires the questionnary to have some box checked, use default value!
+		let conf_score = document.querySelector('input[name="confidence"]:checked').value;
+		if (document.instruction_manager) {
+			document.instruction_manager.add_info('confidence', conf_score, level='task');
+		}
+		questionnaire.close();
+		
+		updateProgressBar(Math.floor(100 * current_file / FILES.length));
+		// small breather for the participant
+		await sleep(1000);
+		var tasks_remaining = loadNewFile();
+		// finish the run
+		if (!tasks_remaining) {
+			updateProgressBar(100);
+			document.open_popup(demographic);
+		} else {
+			//startTimer();
+		}
+	})
+	
+	// submit demographic questionnaire, save data and move on to endscreen
+	$('#demographic_done').click(function() {
+		if (document.instruction_manager) {
+			document.instruction_manager.well_done();
+			// get and save all given demographic info
+			let age = document.querySelector('input[name="age"]').value;
+			let played_pento_before = document.querySelector('input[name="played_pento_before"]:checked');
+			document.instruction_manager.add_info('age', age, 'global');
+			document.instruction_manager.add_info('played_pento_before', Boolean(played_pento_before));
+			// save collected data to server-side resource/data_collection directory
+			let data = document.instruction_manager.data_to_JSON();
+			let file_saver_script = './php/save_userdata.php';
+			fetch(file_saver_script, {
+				method: 'POST',
+				body: data,
+			}).then((response) => {
+				// if something went wrong, log to console
+				let resp_code = response.status;
+				if (resp_code < 200 || resp_code >= 300) {
+					console.log(`Error: Something went wrong during saving of collected data. Response code: ${resp_code}`);
+				}
+			})
+		}
+		demographic.close();
+		document.open_popup(endscreen);
+	});
+
+	// --- Start ---
+	this.open_popup(welcome);
 })

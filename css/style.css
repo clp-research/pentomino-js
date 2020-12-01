@@ -115,6 +115,14 @@ button{
     float: right;
 }
 
+dialog::backdrop{
+	background: rgba(255, 255, 255, .85);
+}
+
+#questionnaire::backdrop{
+	background: rgba(255, 255, 255, .25);
+}
+
 #progress_bg{
 	width:100%;
 	background-color:gainsboro;

@@ -20,25 +20,80 @@
 		<h5>Click on the decribed piece on the left board! <div id="timer">00:00</div></h5>
 		<hr>
 		<div class="row">
-			<div class="seven columns">
+			<div class="eight columns">
 				<!-- 20 rows and columns with block size 20 -->
-					<canvas id="selection_board" width="400" height="400" style="border:1px solid #000000;"></canvas>
-					<br>
-					<input id="task_file" type="file" multiple/>
+					<canvas id="selection_board" width="550" height="550" style="border:1px solid #000000;"></canvas>
 			</div>
-			<div class="five columns">
+			<div class="four columns">
 				<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
-				<hr>
-				<br>
-				<a class="button" id="start">Start</a>
-				<a class="button" id="next" style="visibility: hidden;">Next</a>
-				<a class="button" id="save_exit">Save & Exit</a>
 			</div>
 		</div>
-		<hr>
 		<div id="progress_bg">
 			<div id="progress_bar">0%</div>
 		</div>
+		<!-- Pop-ups -->
+		<!-- Welcome screen -->
+		<dialog id="welcome">
+			<h2>Welcome to the PENTOMINO pilot study!</h2>
+			<p> - some introductory information - </p>
+			<button id="welcome_done">Continue</button>
+		</dialog>
+		<!-- Audio test -->
+		<!-- TODO: browser needs to allow automatic audio start -->
+		<dialog id="audiotest">
+			<h2>Audio test</h2>
+			<p>During the experiment, you need to follow spoken instructions. Try to find a quiet place where you won't be interrupted.</p>
+			<p>Please use the test audio below to make sure your browser works as expected and you can understand the spoken message well.</p>
+			<audio controls src="./resources/audio/audiotest.mp3">
+				Your current browser does not support the
+				<code>audio</code> element. If you can, you may want to try a different browser.
+			</audio>
+			<hr>
+			<p><strong>Unfortunately, if you don't hear the audio, you cannot take part in this study.</strong></p>
+			<button id="audiotest_done">Continue</button>
+		</dialog>
+		<!-- Consent form -->
+		<dialog id="consent">
+			<h2>Subject information and consent form</h2>
+			<p>Please read the following information carefully and click on <strong>Agree</strong> below if you are willing to take part in our experiment.</p>
+			<button id="consent_done">Agree</button>
+		</dialog>
+		
+		<!-- Questionnaire, opens after each piece selection -->
+		<dialog id="questionnaire">
+			<h2>Questionnaire</h2>
+			<p>How confident were you about your choice?</p>
+			<div>
+				<input type="radio" name="confidence" value=1 id="confidence1">
+				<label for="confidence1">very certain</label>
+				<input type="radio" name="confidence" value=2 id="confidence2">
+				<label for="confidence2">rather certain</label>
+				<input type="radio" name="confidence" value=3 id="confidence3" checked>
+				<label for="confidence3">neutral</label>
+				<input type="radio" name="confidence" value=4 id="confidence4">
+				<label for="confidence4">rather uncertain</label>
+				<input type="radio" name="confidence" value=5 id="confidence5">
+				<label for="confidence5">very uncertain</label>
+			</div>
+			<button id="questionnaire_done">Submit</button>
+		</dialog>
+		
+		<!-- Demographic questionnaire -->
+		<dialog id="demographic">
+			<h2>Almost done!</h2>
+				<p>Thanks for taking part in our study. You completed all tasks.</p>
+				<p>To finish your run, please answer the following questions and click on <b>Submit</b>.</p>
+				<label for="age">Age:</label><br>
+				<input type="number" id="age" name="age" min=1><br>
+				<input type="checkbox" id="played_pento_before" name="played_pento_before">
+				<label for="played_pento_before">I have worked with pentomino pieces before.</label><br>
+			<button id="demographic_done">Submit & Finish</button>
+		</dialog>
+		
+		<!-- End screen -->
+		<dialog id="endscreen">
+			<h2>Thanks for your participation!</h2>
+		</dialog>
 	</div>
 
 	<script src='./js/jquery.min.js'></script>

@@ -88,6 +88,7 @@ $(document).ready(function () {
 		complete_instruction(selected_shape) {
 			this.follower_data[this.task_name][this.shape]['selected'] = selected_shape;
 			this._stop_mouse_track(); // saves mouse movement
+			this.instruction.pause(); // stop audio
 			// correct shape selected
 			if (this.shape == selected_shape) {
 				this.follower_data[this.task_name][this.shape]['correct'] = true;
@@ -104,6 +105,15 @@ $(document).ready(function () {
 		}
 		
 		/**
+		 * Play an example audiofile
+		 */
+		audiotest() {
+			let test_file = './resources/audio/audiotest.mp3';
+			let test_audio = new Audio(test_file);
+			test_audio.oncanplaythrough = (event) => {test_audio.play();};
+		}
+		
+		/**
 		 * Emit a 'well done' message
 		 * @param {pass true to enable audio. default: true} audio
 		 */
@@ -117,6 +127,48 @@ $(document).ready(function () {
 			} else {
 				console.log("Well done!");
 			}
+		}
+		
+		/**
+		 * Save additional info to current follower data.
+		 * Data can be added at three levels:
+		 * 		'global': add to root of info dictionary
+		 *		'task': add to current task
+		 *		'shape': add to current shape of the running task
+		 * @param {a descriptive name for the new information} key
+		 * @param {content to assign to key} value
+		 * @param {one of ['global', 'task', 'shape']. Defines insertion point to the data.}
+		 */
+		add_info(key, value, level='global') {
+			switch(level) {
+				case 'global':
+					this.follower_data[key] = value;
+					break;
+				case 'task':
+					if (!this.task_name) {
+						console.log("Error: Trying to save info with no running task.")
+					} else {
+						this.follower_data[this.task_name][key] = value;
+					}
+					break;
+				case 'shape':
+					if (!this.task_name || !this.shape) {
+						console.log("Error: Trying to save info, but no task running or no target shape.")
+					} else {
+						this.follower_data[this.task_name][this.shape][key] = value;
+					}
+					break;
+				default:
+					// Don't save anything, emit error message
+					console.log(`Error: Undefined insertion level to save data ${key} = ${value}: ${level}`)
+			}
+		}
+		
+		/**
+		 * @return collected data as a JSON string
+		 */
+		data_to_JSON() {
+			return JSON.stringify(this.follower_data, null, 2);
 		}
 		
 		/**
