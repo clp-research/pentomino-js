@@ -17,7 +17,7 @@ $(document).ready(function () {
 			this.config				= config;
 			this.pento_shapes		= {};
 
-			// pento grid parameters
+			// board size and grid parameters
 			this.pento_grid_cols	= config.n_blocks;
 			this.pento_grid_rows	= config.n_blocks;
 			this.width				= config.board_size;
@@ -26,6 +26,7 @@ $(document).ready(function () {
 			this.pento_grid_color	= 'gray';
 			this.pento_grid_x		= 0;
 			this.pento_grid_y		= 0;
+			this.source_board_size; // size of source board when board is created from JSON
 
 			// pento game parameters
 			this.show_grid 			= with_grid;
@@ -100,7 +101,7 @@ $(document).ready(function () {
 			this.pento_active_shape = null;
 			this.draw();
 		}
-		
+			
 		/**
 		 * Adapt the JCanvas to the boards dimension
 		 */
@@ -240,7 +241,7 @@ $(document).ready(function () {
 				click: function (layer) {
 					if (!self.pento_read_only) {
 						// remove the shape from the selection board
-						self.destroy_shape(shape);
+						//self.destroy_shape(shape);
 						self.fire_event('shape_selected', self.pento_active_shape.name, {});
 					}
 				}
@@ -313,6 +314,16 @@ $(document).ready(function () {
 
 			this.event_handlers.forEach(handler => handler.handle(event));
 		}
+		
+		
+		/**
+		 * @return factor to scale pieces from source JSON size to this board's size
+		 */
+		scale_to_target_size() { return this.width/this.source_board_size; }
+		/**
+		 * @return factor to scale this board's pieces to the original JSON's size
+		 */
+		scale_to_source_size() { return this.source_board_size/this.width; }
 
 		/**
 		 * Import canvas config from data read from a json file
@@ -321,10 +332,11 @@ $(document).ready(function () {
 		 */
 		fromJSON(shapes, saved_board_size=400) {
 			this.destroy_all_shapes();
+			this.source_board_size = saved_board_size;
 			for (var s in shapes) {
 				var shape = Object.assign(new document.Shape, shapes[s]);
 				// adapt shapes to this board's settings
-				shape.scale(this.pento_block_size, this.width/saved_board_size);
+				shape.scale(this.pento_block_size, this.scale_to_target_size());
 				shape.close();
 				// apply given rotation
 				shape.rotate(shape.rotation);

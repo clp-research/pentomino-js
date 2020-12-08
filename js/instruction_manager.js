@@ -26,6 +26,7 @@ $(document).ready(function () {
 			this.track_id; // interval id if tracking is running
 			this.track_interval			= track_interval; // how often is mouse position checked (milliseconds)
 			this.current_mouse_movement = [];
+			this.correct_counter		= 0; // number of correct guesses by participant
 		}
 		
 		/**
@@ -33,7 +34,12 @@ $(document).ready(function () {
 		 * @param {optional task name, number is used otherwise} name
 		 */
 		new_task(name=null) {
-			this.task_name = name || Object.keys(this.follower_data).length.toString();
+			if (name) {
+				let name_start = Math.max(name.lastIndexOf("/")+1, 0);
+				this.task_name = name.slice(name_start, name.length) || name;
+			} else {
+				this.task_name = Object.keys(this.follower_data).length.toString();
+			}
 			this.follower_data[this.task_name] = {};
 		}
 
@@ -43,17 +49,18 @@ $(document).ready(function () {
 		 * @return true if instruction was generated, false if task is complete
 		 */
 		generate_instruction(audio=true) {
-			// generate / speak/write instruction
 			let next_shape = this.task_board.next_shape;
 			if (!next_shape) {
 				return false;
 			} else {
+				// remove red and green highlights
+				this.remove_highlights();
 				this.shape = next_shape.name;
 				// save the target shape coordinates
 				let target = this.selection_board.get_shape(this.shape);
 				this.follower_data[this.task_name][this.shape] = {
-					'target_x': target.x,
-					'target_y': target.y
+					'target_x': Math.floor(target.x * this.selection_board.scale_to_source_size()),
+					'target_y': Math.floor(target.y * this.selection_board.scale_to_source_size())
 				}
 				if (audio) {
 					// get audio for instruction and play it
@@ -89,19 +96,49 @@ $(document).ready(function () {
 			this.follower_data[this.task_name][this.shape]['selected'] = selected_shape;
 			this._stop_mouse_track(); // saves mouse movement
 			this.instruction.pause(); // stop audio
+			// Note: The highlighting only really makes sense for single-piece tasks,
+			// as the highlights are removed as soon as the next instruction is generated
+			// highlight correct shape in green
+			this.highlight_correct();
 			// correct shape selected
 			if (this.shape == selected_shape) {
 				this.follower_data[this.task_name][this.shape]['correct'] = true;
-			// incorrect shape selected, correct one is removed anyway
+				this.correct_counter += 1;
+			// incorrect shape selected
 			} else {
+				// highlight shape as incorrect
+				this.highlight_incorrect(selected_shape);
 				this.follower_data[this.task_name][this.shape]['correct'] = false;
-				console.log('That was not the correct shape. Let me select the right one for you.')
-				// remove shape from selection board
-				this.selection_board.destroy_shape(this.shape);
 				// handle the incorrectly selected shape
 				this.task_board.handle_selection(selected_shape);
 			}
+			// make task_board handle the selection
 			this.task_board.handle_selection(this.shape);
+		}
+		
+		
+		/**
+		 * Highlight the goal shape in green.
+		 */
+		highlight_correct() {
+			this.selection_board.get_shape(this.shape).set_highlight('green');
+		}
+		
+		/**
+		 * Highlight a given shape in red.
+		 * @param {name of incorrect shape} shape
+		 */
+		highlight_incorrect(shape) {
+			this.selection_board.get_shape(shape).set_highlight('red');
+		}
+		
+		/**
+		 * Remove all hightlights
+		*/
+		remove_highlights() {
+			for (let s of Object.values(this.selection_board.shapes)) {
+				s.remove_highlight();
+			}
 		}
 		
 		/**
@@ -193,18 +230,16 @@ $(document).ready(function () {
 		 * Start tracking mouse coordinates as it is moved
 		 */
 		_start_mouse_track() {
-			// log mouse position at time 0
-			//let start_mousePos = document.get_mouse_pos();
-			//this.current_mouse_movement = [{time: 0, start_mousePos.x, start_mousePos.y}];
 			this.current_mouse_movement = [];
-			// start tracking loop
 			var self = this;
+			var coord_scaling = this.selection_board.scale_to_source_size();
+			// start tracking loop
 			this.track_id = setInterval(function() {
 				let mousePos = document.get_mouse_pos();
 				// save a single time-coordinate pair of the current mouse position
 				self.current_mouse_movement.push({time: self._time_passed(),
-												x: mousePos.x,
-												y: mousePos.y});
+												x: Math.floor(mousePos.x * coord_scaling),
+												y: Math.floor(mousePos.y * coord_scaling)});
 				}, this.track_interval);
 		}
 		

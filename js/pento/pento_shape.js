@@ -11,6 +11,7 @@ $(document).ready(function () {
 			this.is_mirrored = is_mirrored || false;
 			this.writable = true;
 			this.active = false;
+			this.highlight;
 
 			// shape internal grid and bounding box
 			this._internal_grid_size = [4, 4];
@@ -44,6 +45,18 @@ $(document).ready(function () {
 
 		set_deactive() {
 			this.active = false;
+		}
+		
+		/**
+		 * Toggle colored hightlighting of shape on and off
+		 * @param {highlight color} color
+		 */
+		set_highlight(color) {
+			this.highlight = color;
+		}
+		
+		remove_highlight() {
+			this.highlight = null;
 		}
 
 		/**

@@ -7,10 +7,13 @@ $(document).ready(function () {
 	 * @param {*} offsetX 
 	 * @param {*} offsetY 
 	 */
-	var draw_block = function (ctx, block, offsetX, offsetY, active) {
+	var draw_block = function (ctx, block, offsetX, offsetY, active, highlight=null) {
 		if (active) {
-			ctx.shadowColor = 'gray';
+			ctx.shadowColor = 'grey';
 			ctx.shadowBlur = 10;	
+		} else if (highlight) {
+			ctx.shadowColor = highlight;
+			ctx.shadowBlur = 10;
 		}
 		ctx.fillStyle = block.color;
 		ctx.strokeStyle = 'lightgray';
@@ -90,7 +93,7 @@ $(document).ready(function () {
 		// Draw blocks
 		for (var i = 0; i < shape.get_blocks().length; i++) {
 			var block = shape.get_blocks()[i];
-			draw_block(ctx, block, shape.x + params.offsetX, shape.y + params.offsetY, shape.is_active());
+			draw_block(ctx, block, shape.x + params.offsetX, shape.y + params.offsetY, shape.is_active(), shape.highlight);
 		}
 	}
 

@@ -10,6 +10,7 @@ $(document).ready(function() {
 								   './resources/tasks_single_piece/5234_pento_task.json']
 	// for testing
 //	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
+//	var FILES					= ['./resources/tasks_multiple_pieces/4271_pento_task.json']
 	var current_file = 0; // increment as tasks are loaded
 	
 	
@@ -29,17 +30,42 @@ $(document).ready(function() {
 	}
 	
 	// --- Mouse tracking at mouse move ---
+	// Browsers seem to use variables layerX/layerY differently. For consistent
+	// coordinates, pageX/pageY is now used, but this requires the total top/left
+	// offset of the canvas from the page
 	this.mouse_pos			= {x: -1, y: -1};
-	var canvas_offset_top	= this.selection_board.canvas.offsetTop;
-	var	canvas_offset_left	= this.selection_board.canvas.offsetLeft;
+	var canvas_offset_top	= getTotalOffsetTop(this.selection_board.canvas);
+	var	canvas_offset_left	= getTotalOffsetLeft(this.selection_board.canvas);
+	
+	/**
+	 * Computes the offset of an object from the page top in pixels.
+	 * @param {some object to check offset for} obj
+	 * @return offset from page top in pixels
+	 */
+	function getTotalOffsetTop(obj) {
+		if (!obj.offsetParent) { return obj.offsetTop; }
+		// recursively add up current and parent's offset
+		else { return obj.offsetTop + getTotalOffsetTop(obj.offsetParent); }
+	}
+	/**
+	 * Computes the offset of an object from the left page side in pixels.
+	 * @param {some object to check offset for} obj
+	 * @return offset from left page edge in pixels
+	 */
+	function getTotalOffsetLeft(obj) {
+		if (!obj.offsetParent) { return obj.offsetLeft; }
+		// recursively add up current and parent's offset
+		else { return obj.offsetLeft + getTotalOffsetLeft(obj.offsetParent); }
+	}
+	
 	/**
 	 * Updates the current mouse position.
 	 * If the mouse is not on the selection board, the coordinates will be set to (-1, -1).
 	 */
 	function handle_mouse_move(event) {
 		if (event.target.id == SELECTION_BOARD_NAME) {
-			this.mouse_pos = this.mouse_pos = { x: event.layerX - canvas_offset_left,
-												y: event.layerY - canvas_offset_top};
+			this.mouse_pos = { x: event.pageX - canvas_offset_left,
+							   y: event.pageY - canvas_offset_top};
 		} else { // -1 signifies the mouse is of the board
 			this.mouse_pos = {x: -1, y: -1};
 		}
@@ -71,7 +97,7 @@ $(document).ready(function() {
 						// make all pieces on task board invisible
 						document.task_board.toggle_visibility(false);
 						// register new task
-						document.instruction_manager.new_task(FILES[current_file -1].name);
+						document.instruction_manager.new_task(FILES[current_file -1]);
 						// give first instruction
 						document.instruction_manager.generate_instruction();
 						}
@@ -130,6 +156,17 @@ $(document).ready(function() {
 		return time.toString();
 	}
 	
+	// --- Correct counter ---
+	
+	/**
+	 * Update the display of correct guesses
+	 */
+	this.updateCorrectCounter = function() {
+		if (document.instruction_manager) {
+			$('#correct_counter').html(`Correct: ${document.instruction_manager.correct_counter}`);
+		}
+	}
+	
 	// --- Progress bar ---
 	/**
 	 * Updates the displayed progress bar
@@ -151,6 +188,7 @@ $(document).ready(function() {
 				// and make correct pieces visible on the task board
 				if (document.instruction_manager) {
 					document.instruction_manager.complete_instruction(event.object_id);
+					document.updateCorrectCounter();
 					// Try to give new instruction, is task is already finished,
 					// show questionnaire
 					if (!document.instruction_manager.generate_instruction()) {
@@ -174,6 +212,14 @@ $(document).ready(function() {
 	var questionnaire	= document.getElementById('questionnaire');
 	var demographic		= document.getElementById('demographic');
 	var endscreen		= document.getElementById('endscreen');
+	
+	// polyfill is used to help with browsers without native support for 'dialog'
+	dialogPolyfill.registerDialog(welcome);
+	dialogPolyfill.registerDialog(audiotest);
+	dialogPolyfill.registerDialog(consent);
+	dialogPolyfill.registerDialog(questionnaire);
+	dialogPolyfill.registerDialog(demographic);
+	dialogPolyfill.registerDialog(endscreen);
 	
 	// open popup element
 	this.open_popup = function(popup) {

@@ -11,13 +11,14 @@
 
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" href="css/dialog-polyfill.css">
 	<link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 	<div class="container">
-		<h5>Click on the decribed piece on the left board! <div id="timer">00:00</div></h5>
+		<h5>Click on the decribed piece on the left board! <div id="timer">00:00</div><div id="correct_counter">Correct: 0</div></h5>
 		<hr>
 		<div class="row">
 			<div class="eight columns">
@@ -31,6 +32,7 @@
 		<div id="progress_bg">
 			<div id="progress_bar">0%</div>
 		</div>
+		
 		<!-- Pop-ups -->
 		<!-- Welcome screen -->
 		<dialog id="welcome">
@@ -99,6 +101,7 @@
 	<script src='./js/jquery.min.js'></script>
 	<script src='./js/jcanvas.min.js'></script>
 	<script src='./js/Filesaver.js'></script>
+	<script src='./js/dialog/dialog-polyfill.js'></script>
 	
 	<script src='./js/pento/pento_config.js'></script>
 	<script src='./js/pento/pento_block.js'></script>
