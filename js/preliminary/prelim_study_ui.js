@@ -4,12 +4,12 @@ $(document).ready(function() {
 	var SELECTION_BOARD_NAME	= 'selection_board';
 	var TASK_BOARD_NAME			= 'task_board';
 	
-	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json',
-								   './resources/tasks_single_piece/2909_pento_task.json',
-								   './resources/tasks_single_piece/3060_pento_task.json',
-								   './resources/tasks_single_piece/5234_pento_task.json']
+//	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json',
+//								   './resources/tasks_single_piece/2909_pento_task.json',
+//								   './resources/tasks_single_piece/3060_pento_task.json',
+//								   './resources/tasks_single_piece/5234_pento_task.json']
 	// for testing
-//	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
+	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
 //	var FILES					= ['./resources/tasks_multiple_pieces/4271_pento_task.json']
 	var current_file = 0; // increment as tasks are loaded
 	
@@ -234,17 +234,44 @@ $(document).ready(function() {
 	
 	// move on to consent form
 	$('#audiotest_done').click(function() {
-		audiotest.close();
-		document.open_popup(consent);
+		let transcript = $('#transcript').val();
+		if (transcript == '') { // input is missing
+			alert('Please type in what you hear in the test audio file');
+			$('#transcript').css('borderColor', 'red');
+		} else {
+			document.instruction_manager.add_info('audiotest', transcript);
+			audiotest.close();
+			document.open_popup(consent);
+		}
 	});
 	
 	// consent given, start first task and timer
 	$('#consent_done').click(function() {
-		consent.close();
-		var tasks_remaining = loadNewFile();
-		if (!tasks_remaining) {
-			alert('Error, no tasks could be loaded!');
-			document.open_popup(endscreen);
+		let name = $('#name').val();
+		let email = $('#email').val();
+		let follow_agent = $('input[name="follow_agent"]:checked').val();
+		if (name == "") {
+			alert('Please enter your name');
+			$('#name').css('borderColor', 'red');
+		} else if (email == "") {
+			alert('Please enter your email address');
+			$('#email').css('borderColor', 'red');
+		} else if (!$('#consent_agree').is(":checked")) {
+			alert('Please check the box to continue');
+		} else if (!follow_agent) {
+			alert('Please select one of the options');
+		} else {
+			//TODO: Where to save personal data?
+			document.instruction_manager.add_info('name', name);
+			document.instruction_manager.add_info('email', email);
+			document.instruction_manager.add_info('follow_agent', follow_agent);
+			document.instruction_manager.add_info('start_time', new Date().toString());
+			consent.close();
+			var tasks_remaining = loadNewFile();
+			if (!tasks_remaining) {
+				alert('Error, no tasks could be loaded!');
+				document.open_popup(endscreen);
+			}
 		}
 	});
 	
@@ -252,9 +279,9 @@ $(document).ready(function() {
 	$('#questionnaire_done').click(async function() {
 		// get and save the questionnary answer
 		// This requires the questionnary to have some box checked, use default value!
-		let conf_score = document.querySelector('input[name="confidence"]:checked').value;
+		let conf_score = $('input[name="confidence"]:checked').val();
 		if (document.instruction_manager) {
-			document.instruction_manager.add_info('confidence', conf_score, level='task');
+			document.instruction_manager.add_info('confidence', conf_score, 'task');
 		}
 		questionnaire.close();
 		
@@ -274,28 +301,49 @@ $(document).ready(function() {
 	// submit demographic questionnaire, save data and move on to endscreen
 	$('#demographic_done').click(function() {
 		if (document.instruction_manager) {
-			document.instruction_manager.well_done();
-			// get and save all given demographic info
-			let age = document.querySelector('input[name="age"]').value;
-			let played_pento_before = document.querySelector('input[name="played_pento_before"]:checked');
-			document.instruction_manager.add_info('age', age, 'global');
-			document.instruction_manager.add_info('played_pento_before', Boolean(played_pento_before));
-			// save collected data to server-side resource/data_collection directory
-			let data = document.instruction_manager.data_to_JSON();
-			let file_saver_script = './php/save_userdata.php';
-			fetch(file_saver_script, {
-				method: 'POST',
-				body: data,
-			}).then((response) => {
-				// if something went wrong, log to console
-				let resp_code = response.status;
-				if (resp_code < 200 || resp_code >= 300) {
-					console.log(`Error: Something went wrong during saving of collected data. Response code: ${resp_code}`);
-				}
-			})
+			// make sure form is filled out
+			let age = $('#no_age').is(':checked') ? null : $('#age').val();
+			// track device must either be one of the preset options or 'other' and manually specified other_device
+			let track_device = $('input[name="track_device"]:checked').val();
+			track_device = (track_device=='other') ? $('#other_device').val() : track_device;
+			if (age == '') {
+				alert('Please give your age or use the checkbox to skip this question.');
+				$('#age').css('borderColor', 'red');
+			} else if (!track_device) {
+				alert('Please specify your device');
+			} else {
+				// save given demographic info
+				document.instruction_manager.add_info('age', age);
+				document.instruction_manager.add_info('track_device', track_device);
+				document.instruction_manager.add_info('played_pento_before', $('#pento_played_before').is(':checked'));
+				document.instruction_manager.add_info('comments', $('#comments').val());
+				// save time of completion
+				document.instruction_manager.add_info('end_time', new Date().toString());
+				// save info on browser + OS. Warning: This might not be reliable, user can
+				// manually change these information and browsers might change their behaviour in the future
+				document.instruction_manager.add_info('browser_os_info', window.navigator.userAgent);
+				// save collected data to server-side resource/data_collection directory
+				let data = document.instruction_manager.data_to_JSON();
+				let file_saver_script = './php/save_userdata.php';
+				fetch(file_saver_script, {
+					method: 'POST',
+					body: data,
+				}).then((response) => {
+					// if something went wrong, log to console
+					let resp_code = response.status;
+					if (resp_code < 200 || resp_code >= 300) {
+						console.log(`Error: Something went wrong during saving of collected data. Response code: ${resp_code}`);
+					}
+				})
+				// proceed to endscreen
+				document.instruction_manager.well_done();
+				demographic.close();
+				document.open_popup(endscreen);
+			}
+		} else {
+			demographic.close();
+			document.open_popup(endscreen);
 		}
-		demographic.close();
-		document.open_popup(endscreen);
 	});
 
 	// --- Start ---

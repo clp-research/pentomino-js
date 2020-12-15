@@ -40,7 +40,7 @@ $(document).ready(function () {
 			} else {
 				this.task_name = Object.keys(this.follower_data).length.toString();
 			}
-			this.follower_data[this.task_name] = {};
+			this.add_info(this.task_name, {});
 		}
 
 		/**
@@ -58,10 +58,10 @@ $(document).ready(function () {
 				this.shape = next_shape.name;
 				// save the target shape coordinates
 				let target = this.selection_board.get_shape(this.shape);
-				this.follower_data[this.task_name][this.shape] = {
+				this.add_info(this.shape, {
 					'target_x': Math.floor(target.x * this.selection_board.scale_to_source_size()),
 					'target_y': Math.floor(target.y * this.selection_board.scale_to_source_size())
-				}
+				}, 'task');
 				if (audio) {
 					// get audio for instruction and play it
 					// remove '#' from shape name to get file name
@@ -71,6 +71,7 @@ $(document).ready(function () {
 					this.instruction.oncanplaythrough = (event) => {
 						this.instruction.play();
 						this._start_instruction(); // start tracking etc.
+						this.add_info('audio_duration', this.instruction.duration, 'shape');
 					};
 				} else {
 					console.log(`Please select ${this.shape}`);
@@ -93,7 +94,7 @@ $(document).ready(function () {
 		 @param {name of shape selected by follower} selected_shape
 		 */
 		complete_instruction(selected_shape) {
-			this.follower_data[this.task_name][this.shape]['selected'] = selected_shape;
+			this.add_info('selected', selected_shape, 'shape');
 			this._stop_mouse_track(); // saves mouse movement
 			this.instruction.pause(); // stop audio
 			// Note: The highlighting only really makes sense for single-piece tasks,
@@ -102,13 +103,13 @@ $(document).ready(function () {
 			this.highlight_correct();
 			// correct shape selected
 			if (this.shape == selected_shape) {
-				this.follower_data[this.task_name][this.shape]['correct'] = true;
+				this.add_info('correct', true, 'shape');
 				this.correct_counter += 1;
 			// incorrect shape selected
 			} else {
 				// highlight shape as incorrect
 				this.highlight_incorrect(selected_shape);
-				this.follower_data[this.task_name][this.shape]['correct'] = false;
+				this.add_info('correct', false, 'shape');
 				// handle the incorrectly selected shape
 				this.task_board.handle_selection(selected_shape);
 			}
@@ -250,11 +251,7 @@ $(document).ready(function () {
 			if (this.track_id) {
 				this.track_id = clearInterval(this.track_id);
 			}
-			if (!this.shape) {
-				console.log('Error: No shape selected in instruction manager at stop_mouse_track');
-			} else {
-				this.follower_data[this.task_name][this.shape]['movement'] = this.current_mouse_movement;
-			}
+			this.add_info('movement', this.current_mouse_movement, 'shape');
 		}
 		
 	};
