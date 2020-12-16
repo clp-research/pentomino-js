@@ -87,7 +87,7 @@ $(document).ready(function () {
 		var json_content = {};
 		var file_name = (rand_prefix == null ? '' : rand_prefix) + '_pento_task.json';
 
-		
+
 		json_content['initial'] = generator.pento_board_initial.toJSON();
 		json_content['task'] = generator.pento_board_target.toJSON();
 
@@ -172,6 +172,7 @@ $(document).ready(function () {
 	this.generate = function () {
 		generator.generate();
 		// Shapes in task board are removable at right-click
+		generator.pento_board_initial.set("remove_at_rightclick", true);
 		generator.pento_board_target.set("remove_at_rightclick", true);
 	};
 
@@ -185,4 +186,3 @@ $(document).ready(function () {
 	});
 
 })
-
