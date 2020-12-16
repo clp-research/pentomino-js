@@ -3,7 +3,7 @@ $(document).ready(function() {
 	var WITH_GRID				= false;
 	var SELECTION_BOARD_NAME	= 'selection_board';
 	var TASK_BOARD_NAME			= 'task_board';
-	
+
 //	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json',
 //								   './resources/tasks_single_piece/2909_pento_task.json',
 //								   './resources/tasks_single_piece/3060_pento_task.json',
@@ -12,8 +12,8 @@ $(document).ready(function() {
 	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
 //	var FILES					= ['./resources/tasks_multiple_pieces/4271_pento_task.json']
 	var current_file = 0; // increment as tasks are loaded
-	
-	
+
+
 	let selboard_size_str = $(`#${SELECTION_BOARD_NAME}`).css('width');
 	let selboard_size = Number(selboard_size_str.slice(0, selboard_size_str.length-2));
 	this.selection_board = new document.PentoSelectionBoard(`#${SELECTION_BOARD_NAME}`, SELECTION_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=selboard_size));
@@ -21,14 +21,14 @@ $(document).ready(function() {
 	let taskboard_size_str = $(`#${TASK_BOARD_NAME}`).css('width');
 	let taskboard_size = Number(taskboard_size_str.slice(0, taskboard_size_str.length-2));
 	this.task_board = new document.PentoSelectionBoard(`#${TASK_BOARD_NAME}`, TASK_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=taskboard_size), read_only=true,);
-	
+
 	this.instruction_manager = new document.InstructionManager(this.selection_board, this.task_board);
-	
+
 	// Helper function to pause the study for a moment
 	function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
-	
+
 	// --- Mouse tracking at mouse move ---
 	// Browsers seem to use variables layerX/layerY differently. For consistent
 	// coordinates, pageX/pageY is now used, but this requires the total top/left
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	this.mouse_pos			= {x: -1, y: -1};
 	var canvas_offset_top	= getTotalOffsetTop(this.selection_board.canvas);
 	var	canvas_offset_left	= getTotalOffsetLeft(this.selection_board.canvas);
-	
+
 	/**
 	 * Computes the offset of an object from the page top in pixels.
 	 * @param {some object to check offset for} obj
@@ -57,7 +57,7 @@ $(document).ready(function() {
 		// recursively add up current and parent's offset
 		else { return obj.offsetLeft + getTotalOffsetLeft(obj.offsetParent); }
 	}
-	
+
 	/**
 	 * Updates the current mouse position.
 	 * If the mouse is not on the selection board, the coordinates will be set to (-1, -1).
@@ -109,7 +109,7 @@ $(document).ready(function() {
 		}
 		return false;
 	}
-	
+
 	// --- Timer ---
 	var timerId;
 	/**
@@ -123,7 +123,7 @@ $(document).ready(function() {
 		// id is used to stop timer later
 		document.timerId = setInterval(updateTimer, 500, start_time);
 	}
-	
+
 	/**
 	 * Stops the update loop for a timer
 	 * @param {id returned by startTimer function} timerId
@@ -131,7 +131,7 @@ $(document).ready(function() {
 	function stopTimer() {
 		clearInterval(document.timerId);
 	}
-	
+
 	/**
 	 * Updates the timer to depict the time passed since some start_time
 	 * @param {point of time in milliseconds since 01/01/1970 00:00:00 UTC} start_time
@@ -142,7 +142,7 @@ $(document).ready(function() {
 		s = Math.floor((time_passed % 60000) / 1000);
 		$('#timer').html(`${_timeToString(m)}:${_timeToString(s)}`);
 	}
-	
+
 	/**
 	 * Converts number of hours/minutes/seconds to printable string
 	 * @param {hours, minutes or seconds as int} time
@@ -155,9 +155,9 @@ $(document).ready(function() {
 		}
 		return time.toString();
 	}
-	
+
 	// --- Correct counter ---
-	
+
 	/**
 	 * Update the display of correct guesses
 	 */
@@ -166,7 +166,7 @@ $(document).ready(function() {
 			$('#correct_counter').html(`Correct: ${document.instruction_manager.correct_counter}`);
 		}
 	}
-	
+
 	// --- Progress bar ---
 	/**
 	 * Updates the displayed progress bar
@@ -178,9 +178,9 @@ $(document).ready(function() {
 		// update number
 		$('#progress_bar').html(`${completion}%`);
 	}
-	
+
 	// Buttons
-	
+
 	var selection_handler = {
 		handle: function(event) {
 			if (event.type == 'shape_selected')
@@ -204,7 +204,7 @@ $(document).ready(function() {
 		}
 	};
 	this.selection_board.register_event_handler(selection_handler);
-	
+
 	// --- Pop-ups ---
 	var welcome			= document.getElementById('welcome');
 	var audiotest		= document.getElementById('audiotest');
@@ -212,7 +212,7 @@ $(document).ready(function() {
 	var questionnaire	= document.getElementById('questionnaire');
 	var demographic		= document.getElementById('demographic');
 	var endscreen		= document.getElementById('endscreen');
-	
+
 	// polyfill is used to help with browsers without native support for 'dialog'
 	dialogPolyfill.registerDialog(welcome);
 	dialogPolyfill.registerDialog(audiotest);
@@ -220,18 +220,18 @@ $(document).ready(function() {
 	dialogPolyfill.registerDialog(questionnaire);
 	dialogPolyfill.registerDialog(demographic);
 	dialogPolyfill.registerDialog(endscreen);
-	
+
 	// open popup element
 	this.open_popup = function(popup) {
 		popup.showModal();
 		}
-		
+
 	// move on to audiotest
 	$('#welcome_done').click(function() {
 		welcome.close();
 		document.open_popup(audiotest);
 	});
-	
+
 	// move on to consent form
 	$('#audiotest_done').click(function() {
 		let transcript = $('#transcript').val();
@@ -244,7 +244,7 @@ $(document).ready(function() {
 			document.open_popup(consent);
 		}
 	});
-	
+
 	// consent given, start first task and timer
 	$('#consent_done').click(function() {
 		let name = $('#name').val();
@@ -274,30 +274,45 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+
 	// submit task questionnaire, load new task or move to demographic questionnaire
 	$('#questionnaire_done').click(async function() {
-		// get and save the questionnary answer
-		// This requires the questionnary to have some box checked, use default value!
-		let conf_score = $('input[name="confidence"]:checked').val();
-		if (document.instruction_manager) {
-			document.instruction_manager.add_info('confidence', conf_score, 'task');
-		}
-		questionnaire.close();
-		
-		updateProgressBar(Math.floor(100 * current_file / FILES.length));
-		// small breather for the participant
-		await sleep(1000);
-		var tasks_remaining = loadNewFile();
-		// finish the run
-		if (!tasks_remaining) {
-			updateProgressBar(100);
-			document.open_popup(demographic);
+		// get and save the questionnaire answer
+		// all questions are mandatory!
+		understand = $('input[name="understand"]:checked').val();
+		clear = $('input[name="clear"]:checked').val();
+		ambiguous = $('input[name="ambiguous"]:checked').val();
+		complete = $('input[name="complete"]:checked').val();
+		effort = $('input[name="effort"]:checked').val();
+		info = $('input[name="info"]:checked').val();
+		collaborative = $('input[name="collaborative"]:checked').val();
+		if ((!understand) || (!clear) || (!ambiguous) || (!complete) || (!effort) || (!info) || (!collaborative)) {
+			alert("Please answer all questions")
 		} else {
-			//startTimer();
+			if (document.instruction_manager) {
+				// save all answers
+				document.instruction_manager.add_info('understandability', understand, 'task');
+				document.instruction_manager.add_info('clearity', clear, 'task');
+				document.instruction_manager.add_info('ambiguity', ambiguous, 'task');
+				document.instruction_manager.add_info('completeness', complete, 'task');
+				document.instruction_manager.add_info('effort', effort, 'task');
+				document.instruction_manager.add_info('information', info, 'task');
+				document.instruction_manager.add_info('collaborative', collaborative, 'task');
+				document.instruction_manager.add_info('error', $('#task_error').is(":checked"), 'task');
+			}
+			questionnaire.close();
+			updateProgressBar(Math.floor(100 * current_file / FILES.length));
+			// small breather for the participant
+			await sleep(1000);
+			var tasks_remaining = loadNewFile();
+			// finish the run
+			if (!tasks_remaining) {
+				updateProgressBar(100);
+				document.open_popup(demographic);
+			}
 		}
 	})
-	
+
 	// submit demographic questionnaire, save data and move on to endscreen
 	$('#demographic_done').click(function() {
 		if (document.instruction_manager) {
