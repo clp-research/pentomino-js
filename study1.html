@@ -1,0 +1,170 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Pentomino Select</title>
+	<meta name="description" content="Pento preliminary study - follower ui">
+	<meta name="author" content="clpresearch">
+
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" href="css/dialog-polyfill.css">
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+	<div class="container">
+		<h5>Click on the decribed piece on the left board! <div id="timer">00:00</div><div id="correct_counter">Correct: 0</div></h5>
+		<hr>
+		<div class="row">
+			<div class="eight columns">
+				<!-- 20 rows and columns with block size 20 -->
+					<canvas id="selection_board" width="550" height="550" style="border:1px solid #000000;"></canvas>
+			</div>
+			<div class="four columns">
+				<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
+			</div>
+		</div>
+		<div id="progress_bg">
+			<div id="progress_bar">0%</div>
+		</div>
+
+		<!-- Pop-ups -->
+		<!-- Welcome screen -->
+		<dialog id="welcome">
+			<h2>Welcome to the PENTOMINO pilot study!</h2>
+			<p>We invite participants to an online study from KTH and the University of Potsdam.</p>
+			<p>In this experiment, you will assess natural language instructions to pick pentomino objects.</p>
+			<p>It is important that you can clearly hear the spoken instructions. You may eiter use headphones or your computer speakers in a silent environment. You can <strong>only</strong> do the study on a computer, but not on a mobile device (tablet, phone, etc.).</p>
+			<p>It is also important that you try to do as few mistakes as possible in the task. If any problems appear with the interface, please let us know before you complete the task.</p>
+			<p>The study will last 10-15 minutes and can be done at your home or office at your time of preference.</p>
+			<br>
+			<p>If you have any questions, do not hesitate to contact Dimosthenis Kontogiorgos at diko@kth.se or Jana Götze at jana.goetze@uni-potsdam.de.</p>
+			<br>
+			<button id="welcome_done">Continue</button>
+		</dialog>
+		<!-- Audio test -->
+		<!-- TODO: browser needs to allow automatic audio start -->
+		<dialog id="audiotest">
+			<h2>Audio test</h2>
+			<p>During the experiment, you need to follow spoken instructions. Try to find a quiet place where you won't be interrupted.</p>
+			<p>Please use the test audio below to make sure your browser works as expected and you can understand the spoken message well.</p>
+			<hr>
+			<audio controls src="./resources/audio/audiotest.mp3">
+				Your current browser does not support the
+				<code>audio</code> element. If you can, you may want to try a different browser.
+			</audio>
+			<p><strong>Type in the message you hear in the text field below:</strong></p>
+			<p><strong>Unfortunately, if you don't hear the audio, you cannot take part in this study.</strong></p>
+			<input id="transcript" name="transcript"/>
+			<hr>
+			<button id="audiotest_done">Continue</button>
+		</dialog>
+		<!-- Consent form -->
+		<dialog id="consent">
+			<h2>Informed consent form</h2>
+			<p>In this study conducted by KTH and University of Potsdam you will assess the suitability of instructions to Pentomino objects. It is important that you are fluent in English. The study is expected to last 10-15 minutes and is entirely voluntary.</p>
+			<p> We collect your mouse movements and click actions as well as your responses to the questions provided. The data will only be used for research purposes and may be shared with other researchers. If you have any questions you can ask Dimosthenis Kontogiorgos at diko@kth.se or Jana Götze at jana.goetze@uni-potsdam.de.</p>
+			<hr>
+			<label for="name">Name:</label>
+			<input id="name" name="name">
+			<br>
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email">
+			<br>
+			<input type="checkbox" id="consent_agree" name="consent_agree">
+			<label for="consent_agree">I have read and understood the above information.  I agree to take part in the study.</label>
+			<hr>
+			<p>How much are you willing to comply agent instructions? (-3: very little; 3: a lot)</p>
+			<div>
+				<label for="follow_agent1">-3</label>
+				<input type="radio" name="follow_agent" value=-3 id="follow_agent1">
+				<label for="follow_agent2">-2</label>
+				<input type="radio" name="follow_agent" value=-2 id="follow_agent2">
+				<label for="follow_agent3">-1</label>
+				<input type="radio" name="follow_agent" value=-1 id="follow_agent3">
+				<label for="follow_agent4">0</label>
+				<input type="radio" name="follow_agent" value=0 id="follow_agent4">
+				<label for="follow_agent5">1</label>
+				<input type="radio" name="follow_agent" value=1 id="follow_agent5">
+				<label for="follow_agent6">2</label>
+				<input type="radio" name="follow_agent" value=2 id="follow_agent6">
+				<label for="follow_agent7">3</label>
+				<input type="radio" name="follow_agent" value=3 id="follow_agent7">
+
+			</div>
+			<button id="consent_done">Submit & Continue</button>
+		</dialog>
+
+		<!-- Questionnaire, opens after each piece selection -->
+		<dialog id="questionnaire">
+			<h2>Questionnaire</h2>
+			<p>How confident were you about your choice?</p>
+			<div>
+				<input type="radio" name="confidence" value=1 id="confidence1">
+				<label for="confidence1">very certain</label>
+				<input type="radio" name="confidence" value=2 id="confidence2">
+				<label for="confidence2">rather certain</label>
+				<input type="radio" name="confidence" value=3 id="confidence3" checked>
+				<label for="confidence3">neutral</label>
+				<input type="radio" name="confidence" value=4 id="confidence4">
+				<label for="confidence4">rather uncertain</label>
+				<input type="radio" name="confidence" value=5 id="confidence5">
+				<label for="confidence5">very uncertain</label>
+			</div>
+			<button id="questionnaire_done">Submit</button>
+		</dialog>
+
+		<!-- Demographic questionnaire -->
+		<dialog id="demographic">
+			<h2>Almost done!</h2>
+				<p>Thanks for taking part in our study. You completed all tasks.</p>
+				<p>To finish your run, please answer the following questions and click on <strong>Submit</strong>.</p>
+				<label for="age">Age:</label>
+				<input type="number" id="age" name="age" min=1>
+				<input type="checkbox" id="no_age" name="no_age">
+				<label for="no_age">I don't want to give my age</label>
+				<br>
+				<p>What device were you using to move your cursor?</p>
+				<input type="radio" name="track_device" value="mouse" id="device_mouse">
+				<label for="device_mouse">mouse</label>
+				<input type="radio" name="track_device" value="trackpad" id="device_trackpad">
+				<label for="device_trackpad">trackpad</label>
+				<input type="radio" name="track_device" value="other" id="other">
+				<label for="other">other (please specify)</label>
+				<input name="other_device" id="other_device">
+				<br>
+				<input type="checkbox" id="played_pento_before" name="played_pento_before">
+				<label for="played_pento_before">I have worked with pentomino pieces before.</label>
+				<p>Open comments: (Did something go wrong? Feel free to give feedback!)</p>
+				<input id="comments">
+				<br>
+			<button id="demographic_done">Submit & Finish</button>
+		</dialog>
+
+		<!-- End screen -->
+		<dialog id="endscreen">
+			<h2>Thanks for your participation!</h2>
+		</dialog>
+	</div>
+
+	<script src='./js/jquery.min.js'></script>
+	<script src='./js/jcanvas.min.js'></script>
+	<script src='./js/Filesaver.js'></script>
+	<script src='./js/dialog/dialog-polyfill.js'></script>
+
+	<script src='./js/pento/pento_config.js'></script>
+	<script src='./js/pento/pento_block.js'></script>
+	<script src='./js/pento/pento_shape.js'></script>
+	<script src='./js/pento/pento_render.js'></script>
+	<script src='./js/pento/pento_selection_board.js'></script>
+	<script src='./js/pento/pento_generator.js'></script>
+	<script src='./js/instruction_manager.js'></script>
+	<script src='./js/study1/study1.js'></script>
+</body>
+
+</html>

@@ -46,16 +46,17 @@
 						<br>
 						<label class="config">Show Grid</label>
 						<input id="showgrid" type="checkbox" />
-						
+
 						<hr>
 						<p>Available shapes<button class="toggle btn" onclick="toggle_shape_select()">Switch selection</button></p>
 						<div class="row shape-select">
 						</div>
-						
+
 					</div>
 					<hr>
 				<button type="button" id="generate" onclick="generate()">Generate</button>
 				<button type="button" id="save" onclick="save_task()">Save</button>
+				<button class="save btn" onclick="export_as_json()">Export JSON</button>
 			</div>
 		</div>
 
@@ -64,7 +65,7 @@
 	<script src='./js/jquery.min.js'></script>
 	<script src='./js/jcanvas.min.js'></script>
 	<script src='./js/FileSaver.js'></script>
-	
+
 	<script src='./js/pento/pento_config.js'></script>
 	<script src='./js/pento/pento_block.js'></script>
 	<script src='./js/pento/pento_shape.js'></script>
@@ -75,5 +76,3 @@
 </body>
 
 </html>
-
-
