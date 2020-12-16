@@ -1,9 +1,9 @@
 {
-  "audiotest": "I totally understood everything!",
-  "name": "Awesome Study Participant",
-  "email": "particip@123456.de",
+  "audiotest": "I totally understood everything",
+  "name": "Some Participant",
+  "email": "participant@123456.de",
   "follow_agent": "-3",
-  "start_time": "Tue Dec 15 2020 10:19:34 GMT+0100 (Mitteleuropäische Normalzeit)",
+  "start_time": "Wed Dec 16 2020 08:55:07 GMT+0100 (Mitteleuropäische Normalzeit)",
   "2077_pento_task.json": {
     "X0#CC88CC": {
       "target_x": 240,
@@ -12,79 +12,96 @@
       "selected": "T11#408000",
       "movement": [
         {
-          "time": 202,
+          "time": 203,
           "x": -1,
           "y": -1
         },
         {
-          "time": 402,
-          "x": 245,
+          "time": 404,
+          "x": 188,
           "y": 224
         },
         {
-          "time": 605,
-          "x": -1,
-          "y": -1
+          "time": 607,
+          "x": 262,
+          "y": 213
         },
         {
-          "time": 806,
-          "x": -1,
-          "y": -1
+          "time": 820,
+          "x": 186,
+          "y": 174
         },
         {
-          "time": 1006,
-          "x": 271,
-          "y": 114
+          "time": 1021,
+          "x": 156,
+          "y": 147
         },
         {
-          "time": 1213,
-          "x": 259,
-          "y": 114
+          "time": 1221,
+          "x": 156,
+          "y": 147
         },
         {
-          "time": 1418,
-          "x": 256,
-          "y": 114
+          "time": 1423,
+          "x": 156,
+          "y": 147
         },
         {
-          "time": 1621,
-          "x": 256,
-          "y": 114
+          "time": 1627,
+          "x": 156,
+          "y": 147
         },
         {
-          "time": 1823,
-          "x": 63,
-          "y": 175
+          "time": 1827,
+          "x": 54,
+          "y": 64
         },
         {
-          "time": 2023,
-          "x": 44,
-          "y": 141
+          "time": 2028,
+          "x": 105,
+          "y": 191
         },
         {
-          "time": 2224,
-          "x": 43,
-          "y": 135
+          "time": 2228,
+          "x": 140,
+          "y": 205
         },
         {
           "time": 2428,
-          "x": 43,
-          "y": 135
+          "x": 75,
+          "y": 168
         },
         {
-          "time": 2633,
-          "x": 43,
-          "y": 135
+          "time": 2629,
+          "x": 50,
+          "y": 140
+        },
+        {
+          "time": 2830,
+          "x": 50,
+          "y": 133
+        },
+        {
+          "time": 3031,
+          "x": 50,
+          "y": 133
         }
       ],
       "correct": false
     },
-    "confidence": "2"
+    "understandability": "-3",
+    "clearity": "-3",
+    "ambiguity": "1",
+    "completeness": "1",
+    "effort": "-3",
+    "information": "2",
+    "collaborative": "0",
+    "error": false
   },
   "age": "80",
-  "track_device": "trackpad",
+  "track_device": "neurolink",
   "played_pento_before": false,
   "comments": "",
-  "end_time": "Tue Dec 15 2020 10:19:47 GMT+0100 (Mitteleuropäische Normalzeit)",
+  "end_time": "Wed Dec 16 2020 08:56:23 GMT+0100 (Mitteleuropäische Normalzeit)",
   "browser_os_info": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0"
 }

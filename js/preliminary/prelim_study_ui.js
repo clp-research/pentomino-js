@@ -277,24 +277,39 @@ $(document).ready(function() {
 	
 	// submit task questionnaire, load new task or move to demographic questionnaire
 	$('#questionnaire_done').click(async function() {
-		// get and save the questionnary answer
-		// This requires the questionnary to have some box checked, use default value!
-		let conf_score = $('input[name="confidence"]:checked').val();
-		if (document.instruction_manager) {
-			document.instruction_manager.add_info('confidence', conf_score, 'task');
-		}
-		questionnaire.close();
-		
-		updateProgressBar(Math.floor(100 * current_file / FILES.length));
-		// small breather for the participant
-		await sleep(1000);
-		var tasks_remaining = loadNewFile();
-		// finish the run
-		if (!tasks_remaining) {
-			updateProgressBar(100);
-			document.open_popup(demographic);
+		// get and save the questionnaire answer
+		// all questions are mandatory!
+		understand = $('input[name="understand"]:checked').val();
+		clear = $('input[name="clear"]:checked').val();
+		ambiguous = $('input[name="ambiguous"]:checked').val();
+		complete = $('input[name="complete"]:checked').val();
+		effort = $('input[name="effort"]:checked').val();
+		info = $('input[name="info"]:checked').val();
+		collaborative = $('input[name="collaborative"]:checked').val();
+		if ((!understand) || (!clear) || (!ambiguous) || (!complete) || (!effort) || (!info) || (!collaborative)) {
+			alert("Please answer all questions")
 		} else {
-			//startTimer();
+			if (document.instruction_manager) {
+				// save all answers
+				document.instruction_manager.add_info('understandability', understand, 'task');
+				document.instruction_manager.add_info('clearity', clear, 'task');
+				document.instruction_manager.add_info('ambiguity', ambiguous, 'task');
+				document.instruction_manager.add_info('completeness', complete, 'task');
+				document.instruction_manager.add_info('effort', effort, 'task');
+				document.instruction_manager.add_info('information', info, 'task');
+				document.instruction_manager.add_info('collaborative', collaborative, 'task');
+				document.instruction_manager.add_info('error', $('#task_error').is(":checked"), 'task');
+			}
+			questionnaire.close();
+			updateProgressBar(Math.floor(100 * current_file / FILES.length));
+			// small breather for the participant
+			await sleep(1000);
+			var tasks_remaining = loadNewFile();
+			// finish the run
+			if (!tasks_remaining) {
+				updateProgressBar(100);
+				document.open_popup(demographic);
+			}
 		}
 	})
 	

@@ -103,19 +103,89 @@
 		<!-- Questionnaire, opens after each piece selection -->
 		<dialog id="questionnaire">
 			<h2>Questionnaire</h2>
-			<p>How confident were you about your choice?</p>
-			<div>
-				<input type="radio" name="confidence" value=1 id="confidence1">
-				<label for="confidence1">very certain</label>
-				<input type="radio" name="confidence" value=2 id="confidence2">
-				<label for="confidence2">rather certain</label>
-				<input type="radio" name="confidence" value=3 id="confidence3" checked>
-				<label for="confidence3">neutral</label>
-				<input type="radio" name="confidence" value=4 id="confidence4">
-				<label for="confidence4">rather uncertain</label>
-				<input type="radio" name="confidence" value=5 id="confidence5">
-				<label for="confidence5">very uncertain</label>
-			</div>
+			<p><strong>Please rate the instruction you just completed.</strong></p>
+			<hr>
+			<!-- Understandability -->
+			<p>It was easy to understand the instruction</p>
+			<label for="understand-3">difficult</label>
+			<input type="radio" name="understand" value=-3 id="understand-3">
+			<input type="radio" name="understand" value=-2>
+			<input type="radio" name="understand" value=-1>
+			<input type="radio" name="understand" value=0>
+			<input type="radio" name="understand" value=1>
+			<input type="radio" name="understand" value=2>
+			<input type="radio" name="understand" value=3 id="understand3">
+			<label for="understand3">easy</label>
+			<hr>
+			<p>The agent's instruction was clear</p>
+			<label for="clear-3">unclear</label>
+			<input type="radio" name="clear" value=-3 id="clear-3">
+			<input type="radio" name="clear" value=-2>
+			<input type="radio" name="clear" value=-1>
+			<input type="radio" name="clear" value=0>
+			<input type="radio" name="clear" value=1>
+			<input type="radio" name="clear" value=2>
+			<input type="radio" name="clear" value=3 id="clear3">
+			<label for="clear3">clear</label>
+			<hr>
+			<p>The agent's instruction was ambiguous</p>
+			<label for="ambiguous-3">precise</label>
+			<input type="radio" name="ambiguous" value=-3 id="ambiguous-3">
+			<input type="radio" name="ambiguous" value=-2>
+			<input type="radio" name="ambiguous" value=-1>
+			<input type="radio" name="ambiguous" value=0>
+			<input type="radio" name="ambiguous" value=1>
+			<input type="radio" name="ambiguous" value=2>
+			<input type="radio" name="ambiguous" value=3 id="ambiguous3">
+			<label for="ambiguous3">ambiguous</label>
+			<hr>
+			<p>The agent's instruction was complete</p>
+			<label for="complete-3">fragmented</label>
+			<input type="radio" name="complete" value=-3 id="complete-3">
+			<input type="radio" name="complete" value=-2>
+			<input type="radio" name="complete" value=-1>
+			<input type="radio" name="complete" value=0>
+			<input type="radio" name="complete" value=1>
+			<input type="radio" name="complete" value=2>
+			<input type="radio" name="complete" value=3 id="complete3">
+			<label for="complete3">complete</label>
+			<hr>
+			<p>The agent put too little effort</p>
+			<label for="effort-3">too much effort</label>
+			<input type="radio" name="effort" value=-3 id="effort-3">
+			<input type="radio" name="effort" value=-2>
+			<input type="radio" name="effort" value=-1>
+			<input type="radio" name="effort" value=0>
+			<input type="radio" name="effort" value=1>
+			<input type="radio" name="effort" value=2>
+			<input type="radio" name="effort" value=3 id="effort3">
+			<label for="effort3">too little effort</label>
+			<hr>
+			<p>The agent's instruction had too much information</p>
+			<label for="info-3">little information</label>
+			<input type="radio" name="info" value=-3 id="info-3">
+			<input type="radio" name="info" value=-2>
+			<input type="radio" name="info" value=-1>
+			<input type="radio" name="info" value=0>
+			<input type="radio" name="info" value=1>
+			<input type="radio" name="info" value=2>
+			<input type="radio" name="info" value=3 id="info3">
+			<label for="info3">a lot of information</label>
+			<hr>
+			<p>It was a collaborative instruction</p>
+			<label for="collaborative-3">non-collaborative</label>
+			<input type="radio" name="collaborative" value=-3 id="collaborative-3">
+			<input type="radio" name="collaborative" value=-2>
+			<input type="radio" name="collaborative" value=-1>
+			<input type="radio" name="collaborative" value=0>
+			<input type="radio" name="collaborative" value=1>
+			<input type="radio" name="collaborative" value=2>
+			<input type="radio" name="collaborative" value=3 id="collaborative3">
+			<label for="collaborative3">collaborative</label>
+			<hr>
+			<label for="task_error">Something went wrong</label>
+			<input type="checkbox" name="task_error" id="task_error">
+			<hr>
 			<button id="questionnaire_done">Submit</button>
 		</dialog>
 		
