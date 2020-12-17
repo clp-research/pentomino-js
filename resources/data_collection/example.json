@@ -1,107 +1,407 @@
 {
-  "audiotest": "I totally understood everything",
-  "name": "Some Participant",
-  "email": "participant@123456.de",
-  "follow_agent": "-3",
-  "start_time": "Wed Dec 16 2020 08:55:07 GMT+0100 (Mitteleuropäische Normalzeit)",
-  "2077_pento_task.json": {
-    "X0#CC88CC": {
-      "target_x": 240,
+  "audiotest": "a",
+  "name": "a",
+  "email": "a",
+  "follow_agent": "-1",
+  "start_time": "Thu Dec 17 2020 21:07:04 GMT+0100 (CET)",
+  "z.json": {
+    "Z20lightblue": {
+      "target_x": 100,
       "target_y": 80,
-      "audio_duration": 4.92,
-      "selected": "T11#408000",
+      "audio_duration": 2.496,
+      "selected": "Y7lightblue",
       "movement": [
         {
-          "time": 203,
+          "time": 200,
           "x": -1,
           "y": -1
         },
         {
-          "time": 404,
-          "x": 188,
-          "y": 224
+          "time": 401,
+          "x": -1,
+          "y": -1
         },
         {
-          "time": 607,
-          "x": 262,
-          "y": 213
-        },
-        {
-          "time": 820,
-          "x": 186,
-          "y": 174
-        },
-        {
-          "time": 1021,
-          "x": 156,
-          "y": 147
-        },
-        {
-          "time": 1221,
-          "x": 156,
-          "y": 147
-        },
-        {
-          "time": 1423,
-          "x": 156,
-          "y": 147
-        },
-        {
-          "time": 1627,
-          "x": 156,
-          "y": 147
-        },
-        {
-          "time": 1827,
-          "x": 54,
-          "y": 64
-        },
-        {
-          "time": 2028,
-          "x": 105,
-          "y": 191
-        },
-        {
-          "time": 2228,
-          "x": 140,
+          "time": 603,
+          "x": 330,
           "y": 205
         },
         {
-          "time": 2428,
-          "x": 75,
-          "y": 168
-        },
-        {
-          "time": 2629,
-          "x": 50,
-          "y": 140
-        },
-        {
-          "time": 2830,
-          "x": 50,
-          "y": 133
-        },
-        {
-          "time": 3031,
-          "x": 50,
-          "y": 133
+          "time": 804,
+          "x": 328,
+          "y": 205
         }
       ],
       "correct": false
     },
-    "understandability": "-3",
-    "clearity": "-3",
-    "ambiguity": "1",
-    "completeness": "1",
+    "clarity": "-3",
     "effort": "-3",
-    "information": "2",
-    "collaborative": "0",
+    "information": "-3",
+    "collaborative": "-3",
     "error": false
   },
-  "age": "80",
-  "track_device": "neurolink",
+  "l.json": {
+    "L2lightblue": {
+      "target_x": 340,
+      "target_y": 260,
+      "audio_duration": 2.496,
+      "selected": "I0lightblue",
+      "movement": [
+        {
+          "time": 202,
+          "x": 223,
+          "y": 185
+        },
+        {
+          "time": 403,
+          "x": 213,
+          "y": 181
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "n.json": {
+    "N15lightblue": {
+      "target_x": 20,
+      "target_y": 260,
+      "audio_duration": 2.496,
+      "selected": "T18lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 221,
+          "y": 228
+        },
+        {
+          "time": 401,
+          "x": 217,
+          "y": 238
+        },
+        {
+          "time": 602,
+          "x": 209,
+          "y": 264
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "v.json": {
+    "V13lightblue": {
+      "target_x": 20,
+      "target_y": 300,
+      "audio_duration": 2.496,
+      "selected": "F19lightblue",
+      "movement": [
+        {
+          "time": 203,
+          "x": 205,
+          "y": 158
+        },
+        {
+          "time": 404,
+          "x": 206,
+          "y": 168
+        },
+        {
+          "time": 604,
+          "x": 206,
+          "y": 168
+        },
+        {
+          "time": 805,
+          "x": 231,
+          "y": 184
+        },
+        {
+          "time": 1005,
+          "x": 305,
+          "y": 165
+        },
+        {
+          "time": 1206,
+          "x": 296,
+          "y": 156
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "t.json": {
+    "T18lightblue": {
+      "target_x": 100,
+      "target_y": 120,
+      "audio_duration": 2.496,
+      "selected": "Z20lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 261,
+          "y": 253
+        },
+        {
+          "time": 401,
+          "x": 210,
+          "y": 237
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "y.json": {
+    "Y7lightblue": {
+      "target_x": 40,
+      "target_y": 300,
+      "audio_duration": 2.496,
+      "selected": "U16lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 143,
+          "y": 317
+        },
+        {
+          "time": 401,
+          "x": 128,
+          "y": 328
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "w.json": {
+    "W5lightblue": {
+      "target_x": 180,
+      "target_y": 120,
+      "audio_duration": 2.496,
+      "selected": "I0lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 136,
+          "y": 221
+        },
+        {
+          "time": 402,
+          "x": 132,
+          "y": 225
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "x.json": {
+    "X9lightblue": {
+      "target_x": 200,
+      "target_y": 40,
+      "audio_duration": 2.496,
+      "selected": "Y7lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 234,
+          "y": 177
+        },
+        {
+          "time": 403,
+          "x": 214,
+          "y": 191
+        },
+        {
+          "time": 604,
+          "x": 213,
+          "y": 194
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "f.json": {
+    "F19lightblue": {
+      "target_x": 60,
+      "target_y": 80,
+      "audio_duration": 2.496,
+      "selected": "P17lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 261,
+          "y": 212
+        },
+        {
+          "time": 402,
+          "x": 219,
+          "y": 209
+        },
+        {
+          "time": 603,
+          "x": 217,
+          "y": 240
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "u.json": {
+    "U16lightblue": {
+      "target_x": 20,
+      "target_y": 180,
+      "audio_duration": 2.496,
+      "selected": "Z20lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 256,
+          "y": 234
+        },
+        {
+          "time": 402,
+          "x": 208,
+          "y": 251
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "p.json": {
+    "P17lightblue": {
+      "target_x": 40,
+      "target_y": 160,
+      "audio_duration": 2.496,
+      "selected": "V13lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 272,
+          "y": 224
+        },
+        {
+          "time": 402,
+          "x": 208,
+          "y": 194
+        },
+        {
+          "time": 602,
+          "x": 233,
+          "y": 315
+        },
+        {
+          "time": 802,
+          "x": 236,
+          "y": 322
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "i.json": {
+    "I0lightblue": {
+      "target_x": 20,
+      "target_y": 160,
+      "audio_duration": 2.496,
+      "selected": "N15lightblue",
+      "movement": [
+        {
+          "time": 200,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 402,
+          "x": 256,
+          "y": 279
+        },
+        {
+          "time": 601,
+          "x": 240,
+          "y": 326
+        },
+        {
+          "time": 802,
+          "x": 239,
+          "y": 327
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "age": null,
+  "gender": null,
+  "education": "a",
+  "language": "a",
+  "fluent": "-1",
+  "good": "0",
+  "understanding": "1",
+  "complete": "0",
+  "intelligent": "0",
+  "competent": "0",
+  "friendly": "0",
+  "helpful": "0",
+  "comply": "0",
+  "easy": "0",
+  "robot_before": false,
   "played_pento_before": false,
+  "track_device": "trackpad",
+  "know_want": "a",
+  "greatest_difficulty": "a",
+  "why_study": "a",
   "comments": "",
-  "end_time": "Wed Dec 16 2020 08:56:23 GMT+0100 (Mitteleuropäische Normalzeit)",
-  "browser_os_info": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0"
+  "end_time": "Thu Dec 17 2020 21:08:45 GMT+0100 (CET)",
+  "browser_os_info": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15"
 }

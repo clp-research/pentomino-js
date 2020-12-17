@@ -174,8 +174,10 @@ $(document).ready(function () {
 		 * @param {pass true to enable audio. default: true} audio
 		 */
 		correct_piece(audio=true) {
+			var random_num = 0;
 			if (audio) {
-				let correct_piece_file = './resources/audio/correct.mp3';
+				random_num = Math.floor(Math.random() * 3) + 1
+				let correct_piece_file = './resources/audio/correct'+random_num+'.mp3';
 				let correct_piece_audio = new Audio(correct_piece_file);
 				correct_piece_audio.oncanplaythrough = (event) => {
 					correct_piece_audio.play();
@@ -190,8 +192,10 @@ $(document).ready(function () {
 		 * @param {pass true to enable audio. default: true} audio
 		 */
 		incorrect_piece(audio=true) {
+			var random_num = 0;
 			if (audio) {
-				let incorrect_piece_file = './resources/audio/incorrect.mp3';
+				random_num = Math.floor(Math.random() * 3) + 1
+				let incorrect_piece_file = './resources/audio/incorrect'+random_num+'.mp3';
 				let incorrect_piece_audio = new Audio(incorrect_piece_file);
 				incorrect_piece_audio.oncanplaythrough = (event) => {
 					incorrect_piece_audio.play();

@@ -293,22 +293,16 @@ $(document).ready(function() {
 	$('#questionnaire_done').click(async function() {
 		// get and save the questionnaire answer
 		// all questions are mandatory!
-		understand = $('input[name="understand"]:checked').val();
 		clear = $('input[name="clear"]:checked').val();
-		ambiguous = $('input[name="ambiguous"]:checked').val();
-		complete = $('input[name="complete"]:checked').val();
 		effort = $('input[name="effort"]:checked').val();
 		info = $('input[name="info"]:checked').val();
 		collaborative = $('input[name="collaborative"]:checked').val();
-		if ((!understand) || (!clear) || (!ambiguous) || (!complete) || (!effort) || (!info) || (!collaborative)) {
+		if ((!clear) || (!effort) || (!info) || (!collaborative)) {
 			alert("Please answer all questions")
 		} else {
 			if (document.instruction_manager) {
 				// save all answers
-				document.instruction_manager.add_info('understandability', understand, 'task');
-				document.instruction_manager.add_info('clearity', clear, 'task');
-				document.instruction_manager.add_info('ambiguity', ambiguous, 'task');
-				document.instruction_manager.add_info('completeness', complete, 'task');
+				document.instruction_manager.add_info('clarity', clear, 'task');
 				document.instruction_manager.add_info('effort', effort, 'task');
 				document.instruction_manager.add_info('information', info, 'task');
 				document.instruction_manager.add_info('collaborative', collaborative, 'task');
@@ -337,15 +331,19 @@ $(document).ready(function() {
 		if (document.instruction_manager) {
 			// make sure form is filled out
 			let age = $('#no_age').is(':checked') ? null : $('#age').val();
-
 			let gender = $('#no_gender').is(':checked') ? null : $('#gender').val();
-
 			let education = $('#education').val();
-
 			let language = $('#language').val();
-
 			let fluent = $('input[name="fluent"]:checked').val();
-
+			let good = $('input[name="good"]:checked').val();
+			let understanding = $('input[name="understanding"]:checked').val();
+			let complete = $('input[name="complete"]:checked').val();
+			let intelligent = $('input[name="intelligent"]:checked').val();
+			let competent = $('input[name="competent"]:checked').val();
+			let friendly = $('input[name="friendly"]:checked').val();
+			let helpful = $('input[name="helpful"]:checked').val();
+			let comply = $('input[name="comply"]:checked').val();
+			let easy = $('input[name="easy"]:checked').val();
 			// track device must either be one of the preset options or 'other' and manually specified other_device
 			let track_device = $('input[name="track_device"]:checked').val();
 			track_device = (track_device=='other') ? $('#other_device').val() : track_device;
@@ -365,6 +363,33 @@ $(document).ready(function() {
 			} else if (!fluent) {
 				alert('Please specify your English fluency');
 				$('#fluency').css('borderColor', 'red');
+			} else if (!good) {
+				alert('Please specify how good was Mathew');
+				$('#good').css('borderColor', 'red');
+			} else if (!understanding) {
+				alert('Please specify your understanding');
+				$('#understanding').css('borderColor', 'red');
+			} else if (!complete) {
+				alert('Please specify instruction completeness');
+				$('#complete').css('borderColor', 'red');
+			} else if (!intelligent) {
+				alert('Please specify Mathews intelligence');
+				$('#intelligent').css('borderColor', 'red');
+			} else if (!competent) {
+				alert('Please specify Mathews competence');
+				$('#competent').css('borderColor', 'red');
+			} else if (!friendly) {
+				alert('Please specify Mathews friendliness');
+				$('#friendly').css('borderColor', 'red');
+			} else if (!helpful) {
+				alert('Please specify Mathews help');
+				$('#helpful').css('borderColor', 'red');
+			} else if (!comply) {
+				alert('Please specify your compliance');
+				$('#comply').css('borderColor', 'red');
+			} else if (!easy) {
+				alert('Please specify the task difficulty');
+				$('#easy').css('borderColor', 'red');
 			} else if (!track_device) {
 				alert('Please specify your device');
 				$('#track_device').css('borderColor', 'red');
@@ -375,8 +400,21 @@ $(document).ready(function() {
 				document.instruction_manager.add_info('education', education);
 				document.instruction_manager.add_info('language', language);
 				document.instruction_manager.add_info('fluent', fluent);
-				document.instruction_manager.add_info('track_device', track_device);
+				document.instruction_manager.add_info('good', good);
+				document.instruction_manager.add_info('understanding', understanding);
+				document.instruction_manager.add_info('complete', complete);
+				document.instruction_manager.add_info('intelligent', intelligent);
+				document.instruction_manager.add_info('competent', competent);
+				document.instruction_manager.add_info('friendly', friendly);
+				document.instruction_manager.add_info('helpful', helpful);
+				document.instruction_manager.add_info('comply', comply);
+				document.instruction_manager.add_info('easy', easy);
+				document.instruction_manager.add_info('robot_before', $('#robot_before').is(':checked'));
 				document.instruction_manager.add_info('played_pento_before', $('#pento_played_before').is(':checked'));
+				document.instruction_manager.add_info('track_device', track_device);
+				document.instruction_manager.add_info('know_want', $('#know_want').val());
+				document.instruction_manager.add_info('greatest_difficulty', $('#greatest_difficulty').val());
+				document.instruction_manager.add_info('why_study', $('#why_study').val());
 				document.instruction_manager.add_info('comments', $('#comments').val());
 				// save time of completion
 				document.instruction_manager.add_info('end_time', new Date().toString());
