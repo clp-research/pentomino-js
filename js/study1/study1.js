@@ -5,11 +5,6 @@ $(document).ready(function() {
 	var TASK_BOARD_NAME			= 'task_board';
 	var elephant_c = 0;
 
-//	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json',
-//								   './resources/tasks_single_piece/2909_pento_task.json',
-//								   './resources/tasks_single_piece/3060_pento_task.json',
-//								   './resources/tasks_single_piece/5234_pento_task.json']
-	// for testing
 	var FILES					= ['./resources/tasks/z.json',
 								   './resources/tasks/l.json',
 								   './resources/tasks/n.json',
@@ -22,19 +17,17 @@ $(document).ready(function() {
 								   './resources/tasks/u.json',
 								   './resources/tasks/p.json',
 								   './resources/tasks/i.json']
-	// var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
-//	var FILES					= ['./resources/tasks_multiple_pieces/4271_pento_task.json']
-	var current_file = 0; // increment as tasks are loaded
 
+	var current_file = 0; // increment as tasks are loaded
 
 	let selboard_size_str = $(`#${SELECTION_BOARD_NAME}`).css('width');
 	let selboard_size = Number(selboard_size_str.slice(0, selboard_size_str.length-2));
 	this.selection_board = new document.PentoSelectionBoard(`#${SELECTION_BOARD_NAME}`, SELECTION_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=selboard_size));
-	// board which is automatically filled as pieces are selected
+
+	// Board which is automatically filled as pieces are selected
 	let taskboard_size_str = $(`#${TASK_BOARD_NAME}`).css('width');
 	let taskboard_size = Number(taskboard_size_str.slice(0, taskboard_size_str.length-2));
 	this.task_board = new document.PentoSelectionBoard(`#${TASK_BOARD_NAME}`, TASK_BOARD_NAME, WITH_GRID, new document.PentoConfig(board_size=taskboard_size), read_only=true,);
-
 	this.instruction_manager = new document.InstructionManager(this.selection_board, this.task_board);
 
 	// Helper function to pause the study for a moment
@@ -170,7 +163,6 @@ $(document).ready(function() {
 	}
 
 	// --- Correct counter ---
-
 	/**
 	 * Update the display of correct guesses
 	 */
@@ -193,7 +185,6 @@ $(document).ready(function() {
 	}
 
 	// Buttons
-
 	var selection_handler = {
 		handle: function(event) {
 			if (event.type == 'shape_selected')
@@ -422,6 +413,7 @@ $(document).ready(function() {
 				// manually change these information and browsers might change their behaviour in the future
 				document.instruction_manager.add_info('browser_os_info', window.navigator.userAgent);
 				// save collected data to server-side resource/data_collection directory
+
 				let data = document.instruction_manager.data_to_JSON();
 				let file_saver_script = './php/save_userdata.php';
 				fetch(file_saver_script, {
@@ -434,6 +426,7 @@ $(document).ready(function() {
 						console.log(`Error: Something went wrong during saving of collected data. Response code: ${resp_code}`);
 					}
 				})
+
 				// proceed to endscreen
 				document.instruction_manager.well_done();
 				demographic.close();

@@ -119,7 +119,6 @@ $(document).ready(function () {
 			this.task_board.handle_selection(this.shape);
 		}
 
-
 		/**
 		 * Highlight the goal shape in green.
 		 */
@@ -291,6 +290,5 @@ $(document).ready(function () {
 			}
 			this.add_info('movement', this.current_mouse_movement, 'shape');
 		}
-
 	};
 })
