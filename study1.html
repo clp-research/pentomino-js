@@ -77,9 +77,9 @@
 			<input type="email" id="email" name="email">
 			<br>
 			<input type="checkbox" id="consent_agree" name="consent_agree">
-			<label for="consent_agree">I have read and understood the above information.  I agree to take part in the study.</label>
+			<label for="consent_agree">I have read and understood the above information. I agree to take part in the study.</label>
 			<hr>
-			<p>How much are you willing to comply agent instructions? (-3: very little; 3: a lot)</p>
+			<p>How much are you willing to comply TO MATHEW's instructions? (-3: very little; 3: a lot)</p>
 			<div>
 				<label for="follow_agent1">-3</label>
 				<input type="radio" name="follow_agent" value=-3 id="follow_agent1">
@@ -107,14 +107,28 @@
 			<hr>
 			<!-- Understandability -->
 			<p>It was easy to understand the instruction</p>
-			<label for="understand-3">difficult</label>
-			<input type="radio" name="understand" value=-3 id="understand-3">
-			<input type="radio" name="understand" value=-2>
-			<input type="radio" name="understand" value=-1>
-			<input type="radio" name="understand" value=0>
-			<input type="radio" name="understand" value=1>
-			<input type="radio" name="understand" value=2>
+			<label for="understand-3">difficult</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand-3">-3<br/>
+				<input type="radio" name="understand" value=-3 id="understand-3">
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand-2">-2<br/>
+  				<input type="radio" name="understand" value=-2 id="understand-2"/>
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand-1">-1<br/>
+				<input type="radio" name="understand" value=-1 id="understand-1">
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand0">0<br/>
+			<input type="radio" name="understand" value=0 id="understand0">
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand1">1<br/>
+			<input type="radio" name="understand" value=1 id="understand1">
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand2">2<br/>
+			<input type="radio" name="understand" value=2 id="understand2">
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="understand3">3<br/>
 			<input type="radio" name="understand" value=3 id="understand3">
+			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<label for="understand3">easy</label>
 			<hr>
 			<p>The agent's instruction was clear</p>
@@ -199,6 +213,92 @@
 				<input type="checkbox" id="no_age" name="no_age">
 				<label for="no_age">I don't want to give my age</label>
 				<br>
+				<label for="gender">Gender:</label>
+				<input id="gender" name="gender">
+				<input type="checkbox" id="no_gender" name="no_gender">
+				<label for="no_gender">I don't want to give my gender</label>
+				<br>
+				<label for="education">Highest level of completed education:</label>
+				<input id="education" name="education">
+				<br>
+				<label for="language">Native language:</label>
+				<input id="language" name="language">
+				<br>
+				<!-- Fluency -->
+				<p>How fluent are you in English?</p>
+				<label for="fluent-3">Limited fluency</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent-3">-3<br/>
+					<input type="radio" name="fluent" value=-3 id="fluent-3">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent-2">-2<br/>
+	  				<input type="radio" name="fluent" value=-2 id="fluent-2"/>
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent-1">-1<br/>
+					<input type="radio" name="fluent" value=-1 id="fluent-1">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent0">0<br/>
+				<input type="radio" name="fluent" value=0 id="fluent0">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent1">1<br/>
+				<input type="radio" name="fluent" value=1 id="fluent1">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent2">2<br/>
+				<input type="radio" name="fluent" value=2 id="fluent2">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent3">3<br/>
+				<input type="radio" name="fluent" value=3 id="fluent3">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="fluent3">Full fluency</label>
+				<br>
+				<!-- Good agent -->
+				<p>Overall, Mathew was good at instructing me.</p>
+				<label for="good-3">Not so good</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good-3">-3<br/>
+					<input type="radio" name="good" value=-3 id="good-3">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good-2">-2<br/>
+	  				<input type="radio" name="good" value=-2 id="good-2"/>
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good-1">-1<br/>
+					<input type="radio" name="good" value=-1 id="good-1">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good0">0<br/>
+				<input type="radio" name="good" value=0 id="good0">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good1">1<br/>
+				<input type="radio" name="good" value=1 id="good1">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good2">2<br/>
+				<input type="radio" name="good" value=2 id="good2">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good3">3<br/>
+				<input type="radio" name="good" value=3 id="good3">
+				</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="good3">Very good</label>
+				<br>
+
+				<!-- Type	Question	Mandatory	Answers
+				Open-Text	Age	Yes	-
+				Open-Text	Gender	Yes	-
+				Selection	What is the highest level of education you have completed? 	Yes	Less than high school degree, High school degree (or equivalent), Some college (but no degree), Bachelor degree, Master degree, PhD degree
+				Open-Text	Native Language	Yes	-
+				Likert -3,+3	How fluent are you in English	Yes	Limited fluency - Full fluency
+				Likert -3,+3	Overall, the agent was good at instructing me	Yes	-3 Bad / +3 Good
+				Likert -3,+3	The agent was intelligent	Yes	-3 Unintelligent / +3 Intelligent
+				Likert -3,+3	The agent was competent	Yes	-3 Incompetent / +3 Competent
+				Likert -3,+3	The agent was friendly	Yes	-3 Unfriendly / +3 Friendly
+				Likert -3,+3	The agent was helpful	Yes	-3 Distracting / +3 Helpful
+				Likert -3,+3	How much did you comply to agent instructions?	Yes	-3 Very little / +3 A lot
+				Likert -3,+3	The task was easy	Yes	-3 Difficult / +3 Easy
+				Selection	Have you ever interacted with a robot 	Yes	Yes, No
+				Selection	Have you ever used Pentominoes	Yes	Yes, No
+				Open-Text	What internet browser and OS did you use for the task?	Yes	-
+				Open-Text	What mouse did you use for the task (Ordinary mouse, Trackpad)?	Yes	-
+				Open-Text	Did you always know what the agent wanted from you?	No	-
+				Open-Text	What was the greatest difficulty in solving the task?	No	-
+				Open-Text	Why do we do this study?	No	-
+				Open-Text	Do you have any comments? Did anything go wrong?	No	- -->
+
 				<p>What device were you using to move your cursor?</p>
 				<input type="radio" name="track_device" value="mouse" id="device_mouse">
 				<label for="device_mouse">mouse</label>

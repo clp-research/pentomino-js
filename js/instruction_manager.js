@@ -4,7 +4,7 @@ $(document).ready(function () {
 	 *
 	 * @author clpresearch / Karla Friedrichs
 	 */
-	 
+
 	this.InstructionManager = class InstructionManager {
 		/**
 		 * Constructor
@@ -28,7 +28,7 @@ $(document).ready(function () {
 			this.current_mouse_movement = [];
 			this.correct_counter		= 0; // number of correct guesses by participant
 		}
-		
+
 		/**
 		 * Registers the start of a new task
 		 * @param {optional task name, number is used otherwise} name
@@ -80,7 +80,7 @@ $(document).ready(function () {
 				return true;
 			}
 		}
-		
+
 		/**
 		 * Start data collection for current instruction
 		 */
@@ -88,7 +88,7 @@ $(document).ready(function () {
 			this.current_start_time = Date.now();
 			this._start_mouse_track();
 		}
-		
+
 		/**
 		 Stop data collection for current instruction and handle the follower action.
 		 @param {name of shape selected by follower} selected_shape
@@ -105,6 +105,7 @@ $(document).ready(function () {
 			if (this.shape == selected_shape) {
 				this.add_info('correct', true, 'shape');
 				this.correct_counter += 1;
+				this.correct_piece();
 			// incorrect shape selected
 			} else {
 				// highlight shape as incorrect
@@ -112,19 +113,20 @@ $(document).ready(function () {
 				this.add_info('correct', false, 'shape');
 				// handle the incorrectly selected shape
 				this.task_board.handle_selection(selected_shape);
+				this.incorrect_piece();
 			}
 			// make task_board handle the selection
 			this.task_board.handle_selection(this.shape);
 		}
-		
-		
+
+
 		/**
 		 * Highlight the goal shape in green.
 		 */
 		highlight_correct() {
 			this.selection_board.get_shape(this.shape).set_highlight('green');
 		}
-		
+
 		/**
 		 * Highlight a given shape in red.
 		 * @param {name of incorrect shape} shape
@@ -132,7 +134,7 @@ $(document).ready(function () {
 		highlight_incorrect(shape) {
 			this.selection_board.get_shape(shape).set_highlight('red');
 		}
-		
+
 		/**
 		 * Remove all hightlights
 		*/
@@ -141,16 +143,16 @@ $(document).ready(function () {
 				s.remove_highlight();
 			}
 		}
-		
+
 		/**
 		 * Play an example audiofile
 		 */
 		audiotest() {
-			let test_file = './resources/audio/audiotest.mp3';
+			let test_file = './resources/audio/intro.mp3';
 			let test_audio = new Audio(test_file);
 			test_audio.oncanplaythrough = (event) => {test_audio.play();};
 		}
-		
+
 		/**
 		 * Emit a 'well done' message
 		 * @param {pass true to enable audio. default: true} audio
@@ -166,7 +168,39 @@ $(document).ready(function () {
 				console.log("Well done!");
 			}
 		}
-		
+
+		/**
+		 * Emit a 'correct' message
+		 * @param {pass true to enable audio. default: true} audio
+		 */
+		correct_piece(audio=true) {
+			if (audio) {
+				let correct_piece_file = './resources/audio/correct.mp3';
+				let correct_piece_audio = new Audio(correct_piece_file);
+				correct_piece_audio.oncanplaythrough = (event) => {
+					correct_piece_audio.play();
+				}
+			} else {
+				console.log("This was correct!");
+			}
+		}
+
+		/**
+		 * Emit an 'incorrect' message
+		 * @param {pass true to enable audio. default: true} audio
+		 */
+		incorrect_piece(audio=true) {
+			if (audio) {
+				let incorrect_piece_file = './resources/audio/incorrect.mp3';
+				let incorrect_piece_audio = new Audio(incorrect_piece_file);
+				incorrect_piece_audio.oncanplaythrough = (event) => {
+					incorrect_piece_audio.play();
+				}
+			} else {
+				console.log("This was incorrect!");
+			}
+		}
+
 		/**
 		 * Save additional info to current follower data.
 		 * Data can be added at three levels:
@@ -201,14 +235,14 @@ $(document).ready(function () {
 					console.log(`Error: Undefined insertion level to save data ${key} = ${value}: ${level}`)
 			}
 		}
-		
+
 		/**
 		 * @return collected data as a JSON string
 		 */
 		data_to_JSON() {
 			return JSON.stringify(this.follower_data, null, 2);
 		}
-		
+
 		/**
 		 * Write collected data to savefile
 		 * @param {file to save to} filename
@@ -219,14 +253,14 @@ $(document).ready(function () {
 			// Save to file
 			saveAs(file_contents, filename);
 		}
-	
+
 		/**
 		 * @return time passed since start of current instruction in milliseconds
 		 */
 		_time_passed() {
 			return Date.now() - this.current_start_time;
 		}
-		
+
 		/**
 		 * Start tracking mouse coordinates as it is moved
 		 */
@@ -243,7 +277,7 @@ $(document).ready(function () {
 												y: Math.floor(mousePos.y * coord_scaling)});
 				}, this.track_interval);
 		}
-		
+
 		/**
 		 * Stop mouse tracking and store tracking info for current piece
 		 */
@@ -253,6 +287,6 @@ $(document).ready(function () {
 			}
 			this.add_info('movement', this.current_mouse_movement, 'shape');
 		}
-		
+
 	};
 })

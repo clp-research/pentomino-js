@@ -9,7 +9,19 @@ $(document).ready(function() {
 //								   './resources/tasks_single_piece/3060_pento_task.json',
 //								   './resources/tasks_single_piece/5234_pento_task.json']
 	// for testing
-	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
+	var FILES					= ['./resources/tasks/f.json',
+								   './resources/tasks/i.json',
+							   	   './resources/tasks/l.json',
+							   	   './resources/tasks/n.json',
+						   		   './resources/tasks/p.json',
+					   			   './resources/tasks/t.json',
+				   	   			   './resources/tasks/u.json',
+			   		   			   './resources/tasks/v.json',
+		   			   			   './resources/tasks/w.json',
+	   				   			   './resources/tasks/x.json',
+   					   			   './resources/tasks/y.json',
+								   './resources/tasks/z.json']
+	// var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
 //	var FILES					= ['./resources/tasks_multiple_pieces/4271_pento_task.json']
 	var current_file = 0; // increment as tasks are loaded
 
@@ -230,6 +242,7 @@ $(document).ready(function() {
 	$('#welcome_done').click(function() {
 		welcome.close();
 		document.open_popup(audiotest);
+		document.instruction_manager.audiotest();
 	});
 
 	// move on to consent form
@@ -318,17 +331,44 @@ $(document).ready(function() {
 		if (document.instruction_manager) {
 			// make sure form is filled out
 			let age = $('#no_age').is(':checked') ? null : $('#age').val();
+
+			let gender = $('#no_gender').is(':checked') ? null : $('#gender').val();
+
+			let education = $('#education').val();
+
+			let language = $('#language').val();
+
+			let fluent = $('input[name="fluent"]:checked').val();
+
 			// track device must either be one of the preset options or 'other' and manually specified other_device
 			let track_device = $('input[name="track_device"]:checked').val();
 			track_device = (track_device=='other') ? $('#other_device').val() : track_device;
+
 			if (age == '') {
 				alert('Please give your age or use the checkbox to skip this question.');
 				$('#age').css('borderColor', 'red');
+			} else if (gender == '') {
+				alert('Please give your gender or use the checkbox to skip this question.');
+				$('#gender').css('borderColor', 'red');
+			} else if (!education) {
+				alert('Please specify your education');
+				$('#education').css('borderColor', 'red');
+			} else if (!language) {
+				alert('Please specify your native language');
+				$('#language').css('borderColor', 'red');
+			} else if (!fluent) {
+				alert('Please specify your English fluency');
+				$('#fluency').css('borderColor', 'red');
 			} else if (!track_device) {
 				alert('Please specify your device');
+				$('#track_device').css('borderColor', 'red');
 			} else {
 				// save given demographic info
 				document.instruction_manager.add_info('age', age);
+				document.instruction_manager.add_info('gender', gender);
+				document.instruction_manager.add_info('education', education);
+				document.instruction_manager.add_info('language', language);
+				document.instruction_manager.add_info('fluent', fluent);
 				document.instruction_manager.add_info('track_device', track_device);
 				document.instruction_manager.add_info('played_pento_before', $('#pento_played_before').is(':checked'));
 				document.instruction_manager.add_info('comments', $('#comments').val());
