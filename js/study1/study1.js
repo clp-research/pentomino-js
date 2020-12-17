@@ -3,24 +3,25 @@ $(document).ready(function() {
 	var WITH_GRID				= false;
 	var SELECTION_BOARD_NAME	= 'selection_board';
 	var TASK_BOARD_NAME			= 'task_board';
+	var elephant_c = 0;
 
 //	var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json',
 //								   './resources/tasks_single_piece/2909_pento_task.json',
 //								   './resources/tasks_single_piece/3060_pento_task.json',
 //								   './resources/tasks_single_piece/5234_pento_task.json']
 	// for testing
-	var FILES					= ['./resources/tasks/f.json',
-								   './resources/tasks/i.json',
-							   	   './resources/tasks/l.json',
-							   	   './resources/tasks/n.json',
-						   		   './resources/tasks/p.json',
-					   			   './resources/tasks/t.json',
-				   	   			   './resources/tasks/u.json',
-			   		   			   './resources/tasks/v.json',
-		   			   			   './resources/tasks/w.json',
-	   				   			   './resources/tasks/x.json',
-   					   			   './resources/tasks/y.json',
-								   './resources/tasks/z.json']
+	var FILES					= ['./resources/tasks/z.json',
+								   './resources/tasks/l.json',
+								   './resources/tasks/n.json',
+								   './resources/tasks/v.json',
+								   './resources/tasks/t.json',
+								   './resources/tasks/y.json',
+								   './resources/tasks/w.json',
+								   './resources/tasks/x.json',
+								   './resources/tasks/f.json',
+								   './resources/tasks/u.json',
+								   './resources/tasks/p.json',
+								   './resources/tasks/i.json']
 	// var FILES					= ['./resources/tasks_single_piece/2077_pento_task.json']
 //	var FILES					= ['./resources/tasks_multiple_pieces/4271_pento_task.json']
 	var current_file = 0; // increment as tasks are loaded
@@ -175,7 +176,7 @@ $(document).ready(function() {
 	 */
 	this.updateCorrectCounter = function() {
 		if (document.instruction_manager) {
-			$('#correct_counter').html(`Correct: ${document.instruction_manager.correct_counter}`);
+			$('#correct_counter').html(`Correct: ${document.instruction_manager.correct_counter} / 12`);
 		}
 	}
 
@@ -318,6 +319,11 @@ $(document).ready(function() {
 			// small breather for the participant
 			await sleep(1000);
 			var tasks_remaining = loadNewFile();
+
+			// update elephant image
+			document.getElementById('elephant').src='resources/img/elephant'+elephant_c+'.png';
+			elephant_c = elephant_c + 1;
+
 			// finish the run
 			if (!tasks_remaining) {
 				updateProgressBar(100);

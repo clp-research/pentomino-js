@@ -5,20 +5,19 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Pentomino Select</title>
-	<meta name="description" content="Pento preliminary study - follower ui">
+	<title>Pentomino Board</title>
+	<meta name="description" content="Pentomino Study 1">
 	<meta name="author" content="clpresearch">
 
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/skeleton.css">
 	<link rel="stylesheet" href="css/dialog-polyfill.css">
 	<link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
 	<div class="container">
-		<h5>Click on the decribed piece on the left board! <div id="timer">00:00</div><div id="correct_counter">Correct: 0</div></h5>
+		<h5>Select the decribed piece on the left board! <div id="timer">00:00</div><div id="correct_counter">Correct: 0 / 12</div></h5>
 		<hr>
 		<div class="row">
 			<div class="eight columns">
@@ -27,6 +26,9 @@
 			</div>
 			<div class="four columns">
 				<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
+			</div>
+			<div class="four columns">
+				<img id="elephant" src="resources/img/elephant.png" alt="" />
 			</div>
 		</div>
 		<div id="progress_bg">
