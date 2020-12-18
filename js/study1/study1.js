@@ -401,7 +401,7 @@ $(document).ready(function() {
 				document.instruction_manager.add_info('comply', comply);
 				document.instruction_manager.add_info('easy', easy);
 				document.instruction_manager.add_info('robot_before', $('#robot_before').is(':checked'));
-				document.instruction_manager.add_info('played_pento_before', $('#pento_played_before').is(':checked'));
+				document.instruction_manager.add_info('played_pento_before', $('#played_pento_before').is(':checked'));
 				document.instruction_manager.add_info('track_device', track_device);
 				document.instruction_manager.add_info('know_want', $('#know_want').val());
 				document.instruction_manager.add_info('greatest_difficulty', $('#greatest_difficulty').val());
