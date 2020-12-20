@@ -146,7 +146,7 @@ $(document).ready(function() {
 		let time_passed = Date.now() - start_time;
 		m = Math.floor(time_passed / 60000);
 		s = Math.floor((time_passed % 60000) / 1000);
-		$('#timer').html(`${_timeToString(m)}:${_timeToString(s)}`);
+		$('#timer').html(`<span style="color:red">${_timeToString(m)}:${_timeToString(s)}</span>`);
 	}
 
 	/**
@@ -168,7 +168,7 @@ $(document).ready(function() {
 	 */
 	this.updateCorrectCounter = function() {
 		if (document.instruction_manager) {
-			$('#correct_counter').html(`Correct: ${document.instruction_manager.correct_counter} / 12`);
+			$('#correct_counter').html(`Correct: <span style="color:green">${document.instruction_manager.correct_counter}</span> / 12`);
 		}
 	}
 
