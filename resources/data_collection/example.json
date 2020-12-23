@@ -1,223 +1,33 @@
 {
-  "audiotest": "Houston we have a problem.",
-  "name": "Dimosthenis Kontogiorgos",
-  "email": "diko@kth.se",
-  "follow_agent": "2",
-  "start_time": "Fri Dec 18 2020 11:56:31 GMT+0100 (CET)",
+  "audiotest": "a",
+  "name": "a",
+  "email": "a",
+  "follow_agent": "-3",
+  "start_time": "Wed Dec 23 2020 18:52:44 GMT+0100 (CET)",
   "z.json": {
     "Z20lightblue": {
       "target_x": 100,
       "target_y": 80,
       "audio_duration": 2.496,
-      "selected": "X9lightblue",
+      "selected": "U16lightblue",
       "movement": [
         {
-          "time": 200,
+          "time": 201,
           "x": -1,
           "y": -1
         },
         {
           "time": 401,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 602,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 803,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1004,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1204,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1404,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1605,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1805,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2005,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2206,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2407,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2608,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2808,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3008,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3209,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3409,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3609,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3810,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4011,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4212,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4412,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4613,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4814,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 5015,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 5215,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 5416,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 5617,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 5818,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 6018,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 6219,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 6419,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 6619,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 6820,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 7020,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 7221,
-          "x": 350,
-          "y": 146
-        },
-        {
-          "time": 7423,
-          "x": 223,
-          "y": 86
-        },
-        {
-          "time": 7623,
-          "x": 205,
-          "y": 53
-        },
-        {
-          "time": 7824,
-          "x": 202,
-          "y": 50
-        },
-        {
-          "time": 8024,
-          "x": 202,
-          "y": 50
+          "x": 307,
+          "y": 324
         }
       ],
       "correct": false
     },
-    "clarity": "2",
-    "effort": "0",
-    "information": "-1",
-    "collaborative": "0",
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
     "error": false
   },
   "l.json": {
@@ -228,137 +38,27 @@
       "selected": "L2lightblue",
       "movement": [
         {
-          "time": 201,
-          "x": -1,
-          "y": -1
+          "time": 202,
+          "x": 314,
+          "y": 355
         },
         {
-          "time": 401,
-          "x": -1,
-          "y": -1
+          "time": 402,
+          "x": 319,
+          "y": 350
         },
         {
           "time": 602,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 803,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1004,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1204,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1404,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1605,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1805,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2006,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2207,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2408,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2608,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2809,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3009,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3209,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3410,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3610,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3811,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4012,
-          "x": 359,
-          "y": 176
-        },
-        {
-          "time": 4213,
-          "x": 277,
-          "y": 153
-        },
-        {
-          "time": 4416,
-          "x": 318,
-          "y": 236
-        },
-        {
-          "time": 4617,
-          "x": 342,
-          "y": 325
-        },
-        {
-          "time": 4817,
-          "x": 342,
-          "y": 325
-        },
-        {
-          "time": 5018,
-          "x": 342,
-          "y": 325
+          "x": 341,
+          "y": 328
         }
       ],
       "correct": true
     },
-    "clarity": "-1",
-    "effort": "1",
-    "information": "0",
-    "collaborative": "1",
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
     "error": false
   },
   "n.json": {
@@ -366,482 +66,27 @@
       "target_x": 20,
       "target_y": 260,
       "audio_duration": 2.496,
-      "selected": "Y7lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 401,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 602,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 802,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1002,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1203,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1404,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1604,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1806,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2006,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2207,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2407,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2607,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2807,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3008,
-          "x": 309,
-          "y": 208
-        },
-        {
-          "time": 3209,
-          "x": 309,
-          "y": 208
-        },
-        {
-          "time": 3409,
-          "x": 290,
-          "y": 200
-        },
-        {
-          "time": 3609,
-          "x": 285,
-          "y": 195
-        },
-        {
-          "time": 3810,
-          "x": 285,
-          "y": 195
-        },
-        {
-          "time": 4010,
-          "x": 285,
-          "y": 195
-        },
-        {
-          "time": 4211,
-          "x": 285,
-          "y": 195
-        },
-        {
-          "time": 4411,
-          "x": 285,
-          "y": 195
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "0",
-    "effort": "-1",
-    "information": "-2",
-    "collaborative": "-1",
-    "error": false
-  },
-  "v.json": {
-    "V13lightblue": {
-      "target_x": 20,
-      "target_y": 300,
-      "audio_duration": 2.496,
-      "selected": "Z20lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 402,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 602,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 802,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1003,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1203,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1404,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1604,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1805,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2005,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2206,
-          "x": 330,
-          "y": 264
-        },
-        {
-          "time": 2407,
-          "x": 329,
-          "y": 264
-        },
-        {
-          "time": 2610,
-          "x": 216,
-          "y": 265
-        },
-        {
-          "time": 2810,
-          "x": 211,
-          "y": 264
-        },
-        {
-          "time": 3011,
-          "x": 211,
-          "y": 264
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "2",
-    "effort": "1",
-    "information": "1",
-    "collaborative": "1",
-    "error": false
-  },
-  "t.json": {
-    "T18lightblue": {
-      "target_x": 100,
-      "target_y": 120,
-      "audio_duration": 2.496,
-      "selected": "F19lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 401,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 602,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 802,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1002,
-          "x": 306,
-          "y": 24
-        },
-        {
-          "time": 1203,
-          "x": 195,
-          "y": 83
-        },
-        {
-          "time": 1404,
-          "x": 202,
-          "y": 91
-        },
-        {
-          "time": 1604,
-          "x": 202,
-          "y": 91
-        },
-        {
-          "time": 1805,
-          "x": 202,
-          "y": 91
-        },
-        {
-          "time": 2005,
-          "x": 202,
-          "y": 91
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "-2",
-    "effort": "-1",
-    "information": "-1",
-    "collaborative": "-1",
-    "error": false
-  },
-  "y.json": {
-    "Y7lightblue": {
-      "target_x": 40,
-      "target_y": 300,
-      "audio_duration": 2.496,
-      "selected": "Z20lightblue",
+      "selected": "W5lightblue",
       "movement": [
         {
           "time": 200,
-          "x": -1,
-          "y": -1
+          "x": 357,
+          "y": 326
         },
         {
           "time": 401,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 601,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 802,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1002,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1203,
-          "x": 338,
-          "y": 178
-        },
-        {
-          "time": 1403,
-          "x": 346,
-          "y": 164
-        },
-        {
-          "time": 1605,
-          "x": 347,
-          "y": 162
-        },
-        {
-          "time": 1805,
-          "x": 347,
-          "y": 162
-        },
-        {
-          "time": 2005,
-          "x": 347,
-          "y": 162
-        },
-        {
-          "time": 2205,
-          "x": 347,
-          "y": 162
-        },
-        {
-          "time": 2406,
-          "x": 347,
-          "y": 162
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "1",
-    "effort": "1",
-    "information": "1",
-    "collaborative": "1",
-    "error": false
-  },
-  "w.json": {
-    "W5lightblue": {
-      "target_x": 180,
-      "target_y": 120,
-      "audio_duration": 2.496,
-      "selected": "P17lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 401,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 601,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 802,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1002,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1202,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1402,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1602,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1802,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2002,
-          "x": 375,
-          "y": 114
-        },
-        {
-          "time": 2203,
-          "x": 353,
-          "y": 106
-        },
-        {
-          "time": 2403,
-          "x": 320,
-          "y": 79
-        },
-        {
-          "time": 2604,
-          "x": 306,
-          "y": 66
-        },
-        {
-          "time": 2805,
-          "x": 306,
-          "y": 66
-        },
-        {
-          "time": 3006,
-          "x": 306,
-          "y": 66
-        },
-        {
-          "time": 3207,
-          "x": 306,
-          "y": 66
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "1",
-    "effort": "-1",
-    "information": "-2",
-    "collaborative": "3",
-    "error": false
-  },
-  "x.json": {
-    "X9lightblue": {
-      "target_x": 200,
-      "target_y": 40,
-      "audio_duration": 2.496,
-      "selected": "I0lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 402,
-          "x": -1,
-          "y": -1
+          "x": 348,
+          "y": 341
         },
         {
           "time": 603,
-          "x": -1,
-          "y": -1
+          "x": 348,
+          "y": 341
         },
         {
-          "time": 804,
-          "x": -1,
-          "y": -1
+          "time": 805,
+          "x": 348,
+          "y": 341
         },
         {
           "time": 1005,
@@ -850,231 +95,23 @@
         },
         {
           "time": 1205,
-          "x": 385,
-          "y": 197
-        },
-        {
-          "time": 1406,
-          "x": 244,
-          "y": 213
-        },
-        {
-          "time": 1606,
-          "x": 244,
-          "y": 213
-        },
-        {
-          "time": 1807,
-          "x": 244,
-          "y": 213
-        },
-        {
-          "time": 2008,
-          "x": 180,
-          "y": 223
-        },
-        {
-          "time": 2209,
-          "x": 139,
-          "y": 229
-        },
-        {
-          "time": 2410,
-          "x": 137,
-          "y": 229
-        },
-        {
-          "time": 2610,
-          "x": 137,
-          "y": 229
-        },
-        {
-          "time": 2811,
-          "x": 137,
-          "y": 229
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "2",
-    "effort": "0",
-    "information": "0",
-    "collaborative": "1",
-    "error": false
-  },
-  "f.json": {
-    "F19lightblue": {
-      "target_x": 60,
-      "target_y": 80,
-      "audio_duration": 2.496,
-      "selected": "X9lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 401,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 601,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 801,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1003,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1203,
-          "x": -1,
-          "y": -1
+          "x": 360,
+          "y": 341
         },
         {
           "time": 1405,
-          "x": 338,
-          "y": 61
-        },
-        {
-          "time": 1605,
-          "x": 338,
-          "y": 61
-        },
-        {
-          "time": 1805,
-          "x": 321,
-          "y": 90
-        },
-        {
-          "time": 2005,
-          "x": 321,
-          "y": 90
-        },
-        {
-          "time": 2206,
-          "x": 321,
-          "y": 90
-        },
-        {
-          "time": 2406,
-          "x": 321,
-          "y": 90
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "-2",
-    "effort": "-2",
-    "information": "2",
-    "collaborative": "-1",
-    "error": false
-  },
-  "u.json": {
-    "U16lightblue": {
-      "target_x": 20,
-      "target_y": 180,
-      "audio_duration": 2.496,
-      "selected": "W5lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 402,
           "x": 354,
-          "y": 95
-        },
-        {
-          "time": 603,
-          "x": 340,
-          "y": 96
-        },
-        {
-          "time": 803,
-          "x": 229,
-          "y": 144
-        },
-        {
-          "time": 1003,
-          "x": 227,
-          "y": 146
-        },
-        {
-          "time": 1204,
-          "x": 227,
-          "y": 146
-        }
-      ],
-      "correct": false
-    },
-    "clarity": "2",
-    "effort": "1",
-    "information": "-2",
-    "collaborative": "1",
-    "error": false
-  },
-  "p.json": {
-    "P17lightblue": {
-      "target_x": 40,
-      "target_y": 160,
-      "audio_duration": 2.496,
-      "selected": "P17lightblue",
-      "movement": [
-        {
-          "time": 201,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 402,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 603,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 803,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1003,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1203,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1405,
-          "x": -1,
-          "y": -1
+          "y": 339
         },
         {
           "time": 1606,
-          "x": -1,
-          "y": -1
+          "x": 354,
+          "y": 339
         },
         {
           "time": 1806,
-          "x": -1,
-          "y": -1
+          "x": 354,
+          "y": 339
         },
         {
           "time": 2006,
@@ -1082,85 +119,133 @@
           "y": -1
         },
         {
-          "time": 2206,
-          "x": -1,
-          "y": -1
+          "time": 2207,
+          "x": 385,
+          "y": 344
         },
         {
           "time": 2407,
-          "x": -1,
-          "y": -1
+          "x": 370,
+          "y": 346
         },
         {
-          "time": 2607,
-          "x": -1,
-          "y": -1
+          "time": 2608,
+          "x": 362,
+          "y": 349
         },
         {
-          "time": 2807,
-          "x": -1,
-          "y": -1
+          "time": 2808,
+          "x": 362,
+          "y": 349
         },
         {
-          "time": 3008,
-          "x": -1,
-          "y": -1
+          "time": 3009,
+          "x": 328,
+          "y": 349
         },
         {
-          "time": 3209,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3410,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3610,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 3810,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4011,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 4211,
-          "x": 79,
-          "y": 191
-        },
-        {
-          "time": 4412,
-          "x": 36,
-          "y": 176
-        },
-        {
-          "time": 4612,
-          "x": 36,
-          "y": 176
+          "time": 3210,
+          "x": 250,
+          "y": 342
         }
       ],
-      "correct": true
+      "correct": false
     },
-    "clarity": "-2",
-    "effort": "-1",
-    "information": "1",
-    "collaborative": "-2",
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
     "error": false
   },
-  "i.json": {
-    "I0lightblue": {
+  "v.json": {
+    "V13lightblue": {
       "target_x": 20,
-      "target_y": 160,
+      "target_y": 300,
       "audio_duration": 2.496,
-      "selected": "I0lightblue",
+      "selected": "F19lightblue",
+      "movement": [
+        {
+          "time": 200,
+          "x": 314,
+          "y": 246
+        },
+        {
+          "time": 400,
+          "x": 277,
+          "y": 149
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "t.json": {
+    "T18lightblue": {
+      "target_x": 100,
+      "target_y": 120,
+      "audio_duration": 2.496,
+      "selected": "W5lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 299,
+          "y": 329
+        },
+        {
+          "time": 404,
+          "x": 319,
+          "y": 328
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "y.json": {
+    "Y7lightblue": {
+      "target_x": 40,
+      "target_y": 300,
+      "audio_duration": 2.496,
+      "selected": "L2lightblue",
+      "movement": [
+        {
+          "time": 200,
+          "x": 323,
+          "y": 229
+        },
+        {
+          "time": 400,
+          "x": 325,
+          "y": 245
+        },
+        {
+          "time": 601,
+          "x": 328,
+          "y": 248
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "w.json": {
+    "W5lightblue": {
+      "target_x": 180,
+      "target_y": 120,
+      "audio_duration": 2.496,
+      "selected": "N15lightblue",
       "movement": [
         {
           "time": 201,
@@ -1169,114 +254,210 @@
         },
         {
           "time": 402,
+          "x": 308,
+          "y": 293
+        },
+        {
+          "time": 602,
+          "x": 226,
+          "y": 307
+        },
+        {
+          "time": 803,
+          "x": 225,
+          "y": 307
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "x.json": {
+    "X9lightblue": {
+      "target_x": 200,
+      "target_y": 40,
+      "audio_duration": 2.496,
+      "selected": "F19lightblue",
+      "movement": [
+        {
+          "time": 200,
+          "x": 299,
+          "y": 185
+        },
+        {
+          "time": 400,
+          "x": 292,
+          "y": 151
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "f.json": {
+    "F19lightblue": {
+      "target_x": 60,
+      "target_y": 80,
+      "audio_duration": 2.496,
+      "selected": "Y7lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 349,
+          "y": 277
+        },
+        {
+          "time": 401,
+          "x": 331,
+          "y": 220
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "u.json": {
+    "U16lightblue": {
+      "target_x": 20,
+      "target_y": 180,
+      "audio_duration": 2.496,
+      "selected": "F19lightblue",
+      "movement": [
+        {
+          "time": 202,
           "x": -1,
           "y": -1
+        },
+        {
+          "time": 402,
+          "x": 372,
+          "y": 366
+        },
+        {
+          "time": 602,
+          "x": 322,
+          "y": 329
+        },
+        {
+          "time": 802,
+          "x": 302,
+          "y": 328
+        },
+        {
+          "time": 1002,
+          "x": 286,
+          "y": 328
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "p.json": {
+    "P17lightblue": {
+      "target_x": 40,
+      "target_y": 160,
+      "audio_duration": 2.496,
+      "selected": "Y7lightblue",
+      "movement": [
+        {
+          "time": 201,
+          "x": 338,
+          "y": 253
+        },
+        {
+          "time": 403,
+          "x": 285,
+          "y": 202
         },
         {
           "time": 603,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 804,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1004,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1205,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1405,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1606,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1807,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2008,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2208,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2409,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2609,
-          "x": 316,
-          "y": 232
-        },
-        {
-          "time": 2810,
-          "x": 101,
-          "y": 215
-        },
-        {
-          "time": 3010,
-          "x": 90,
-          "y": 215
-        },
-        {
-          "time": 3211,
-          "x": 28,
-          "y": 194
-        },
-        {
-          "time": 3411,
-          "x": 28,
-          "y": 194
+          "x": 285,
+          "y": 202
         }
       ],
-      "correct": true
+      "correct": false
     },
-    "clarity": "0",
-    "effort": "2",
-    "information": "-1",
-    "collaborative": "0",
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
     "error": false
   },
-  "age": "33",
-  "gender": "Male",
-  "education": "MSc",
-  "language": "Greek",
-  "fluent": "2",
-  "good": "1",
-  "understanding": "-1",
-  "complete": "-1",
-  "intelligent": "1",
-  "competent": "1",
-  "friendly": "2",
-  "helpful": "2",
-  "comply": "0",
-  "easy": "1",
-  "robot_before": true,
+  "i.json": {
+    "I0lightblue": {
+      "target_x": 20,
+      "target_y": 160,
+      "audio_duration": 2.496,
+      "selected": "T18lightblue",
+      "movement": [
+        {
+          "time": 200,
+          "x": 400,
+          "y": 312
+        },
+        {
+          "time": 401,
+          "x": 385,
+          "y": 304
+        },
+        {
+          "time": 601,
+          "x": 328,
+          "y": 293
+        },
+        {
+          "time": 802,
+          "x": 323,
+          "y": 294
+        }
+      ],
+      "correct": false
+    },
+    "clarity": "-3",
+    "effort": "-3",
+    "information": "-3",
+    "collaborative": "-3",
+    "error": false
+  },
+  "age": "1",
+  "gender": "1",
+  "education": "1",
+  "language": "1",
+  "fluent": "-3",
+  "good": "-3",
+  "understanding": "-3",
+  "complete": "-3",
+  "intelligent": "-3",
+  "competent": "-3",
+  "friendly": "-3",
+  "helpful": "-3",
+  "comply": "-3",
+  "easy": "-3",
+  "robot_before": false,
+  "ci_before": false,
   "played_pento_before": false,
-  "track_device": "trackpad",
-  "know_want": "no",
-  "greatest_difficulty": "Mathew",
-  "why_study": "For research",
-  "comments": "Alles klar!",
-  "end_time": "Fri Dec 18 2020 12:00:18 GMT+0100 (CET)",
+  "track_device": "mouse",
+  "know_want": "",
+  "greatest_difficulty": "",
+  "why_study": "",
+  "comments": "",
+  "end_time": "Wed Dec 23 2020 18:53:59 GMT+0100 (CET)",
   "browser_os_info": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15"
 }

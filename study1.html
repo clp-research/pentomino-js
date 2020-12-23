@@ -42,14 +42,14 @@
 		<!-- Welcome screen -->
 		<dialog id="welcome">
 			<h2>Welcome to the PENTOMINO study!</h2>
-			<p>In this online study from KTH and the University of Potsdam you will assess <strong>natural language instructions</strong> to pick pentomino objects.</p>
-			<p>It is important that you can <strong>clearly hear the spoken instructions</strong>. You may either use headphones or your computer speakers in a silent room.</p>
-			<p>You can <strong>only</strong> do the study on a computer, but not on a mobile device (no tablet or phone).</p>
-			<p>It is also important that you try to make <strong>as few mistakes as possible</strong> in the task. If any problems occur with the interface, please let us know before you complete the task.</p>
+			<p>In this online study from KTH and the University of Potsdam you will assess <strong>natural language instructions</strong> to pick pentomino objects.<br>
+			It is important that you can <strong>clearly hear the spoken instructions</strong>. You may either use headphones or your computer speakers in a silent room.</p>
+			<p>You can <strong>only</strong> do the study on a computer, but not on a mobile device (no tablet or phone). It is also important that you try to make<br>
+			<strong>as few mistakes as possible</strong> in the task. If any problems occur with the interface, please let us know before you complete the task.</p>
 			<p>The study will last <strong>10-15 minutes</strong> and can be done at your home or office at your time of preference.</p>
 			<br>
-			<p>If you have any questions, do not hesitate to contact <strong>Dimos Kontogiorgos</strong> at diko @ kth.se or <strong>Jana Götze</strong> at jana.goetze @ uni-potsdam.de.</p>
-			<p>*in collaboration with <strong>Hannah Pelikan</strong>, <strong>David Schlangen</strong> and <strong>Joakim Gustafson</strong>. <strong>Karla Friedrichs</strong> has contributed to this work.</p>
+			<p>If you have any questions, do not hesitate to contact <strong>Dimos Kontogiorgos</strong> at diko @ kth.se or <strong>Jana Götze</strong> at jana.goetze @ uni-potsdam.de.<br>
+			*in collaboration with <strong>Hannah Pelikan</strong>, <strong>David Schlangen</strong> and <strong>Joakim Gustafson</strong>. <strong>Karla Friedrichs</strong> has contributed to this work.</p>
 			<br>
 			<button id="welcome_done">Continue</button>
 		</dialog>
@@ -74,10 +74,11 @@
 		<!-- Consent form -->
 		<dialog id="consent">
 			<h2>Informed consent form</h2>
-			<p>In this study you will assess the suitability of instructions to pentomino objects in order to build an elephant shape.</p>
-			<p>It is important that you are fluent in English. The study is expected to last 10-15 minutes and is entirely voluntary.</p>
-			<p>We collect your mouse movements and clicks as well as your responses to the questions provided.</p>
-			<p>The questionnaire data will only be used for research purposes and may be shared with other researchers.</p>
+			<p>In this study you will assess the suitability of instructions to pentomino objects in order to build an elephant shape.<br>
+			Mathew will instruct you what pieces to pick but he will place (and sometimes also rotate) the right pentominos on the elephant.</p>
+			<p>It is important that you are fluent in English. The study is expected to last 10-15 minutes and is entirely voluntary.<br>
+			We collect your mouse movements and clicks as well as your responses to the questions provided.<br>
+			The questionnaire data will only be used for research purposes and may be shared with other researchers.</p>
 			<hr>
 			<label for="name">Name:</label>
 			<input id="name" name="name">
@@ -123,7 +124,8 @@
 
 			<!-- Clarity -->
 			<p>Mathew's instruction was ambiguous</p>
-			<label for="clear-3">clear</label>&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="clear-3">non-ambiguous</label>&nbsp;&nbsp;&nbsp;
 			<label for="clear-3">-3<br/>
 				<input type="radio" name="clear" value=-3 id="clear-3">
 			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -150,7 +152,8 @@
 
 			<!-- Effort -->
 			<p>Mathew put too much effort in this instruction</p>
-			<label for="effort-3">little</label>&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label for="effort-3">too little effort</label>&nbsp;&nbsp;&nbsp;
 			<label for="effort-3">-3<br/>
 				<input type="radio" name="effort" value=-3 id="effort-3">
 			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -172,12 +175,12 @@
 			<label for="effort3">&nbsp;3<br/>
 				<input type="radio" name="effort" value=3 id="effort3">
 			</label>&nbsp;&nbsp;&nbsp;
-			<label for="effort3">a lot</label>
+			<label for="effort3">too much effort</label>
 			<br><br>
 
 			<!-- Information -->
 			<p>Mathew's instruction had too much information</p>
-			<label for="info-3">little</label>&nbsp;&nbsp;&nbsp;
+			<label for="info-3">too little information</label>&nbsp;&nbsp;&nbsp;
 			<label for="info-3">-3<br/>
 				<input type="radio" name="info" value=-3 id="info-3">
 			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -199,12 +202,13 @@
 			<label for="info3">&nbsp;3<br/>
 				<input type="radio" name="info" value=3 id="info3">
 			</label>&nbsp;&nbsp;&nbsp;
-			<label for="info3">a lot</label>
+			<label for="info3">too much information</label>
 			<br><br>
 
 			<!-- Collaboration -->
 			<p>Mathew's instruction was collaborative</p>
-			<label for="collaborative-3">little</label>&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;
+			<label for="collaborative-3">non-collaborative</label>&nbsp;&nbsp;&nbsp;
 			<label for="collaborative-3">-3<br/>
 				<input type="radio" name="collaborative" value=-3 id="collaborative-3">
 			</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -226,7 +230,7 @@
 			<label for="collaborative3">&nbsp;3<br/>
 				<input type="radio" name="collaborative" value=3 id="collaborative3">
 			</label>&nbsp;&nbsp;&nbsp;
-			<label for="info3">a lot</label>
+			<label for="info3">collaborative</label>
 			<br>
 
 			<input type="checkbox" name="task_error" id="task_error">
@@ -538,6 +542,11 @@
 				<!-- Robot -->
 				<input type="checkbox" id="robot_before" name="robot_before">
 				<label for="robot_before">I have interacted with a robot before.</label>
+				<br>
+
+				<!-- Conversational Interface -->
+				<input type="checkbox" id="ci_before" name="ci_before">
+				<label for="ci_before">I have interacted with a conversational interface before.</label>
 				<br>
 
 				<!-- Pento -->
