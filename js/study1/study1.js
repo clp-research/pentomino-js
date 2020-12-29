@@ -5,18 +5,18 @@ $(document).ready(function() {
 	var TASK_BOARD_NAME			= 'task_board';
 	var elephant_c = 0;
 
-	var FILES					= ['./resources/tasks/z.json',
-								   './resources/tasks/l.json',
-								   './resources/tasks/n.json',
-								   './resources/tasks/v.json',
-								   './resources/tasks/t.json',
-								   './resources/tasks/y.json',
-								   './resources/tasks/w.json',
-								   './resources/tasks/x.json',
-								   './resources/tasks/f.json',
-								   './resources/tasks/u.json',
-								   './resources/tasks/p.json',
-								   './resources/tasks/i.json']
+	var FILES					= ['../resources/tasks/z.json',
+								   '../resources/tasks/l.json',
+								   '../resources/tasks/n.json',
+								   '../resources/tasks/v.json',
+								   '../resources/tasks/t.json',
+								   '../resources/tasks/y.json',
+								   '../resources/tasks/w.json',
+								   '../resources/tasks/x.json',
+								   '../resources/tasks/f.json',
+								   '../resources/tasks/u.json',
+								   '../resources/tasks/p.json',
+								   '../resources/tasks/i.json']
 
 	var current_file = 0; // increment as tasks are loaded
 
@@ -306,7 +306,7 @@ $(document).ready(function() {
 			var tasks_remaining = loadNewFile();
 
 			// update elephant image
-			document.getElementById('elephant').src='resources/img/elephant'+elephant_c+'.png';
+			document.getElementById('elephant').src='../resources/img/elephant'+elephant_c+'.png';
 			elephant_c = elephant_c + 1;
 
 			// finish the run
@@ -410,13 +410,14 @@ $(document).ready(function() {
 				document.instruction_manager.add_info('comments', $('#comments').val());
 				// save time of completion
 				document.instruction_manager.add_info('end_time', new Date().toString());
+				document.instruction_manager.add_info('participant', PARTICIPANT);
 				// save info on browser + OS. Warning: This might not be reliable, user can
 				// manually change these information and browsers might change their behaviour in the future
 				document.instruction_manager.add_info('browser_os_info', window.navigator.userAgent);
 				// save collected data to server-side resource/data_collection directory
 
 				let data = document.instruction_manager.data_to_JSON();
-				let file_saver_script = './php/save_userdata.php';
+				let file_saver_script = '../php/save_userdata.php';
 				fetch(file_saver_script, {
 					method: 'POST',
 					body: data,

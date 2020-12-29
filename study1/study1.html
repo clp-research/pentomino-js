@@ -12,10 +12,10 @@
 	<meta name="description" content="Pentomino Study 1">
 	<meta name="author" content="clpresearch">
 
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/skeleton.css">
-	<link rel="stylesheet" href="css/dialog-polyfill.css">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="../css/normalize.css">
+	<link rel="stylesheet" href="../css/skeleton.css">
+	<link rel="stylesheet" href="../css/dialog-polyfill.css">
+	<link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
 				<canvas id="task_board" width="300" height="300" style="border:1px solid #000000;"></canvas>
 			</div>
 			<div class="four columns">
-				<img id="elephant" src="resources/img/elephant.png" alt="" />
+				<img id="elephant" src="../resources/img/elephant.png" alt="" />
 			</div>
 		</div>
 		<div id="progress_bg">
@@ -52,6 +52,11 @@
 			*in collaboration with <strong>Hannah Pelikan</strong>, <strong>David Schlangen</strong> and <strong>Joakim Gustafson</strong>. <strong>Karla Friedrichs</strong> has contributed to this work.</p>
 			<br>
 			<button id="welcome_done">Continue</button>
+
+			<div id="participant_num"></div>
+			<script>
+				document.getElementById("participant_num").innerHTML = "Participant: " + PARTICIPANT;
+			</script>
 		</dialog>
 
 		<!-- Audio test -->
@@ -60,7 +65,7 @@
 			<p>Can you hear Mathew? You will need to follow spoken instructions. Try to find a quiet place where you won't be interrupted.</p>
 			<hr>
 			<p><strong>When Mathew stops speaking, listen to the following message and type what he said in the text box below.</strong></p>
-			<audio controls src="./resources/audio/audiotest.mp3">
+			<audio controls src="../resources/audio/audiotest.mp3">
 				Your current browser does not support the <code>audio</code> element. If you can, you may want to try a different browser.
 			</audio>
 			<p></p>
@@ -585,20 +590,20 @@
 		</dialog>
 	</div>
 
-	<script src='./js/jquery.min.js'></script>
-	<script src='./js/jcanvas.min.js'></script>
-	<script src='./js/Filesaver.js'></script>
-	<script src='./js/dialog/dialog-polyfill.js'></script>
+	<script src='../js/jquery.min.js'></script>
+	<script src='../js/jcanvas.min.js'></script>
+	<script src='../js/Filesaver.js'></script>
+	<script src='../js/dialog/dialog-polyfill.js'></script>
 
-	<script src='./js/pento/pento_config.js'></script>
-	<script src='./js/pento/pento_block.js'></script>
-	<script src='./js/pento/pento_shape.js'></script>
-	<script src='./js/pento/pento_render.js'></script>
-	<script src='./js/pento/pento_selection_board.js'></script>
-	<script src='./js/pento/pento_generator.js'></script>
+	<script src='../js/pento/pento_config.js'></script>
+	<script src='../js/pento/pento_block.js'></script>
+	<script src='../js/pento/pento_shape.js'></script>
+	<script src='../js/pento/pento_render.js'></script>
+	<script src='../js/pento/pento_selection_board.js'></script>
+	<script src='../js/pento/pento_generator.js'></script>
 
-	<script src='./js/instruction_manager.js'></script>
-	<script src='./js/study1/study1.js'></script>
+	<script src='../js/instruction_manager.js'></script>
+	<script src='../js/study1/study1.js'></script>
 </body>
 
 </html>

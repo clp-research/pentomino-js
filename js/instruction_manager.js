@@ -65,7 +65,7 @@ $(document).ready(function () {
 				if (audio) {
 					// get audio for instruction and play it
 					// remove '#' from shape name to get file name
-					let instr_file = `./resources/audio/${this.shape.slice(0,2)}${this.shape.slice(3)}.mp3`;
+					let instr_file = `../resources/audio/p/${PARTICIPANT}/${this.shape.slice(0,2)}${this.shape.slice(3)}.mp3`;
 					this.instruction = new Audio(instr_file);
 					// start instruction as soon as audio is loaded sufficiently
 					this.instruction.oncanplaythrough = (event) => {
@@ -147,7 +147,7 @@ $(document).ready(function () {
 		 * Play an example audiofile
 		 */
 		audiotest() {
-			let test_file = './resources/audio/intro.mp3';
+			let test_file = '../resources/audio/intro.mp3';
 			let test_audio = new Audio(test_file);
 			test_audio.oncanplaythrough = (event) => {test_audio.play();};
 		}
@@ -158,7 +158,7 @@ $(document).ready(function () {
 		 */
 		well_done(audio=true) {
 			if (audio) {
-				let well_done_file = './resources/audio/done.mp3';
+				let well_done_file = '../resources/audio/done.mp3';
 				let well_done_audio = new Audio(well_done_file);
 				well_done_audio.oncanplaythrough = (event) => {
 					well_done_audio.play();
@@ -176,7 +176,7 @@ $(document).ready(function () {
 			var random_num = 0;
 			if (audio) {
 				random_num = Math.floor(Math.random() * 3) + 1
-				let correct_piece_file = './resources/audio/correct'+random_num+'.mp3';
+				let correct_piece_file = '../resources/audio/correct'+random_num+'.mp3';
 				let correct_piece_audio = new Audio(correct_piece_file);
 				correct_piece_audio.oncanplaythrough = (event) => {
 					correct_piece_audio.play();
@@ -194,7 +194,7 @@ $(document).ready(function () {
 			var random_num = 0;
 			if (audio) {
 				random_num = Math.floor(Math.random() * 3) + 1
-				let incorrect_piece_file = './resources/audio/incorrect'+random_num+'.mp3';
+				let incorrect_piece_file = '../resources/audio/incorrect'+random_num+'.mp3';
 				let incorrect_piece_audio = new Audio(incorrect_piece_file);
 				incorrect_piece_audio.oncanplaythrough = (event) => {
 					incorrect_piece_audio.play();

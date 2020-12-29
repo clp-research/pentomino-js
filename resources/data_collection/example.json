@@ -3,7 +3,7 @@
   "name": "a",
   "email": "a",
   "follow_agent": "-3",
-  "start_time": "Wed Dec 23 2020 18:52:44 GMT+0100 (CET)",
+  "start_time": "Mon Dec 28 2020 19:26:04 GMT+0100 (CET)",
   "z.json": {
     "Z20lightblue": {
       "target_x": 100,
@@ -18,8 +18,73 @@
         },
         {
           "time": 401,
-          "x": 307,
-          "y": 324
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 602,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 802,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 1003,
+          "x": 289,
+          "y": 333
+        },
+        {
+          "time": 1204,
+          "x": 278,
+          "y": 338
+        },
+        {
+          "time": 1404,
+          "x": 313,
+          "y": 336
+        },
+        {
+          "time": 1604,
+          "x": 313,
+          "y": 336
+        },
+        {
+          "time": 1805,
+          "x": 313,
+          "y": 336
+        },
+        {
+          "time": 2004,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 2205,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 2406,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 2607,
+          "x": 296,
+          "y": 320
+        },
+        {
+          "time": 2807,
+          "x": 289,
+          "y": 336
+        },
+        {
+          "time": 3008,
+          "x": 301,
+          "y": 338
         }
       ],
       "correct": false
@@ -38,19 +103,19 @@
       "selected": "L2lightblue",
       "movement": [
         {
-          "time": 202,
-          "x": 314,
-          "y": 355
+          "time": 200,
+          "x": -1,
+          "y": -1
         },
         {
-          "time": 402,
-          "x": 319,
-          "y": 350
+          "time": 401,
+          "x": 338,
+          "y": 321
         },
         {
           "time": 602,
-          "x": 341,
-          "y": 328
+          "x": 338,
+          "y": 321
         }
       ],
       "correct": true
@@ -66,87 +131,22 @@
       "target_x": 20,
       "target_y": 260,
       "audio_duration": 2.496,
-      "selected": "W5lightblue",
+      "selected": "L2lightblue",
       "movement": [
         {
-          "time": 200,
-          "x": 357,
-          "y": 326
+          "time": 201,
+          "x": 385,
+          "y": 341
         },
         {
-          "time": 401,
-          "x": 348,
+          "time": 402,
+          "x": 382,
           "y": 341
         },
         {
           "time": 603,
-          "x": 348,
-          "y": 341
-        },
-        {
-          "time": 805,
-          "x": 348,
-          "y": 341
-        },
-        {
-          "time": 1005,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 1205,
-          "x": 360,
-          "y": 341
-        },
-        {
-          "time": 1405,
-          "x": 354,
-          "y": 339
-        },
-        {
-          "time": 1606,
-          "x": 354,
-          "y": 339
-        },
-        {
-          "time": 1806,
-          "x": 354,
-          "y": 339
-        },
-        {
-          "time": 2006,
-          "x": -1,
-          "y": -1
-        },
-        {
-          "time": 2207,
-          "x": 385,
-          "y": 344
-        },
-        {
-          "time": 2407,
-          "x": 370,
-          "y": 346
-        },
-        {
-          "time": 2608,
-          "x": 362,
-          "y": 349
-        },
-        {
-          "time": 2808,
-          "x": 362,
-          "y": 349
-        },
-        {
-          "time": 3009,
-          "x": 328,
-          "y": 349
-        },
-        {
-          "time": 3210,
-          "x": 250,
-          "y": 342
+          "x": 339,
+          "y": 347
         }
       ],
       "correct": false
@@ -162,17 +162,17 @@
       "target_x": 20,
       "target_y": 300,
       "audio_duration": 2.496,
-      "selected": "F19lightblue",
+      "selected": "P17lightblue",
       "movement": [
         {
-          "time": 200,
-          "x": 314,
-          "y": 246
+          "time": 202,
+          "x": 386,
+          "y": 357
         },
         {
-          "time": 400,
-          "x": 277,
-          "y": 149
+          "time": 402,
+          "x": 325,
+          "y": 338
         }
       ],
       "correct": false
@@ -191,13 +191,13 @@
       "selected": "W5lightblue",
       "movement": [
         {
-          "time": 201,
-          "x": 299,
-          "y": 329
+          "time": 200,
+          "x": 376,
+          "y": 336
         },
         {
-          "time": 404,
-          "x": 319,
+          "time": 402,
+          "x": 313,
           "y": 328
         }
       ],
@@ -214,22 +214,22 @@
       "target_x": 40,
       "target_y": 300,
       "audio_duration": 2.496,
-      "selected": "L2lightblue",
+      "selected": "N15lightblue",
       "movement": [
         {
-          "time": 200,
-          "x": 323,
-          "y": 229
+          "time": 201,
+          "x": 370,
+          "y": 343
         },
         {
-          "time": 400,
-          "x": 325,
-          "y": 245
+          "time": 401,
+          "x": 356,
+          "y": 341
         },
         {
-          "time": 601,
-          "x": 328,
-          "y": 248
+          "time": 602,
+          "x": 356,
+          "y": 341
         }
       ],
       "correct": false
@@ -245,27 +245,17 @@
       "target_x": 180,
       "target_y": 120,
       "audio_duration": 2.496,
-      "selected": "N15lightblue",
+      "selected": "Z20lightblue",
       "movement": [
         {
           "time": 201,
-          "x": -1,
-          "y": -1
+          "x": 392,
+          "y": 354
         },
         {
           "time": 402,
-          "x": 308,
-          "y": 293
-        },
-        {
-          "time": 602,
-          "x": 226,
-          "y": 307
-        },
-        {
-          "time": 803,
-          "x": 225,
-          "y": 307
+          "x": 337,
+          "y": 354
         }
       ],
       "correct": false
@@ -281,17 +271,22 @@
       "target_x": 200,
       "target_y": 40,
       "audio_duration": 2.496,
-      "selected": "F19lightblue",
+      "selected": "V13lightblue",
       "movement": [
         {
           "time": 200,
-          "x": 299,
-          "y": 185
+          "x": 352,
+          "y": 360
         },
         {
-          "time": 400,
-          "x": 292,
-          "y": 151
+          "time": 401,
+          "x": 332,
+          "y": 354
+        },
+        {
+          "time": 601,
+          "x": 332,
+          "y": 354
         }
       ],
       "correct": false
@@ -307,17 +302,17 @@
       "target_x": 60,
       "target_y": 80,
       "audio_duration": 2.496,
-      "selected": "Y7lightblue",
+      "selected": "V13lightblue",
       "movement": [
         {
-          "time": 201,
-          "x": 349,
-          "y": 277
+          "time": 202,
+          "x": 358,
+          "y": 344
         },
         {
-          "time": 401,
-          "x": 331,
-          "y": 220
+          "time": 402,
+          "x": 309,
+          "y": 349
         }
       ],
       "correct": false
@@ -336,29 +331,19 @@
       "selected": "F19lightblue",
       "movement": [
         {
-          "time": 202,
-          "x": -1,
-          "y": -1
+          "time": 201,
+          "x": 328,
+          "y": 357
         },
         {
           "time": 402,
-          "x": 372,
-          "y": 366
+          "x": 320,
+          "y": 355
         },
         {
-          "time": 602,
-          "x": 322,
-          "y": 329
-        },
-        {
-          "time": 802,
-          "x": 302,
-          "y": 328
-        },
-        {
-          "time": 1002,
-          "x": 286,
-          "y": 328
+          "time": 603,
+          "x": 277,
+          "y": 338
         }
       ],
       "correct": false
@@ -374,22 +359,37 @@
       "target_x": 40,
       "target_y": 160,
       "audio_duration": 2.496,
-      "selected": "Y7lightblue",
+      "selected": "U16lightblue",
       "movement": [
         {
-          "time": 201,
-          "x": 338,
-          "y": 253
+          "time": 204,
+          "x": 294,
+          "y": 330
         },
         {
-          "time": 403,
-          "x": 285,
-          "y": 202
+          "time": 404,
+          "x": 313,
+          "y": 333
         },
         {
-          "time": 603,
-          "x": 285,
-          "y": 202
+          "time": 604,
+          "x": 313,
+          "y": 333
+        },
+        {
+          "time": 805,
+          "x": -1,
+          "y": -1
+        },
+        {
+          "time": 1005,
+          "x": 322,
+          "y": 352
+        },
+        {
+          "time": 1206,
+          "x": 322,
+          "y": 352
         }
       ],
       "correct": false
@@ -409,23 +409,28 @@
       "movement": [
         {
           "time": 200,
-          "x": 400,
-          "y": 312
+          "x": -1,
+          "y": -1
         },
         {
           "time": 401,
-          "x": 385,
-          "y": 304
+          "x": -1,
+          "y": -1
         },
         {
-          "time": 601,
-          "x": 328,
-          "y": 293
+          "time": 602,
+          "x": 309,
+          "y": 297
         },
         {
-          "time": 802,
-          "x": 323,
-          "y": 294
+          "time": 804,
+          "x": 317,
+          "y": 299
+        },
+        {
+          "time": 1004,
+          "x": 325,
+          "y": 302
         }
       ],
       "correct": false
@@ -458,6 +463,7 @@
   "greatest_difficulty": "",
   "why_study": "",
   "comments": "",
-  "end_time": "Wed Dec 23 2020 18:53:59 GMT+0100 (CET)",
+  "end_time": "Mon Dec 28 2020 19:26:59 GMT+0100 (CET)",
+  "participant": 1,
   "browser_os_info": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15"
 }
