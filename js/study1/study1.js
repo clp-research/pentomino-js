@@ -299,6 +299,38 @@ $(document).ready(function() {
 				document.instruction_manager.add_info('collaborative', collaborative, 'task');
 				document.instruction_manager.add_info('error', $('#task_error').is(":checked"), 'task');
 			}
+
+			// clear selections
+			document.getElementById("clear-3").checked = false;
+			document.getElementById("clear-2").checked = false;
+			document.getElementById("clear-1").checked = false;
+			document.getElementById("clear0").checked = false;
+			document.getElementById("clear1").checked = false;
+			document.getElementById("clear2").checked = false;
+			document.getElementById("clear3").checked = false;
+			document.getElementById("effort-3").checked = false;
+			document.getElementById("effort-2").checked = false;
+			document.getElementById("effort-1").checked = false;
+			document.getElementById("effort0").checked = false;
+			document.getElementById("effort1").checked = false;
+			document.getElementById("effort2").checked = false;
+			document.getElementById("effort3").checked = false;
+			document.getElementById("effort-3").checked = false;
+			document.getElementById("info-3").checked = false;
+			document.getElementById("info-2").checked = false;
+			document.getElementById("info-1").checked = false;
+			document.getElementById("info0").checked = false;
+			document.getElementById("info1").checked = false;
+			document.getElementById("info2").checked = false;
+			document.getElementById("info3").checked = false;
+			document.getElementById("collaborative-3").checked = false;
+			document.getElementById("collaborative-2").checked = false;
+			document.getElementById("collaborative-1").checked = false;
+			document.getElementById("collaborative0").checked = false;
+			document.getElementById("collaborative1").checked = false;
+			document.getElementById("collaborative2").checked = false;
+			document.getElementById("collaborative3").checked = false;
+
 			questionnaire.close();
 			updateProgressBar(Math.floor(100 * current_file / FILES.length));
 			// small breather for the participant
@@ -321,8 +353,8 @@ $(document).ready(function() {
 	$('#demographic_done').click(function() {
 		if (document.instruction_manager) {
 			// make sure form is filled out
-			let age = $('#no_age').is(':checked') ? null : $('#age').val();
-			let gender = $('#no_gender').is(':checked') ? null : $('#gender').val();
+			let age = $('#age').val();
+			let gender = $('#gender').val();
 			let education = $('#education').val();
 			let language = $('#language').val();
 			let fluent = $('input[name="fluent"]:checked').val();
@@ -340,10 +372,10 @@ $(document).ready(function() {
 			track_device = (track_device=='other') ? $('#other_device').val() : track_device;
 
 			if (age == '') {
-				alert('Please give your age or use the checkbox to skip this question.');
+				alert('Please specify your age or type none.');
 				$('#age').css('borderColor', 'red');
 			} else if (gender == '') {
-				alert('Please give your gender or use the checkbox to skip this question.');
+				alert('Please specify your gender or type none.');
 				$('#gender').css('borderColor', 'red');
 			} else if (!education) {
 				alert('Please specify your education');
