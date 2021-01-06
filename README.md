@@ -13,7 +13,7 @@ Interfaces provided in this repository:
 'Dialog' popups are not fully supported in all browsers. [dialog-polyfill](https://github.com/GoogleChrome/dialog-polyfill) is used to help with this issue. If the interface does not seem to work, you might want to change your browser to a [supported one](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog#Browser_compatibility).
 
 **REQUIRES SERVER SETUP.** Using [MAMP (Mac/Windows)](https://www.mamp.info/de/mac/): Once you have MAMP installed, create a server using the pentomino-js directory.
-(Preferences > Server > select pentomino-js directory as root). Start the server and visit [http://localhost:8888/study1.html](http://localhost:8888/study1.html)
+(Preferences > Server > select pentomino-js directory as root). Start the server and visit [http://localhost:8888/study1/p1.html](http://localhost:8888/study1/p1.html), for P1 participant (replace 1 with participant no).
 
 Interface to study the effect of different instruction giving strategies.
 Includes a board showing different pentomino pieces to select from and a task board (which can't be manipulated be the user).
