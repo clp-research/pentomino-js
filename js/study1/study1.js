@@ -388,25 +388,25 @@ $(document).ready(function() {
 				alert('Please specify your English fluency');
 				$('#fluency').css('borderColor', 'red');
 			} else if (!good) {
-				alert('Please specify how good Mathew was');
+				alert('Please specify how good was Mathew');
 				$('#good').css('borderColor', 'red');
 			} else if (!understanding) {
 				alert('Please specify your understanding');
 				$('#understanding').css('borderColor', 'red');
 			} else if (!complete) {
-				alert('Please specify the instruction completeness');
+				alert('Please specify instruction completeness');
 				$('#complete').css('borderColor', 'red');
 			} else if (!intelligent) {
-				alert("Please specify Mathew's intelligence");
+				alert('Please specify Mathews intelligence');
 				$('#intelligent').css('borderColor', 'red');
 			} else if (!competent) {
-				alert("Please specify Mathew's competence");
+				alert('Please specify Mathews competence');
 				$('#competent').css('borderColor', 'red');
 			} else if (!friendly) {
-				alert("Please specify Mathew's friendliness");
+				alert('Please specify Mathews friendliness');
 				$('#friendly').css('borderColor', 'red');
 			} else if (!helpful) {
-				alert("Please specify Mathew's helpfulness");
+				alert('Please specify Mathews help');
 				$('#helpful').css('borderColor', 'red');
 			} else if (!comply) {
 				alert('Please specify your compliance');
