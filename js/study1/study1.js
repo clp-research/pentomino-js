@@ -330,6 +330,7 @@ $(document).ready(function() {
 			document.getElementById("collaborative1").checked = false;
 			document.getElementById("collaborative2").checked = false;
 			document.getElementById("collaborative3").checked = false;
+			document.getElementById("task_error").checked = false;
 
 			questionnaire.close();
 			updateProgressBar(Math.floor(100 * current_file / FILES.length));
