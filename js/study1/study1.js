@@ -94,6 +94,7 @@ $(document).ready(function() {
 			// load new task
 			$.ajax({url:FILES[current_file],
 					dataType:'json',
+					async   : true,
 					complete: function(data, msg) {
 						let json = data.responseJSON;
 						document.selection_board.fromJSON(json['initial']);
