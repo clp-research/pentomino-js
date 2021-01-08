@@ -20,7 +20,7 @@
 
 <body>
 	<div class="container">
-		<h5>Click the decribed piece on the left board! <div id="timer"><span style="color:red">00:00</span></div><div id="correct_counter">Correct: <span style="color:green">0</span> / 12</div></h5>
+		<h5>Click the described piece on the left board! <div id="timer"><span style="color:red">00:00</span></div><div id="correct_counter">Correct: <span style="color:green">0</span> / 12</div></h5>
 		<hr>
 		<div class="row">
 			<div class="eight columns">
@@ -69,7 +69,7 @@
 				Your current browser does not support the <code>audio</code> element. If you can, you may want to try a different browser.
 			</audio>
 			<p></p>
-			<input id="transcript" name="transcript"/> &nbsp; what did Mathew say?
+			<input id="transcript" name="transcript"/> &nbsp; What did Mathew say? (Press the play button)
 			<p><strong>Unfortunately, if you can't hear the audio, you cannot take part in this study. You can also try another browser*.</strong></p>
 			<hr>
 			<p>*the study should work properly on Chrome, Firefox and Safari on Mac OS X, Windows and Linux.</p>
@@ -79,9 +79,10 @@
 		<!-- Consent form -->
 		<dialog id="consent">
 			<h2>Informed consent form</h2>
-			<p>In this study you will assess the suitability of instructions to pentomino objects in order to build an elephant shape.<br>
-			Mathew will instruct you what pieces to pick but he will place (maybe also rotate) the right pentominos on the elephant.<br>
-			You can see your time and how many correct pieces you found at the top right part of your screen.</p>
+			<p>In this study you will assess the suitability of instructions to pick pentomino objects in order to build an elephant shape.<br>
+			Mathew will instruct you what pieces to pick. He will then place (maybe also rotate) the right pentominos on the elephant.<br>
+			You can see your time and how many correct pieces you found at the top right part of your screen. You can see your<br>
+			overall progress on the bar below the boards.</p>
 			<p>It is important that you are fluent in English. The study is expected to last 10-15 minutes and is entirely voluntary.<br>
 			We collect your mouse movements and clicks as well as your responses to the questions provided.<br>
 			The questionnaire data will only be used for research purposes and may be shared with other researchers.</p>
@@ -584,14 +585,14 @@
 				<label for="easy3">easy</label>
 				<br>
 
+				<!-- Conversational Interface -->
+				<input type="checkbox" id="ci_before" name="ci_before">
+				<label for="ci_before">I have interacted with a conversational interface before (for example Alexa or Siri).</label>
+				<br>
+
 				<!-- Robot -->
 				<input type="checkbox" id="robot_before" name="robot_before">
 				<label for="robot_before">I have interacted with a robot before.</label>
-				<br>
-
-				<!-- Conversational Interface -->
-				<input type="checkbox" id="ci_before" name="ci_before">
-				<label for="ci_before">I have interacted with a conversational interface before.</label>
 				<br>
 
 				<!-- Pento -->
@@ -615,7 +616,7 @@
 				<p>What was the greatest difficulty in solving the task?</p>
 				<input id="greatest_difficulty" size="70">
 
-				<p>Why do we do this study?</p>
+				<p>Can you guess why we do this study?</p>
 				<input id="why_study" size="70">
 
 				<p>Any comments? (Did something go wrong? Feel free to give feedback!)</p>
