@@ -267,10 +267,27 @@ $(document).ready(function() {
 		} else if (!follow_agent) {
 			alert('Please select one of the options');
 		} else {
+			document.instruction_manager.add_info('participant', PARTICIPANT);
+			document.instruction_manager.add_info('browser_os_info', window.navigator.userAgent);
 			document.instruction_manager.add_info('name', name);
 			document.instruction_manager.add_info('email', email);
 			document.instruction_manager.add_info('follow_agent', follow_agent);
 			document.instruction_manager.add_info('start_time', new Date().toString());
+
+			// send initial data to email when a user starts
+			let user_data = document.instruction_manager.data_to_JSON();
+			let email_script = '../php/send_userdata.php';
+			fetch(email_script, {
+				method: 'POST',
+				body: user_data,
+			}).then((response) => {
+				// if something went wrong, log to console
+				let resp_code = response.status;
+				if (resp_code < 200 || resp_code >= 300) {
+					console.log(`Error: Something went wrong during sending of collected data. Response code: ${resp_code}`);
+				}
+			})
+
 			consent.close();
 			var tasks_remaining = loadNewFile();
 			if (!tasks_remaining) {
@@ -476,11 +493,7 @@ $(document).ready(function() {
 				document.instruction_manager.add_info('greatest_difficulty', $('#greatest_difficulty').val());
 				document.instruction_manager.add_info('why_study', $('#why_study').val());
 				document.instruction_manager.add_info('comments', $('#comments').val());
-				// save time of completion
 				document.instruction_manager.add_info('end_time', new Date().toString());
-				document.instruction_manager.add_info('participant', PARTICIPANT);
-				// save info on browser + OS. Warning: This might not be reliable, user can manually change these information and browsers might change their behaviour in the future
-				document.instruction_manager.add_info('browser_os_info', window.navigator.userAgent);
 
 				// save collected data to server-side resource/data_collection directory
 				let data = document.instruction_manager.data_to_JSON();
