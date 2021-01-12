@@ -189,7 +189,7 @@ $(document).ready(function () {
 			if (!this.config['colors']) {
 				var colors = this.pento_config.get_pento_colors();
 			} else {
-				var colors = ['lightblue'];
+				var colors = ['lightblue']; // all pieces get same color
 			}
 
 			var pento_types = this.pento_config.get_pento_types();
@@ -208,10 +208,12 @@ $(document).ready(function () {
 			var flip_counter = 0;
 			var generated_shapes = [];
 			var r = 0;
-			while (r < this.config['nshapes']) {
+			var nshapes = this.config['all_selected_once'] ? pento_types.length : this.config['nshapes'];
+			
+			while (r < nshapes) {
 
-				// generate random types
-				var rand_type = pento_types[Math.floor(Math.random() * pento_types.length)];
+				// generate random type or use each type exactly once
+				var rand_type = this.config['all_selected_once'] ? pento_types[r] : pento_types[Math.floor(Math.random() * pento_types.length)];
 				var rand_color = colors[Math.floor(Math.random() * colors.length)];
 
 				// random position

@@ -18,7 +18,7 @@
 <body>
 	<div class="container">
 		<h5>Pentomino Task creator</h5>
-			<p>Generate start position, move pieces freely, right-click to remove pieces, save task as a json file
+			<p>Generate start position, move pieces freely, right-click to remove pieces, save task as a json file and png
 			<hr>
 		<div class="row">
 			<div class="eight columns">
@@ -42,6 +42,10 @@
 						<br>
 						<label class="config">Monoshape</label>
 						<input id="shapes" type="checkbox" />
+						
+						<br>
+						<label class="config">All selected types <strong>once</strong></label>
+						<input id="all_selected_once" type="checkbox"/>
 
 						<br>
 						<label class="config">Show Grid</label>
@@ -55,7 +59,7 @@
 					</div>
 					<hr>
 				<button type="button" id="generate" onclick="generate()">Generate</button>
-				<button type="button" id="save" onclick="save_task()">Save</button>
+				<button type="button" id="save" onclick="export_as_png()">Export PNG</button>
 				<button class="save btn" onclick="export_as_json()">Export JSON</button>
 			</div>
 		</div>

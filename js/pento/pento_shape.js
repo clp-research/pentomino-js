@@ -14,7 +14,7 @@ $(document).ready(function () {
 			this.highlight;
 
 			// shape internal grid and bounding box
-			this._internal_grid_size = [4, 4];
+			this._internal_grid_size = [5, 5];
 			this._internal_grid_shifts = [1, 0];
 			this._internal_grid = [];
 			this._init_grid();
@@ -555,7 +555,7 @@ $(document).ready(function () {
 	// Draw I
 	this.pento_I = function (shape) {
 		// Draw blocks
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < 5; i++) {
 			var block = this.pento_create_block(0, i * shape.block_size, shape.block_size, shape.color);
 			shape.add_block(block);
 		}

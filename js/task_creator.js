@@ -8,6 +8,7 @@ $(document).ready(function () {
 		['nchanges', 0], // no changes in generation since we do them manually
 		['colors', false, true],
 		['shapes', false, true],
+		['all_selected_once', false, true], // use this mode to generate exactly one piece of each type
 		['showgrid', true, true],
 		['readonly', false, true]
 	];
@@ -37,9 +38,10 @@ $(document).ready(function () {
 	var update = function (config, pento_config) {
 		for (var key in config) {
 			if (!key.startsWith('_')) {
-				var is_bool = (key == 'colors' || key == 'readonly' || key == 'shapes' || key == 'showgrid');
+				var is_bool = (key == 'colors' || key == 'readonly' || key == 'shapes' || key == 'showgrid' || key=='all_selected_once');
 				let user_set_value = get_ui_value(key, is_bool);
-				config[key] = user_set_value ? user_set_value : config[key];
+				// user_set_value === user_set_value is used to ignore NaN
+				config[key] = user_set_value === user_set_value ? user_set_value : config[key];
 			}
 		}
 
@@ -66,10 +68,9 @@ $(document).ready(function () {
 
 	//--- export and import boards
 
-	this.save_task = function () {
+	this.export_as_png = function () {
 		var rand_prefix = generator.get_prefix();
 		this.save_boards_as_image(rand_prefix);
-		this.export_as_json(rand_prefix);
 	};
 
 	/**
@@ -141,9 +142,9 @@ $(document).ready(function () {
 	 */
 	var get_ui_value = function (id, is_bool) {
 		if (is_bool) {
-			return $('input#' + id).is(':checked')
+			return $('input#' + id).is(':checked');
 		} else {
-			return parseInt($('input#' + id).val())
+			return parseInt($('input#' + id).val());
 		}
 	};
 
