@@ -1,17 +1,17 @@
 $(document).ready(function () {
 
-	this.Block = class Block {
+	class Block {
 		constructor(x, y, width, height, color) {
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
-			this.color = color;
-			this.border_color = 'black';
-			this.rotation = 0;
+			this.x = x
+			this.y = y
+			this.width = width
+			this.height = height
+			this.color = color
+			this.border_color = 'black'
+			this.rotation = 0
 
-			this.shape_center_x = 0;
-			this.shape_center_y = 0;
+			this.shape_center_x = 0
+			this.shape_center_y = 0
 
 			this.create_vertices();
 		}
@@ -25,26 +25,26 @@ $(document).ready(function () {
 		}
 
 		get_center(){
-			var x_sum = 0;
-			var y_sum = 0;
+			var x_sum = 0
+			var y_sum = 0
 			for (var vertex_index in this._vertices) {
-				var vertex = this._vertices[vertex_index];
-				x_sum += vertex[0];
-				y_sum += vertex[1];
+				var vertex = this._vertices[vertex_index]
+				x_sum += vertex[0]
+				y_sum += vertex[1]
 			}
 			return [x_sum/this._vertices.length, y_sum/this._vertices.length]
 		}
 
 		set_shape_center(center_dx, center_dy) {
-			this.shape_center_x = center_dx || 0;
-			this.shape_center_y = center_dy || 0;
+			this.shape_center_x = center_dx || 0
+			this.shape_center_y = center_dy || 0
 		}
 
 		is_inside(bbox, offsetX, offsetY) {
 			for (var vertex_index in this._vertices) {
-				var vertex = this._vertices[vertex_index];
-				var point_x = vertex[0] + offsetX;
-				var point_y = vertex[1] + offsetY;
+				var vertex = this._vertices[vertex_index]
+				var point_x = vertex[0] + offsetX
+				var point_y = vertex[1] + offsetY
 				if (point_x < bbox[0] || point_x > bbox[0] + bbox[2] || point_y > bbox[1] + bbox[3] || point_y < bbox[1]) {
 					return false
 				}
@@ -56,7 +56,7 @@ $(document).ready(function () {
 		 * Returs a deepcopy of this block
 		 */
 		copy() {
-			var block_copy = Block(this.x, this.y, this.width, this.height, this.color);
+			var block_copy = Block(this.x, this.y, this.width, this.height, this.color)
 			return block_copy
 		}
 
@@ -66,9 +66,9 @@ $(document).ready(function () {
 				[this.x + this.width, this.y],
 				[this.x + this.width, this.y + this.height],
 				[this.x, this.y + this.height]
-			];
+			]
 
-			this._edge_style = [0.5,0.5,0.5,0.5];
+			this._edge_style = [0.5,0.5,0.5,0.5]
 		}
 
 		get_vertices(){
@@ -80,7 +80,7 @@ $(document).ready(function () {
 		}
 
 		set_edge_style(row, style){
-			this._edge_style[row] = style;
+			this._edge_style[row] = style
 		}
 
 		get_vertex(row, col) {
@@ -88,20 +88,20 @@ $(document).ready(function () {
 		}
 
 		set_vertex(row, col, value) {
-			this._vertices[row][col] = value;
+			this._vertices[row][col] = value
 		}
 
 		_move(dx, dy) {
-			this.x += dx;
-			this.y += dy;
-			this._update_vertices(dx, dy);
+			this.x += dx
+			this.y += dy
+			this._update_vertices(dx, dy)
 		}
 
 		_update_vertices(dx, dy) {
 			for (var i = 0; i < this._vertices.length; i++) {
-				var vertex = this._vertices[i];
-				vertex[0] += dx;
-				vertex[1] += dy;
+				var vertex = this._vertices[i]
+				vertex[0] += dx
+				vertex[1] += dy
 			}
 		}
 
@@ -111,34 +111,22 @@ $(document).ready(function () {
 		 */
 		rotate(delta_angle, new_angle) {
 			// move to center
-			this._move(-this.shape_center_x, -this.shape_center_y);
+			this._move(-this.shape_center_x, -this.shape_center_y)
 
 			// do rotation of vertices
 			for (var i = 0; i < this._vertices.length; i++) {
-				var vertex = this._vertices[i];
-				var x = vertex[0];
-				var y = vertex[1];
-				this.set_vertex(i, 0, Math.cos(delta_angle * Math.PI / 180) * x - Math.sin(delta_angle * Math.PI / 180) * y);
-				this.set_vertex(i, 1, Math.sin(delta_angle * Math.PI / 180) * x + Math.cos(delta_angle * Math.PI / 180) * y);
+				var vertex = this._vertices[i]
+				var x = vertex[0]
+				var y = vertex[1]
+				this.set_vertex(i, 0, Math.cos(delta_angle * Math.PI / 180) * x - Math.sin(delta_angle * Math.PI / 180) * y)
+				this.set_vertex(i, 1, Math.sin(delta_angle * Math.PI / 180) * x + Math.cos(delta_angle * Math.PI / 180) * y)
 			}
 
 			// move back to original position
-			this._move(this.shape_center_x, this.shape_center_y);
+			this._move(this.shape_center_x, this.shape_center_y)
 
 			// store current rotation
-			this.rotation = new_angle;
-		}
-		
-		/**
-		 * Resizes the block and adapts its coordinates to match a new board size.
-		 * @param {new size} block_size
-		 * @param {new board size / old board size} pos_factor
-		 */
-		scale(block_size, pos_factor) {
-			this.width = block_size;
-			this.height = block_size;
-			this.x *= pos_factor;
-			this.y *= pos_factor;
+			this.rotation = new_angle
 		}
 
 		/**
@@ -149,17 +137,17 @@ $(document).ready(function () {
 		 */
 		hits(block, dx, dy) {
 			// create a copy of own vertices
-			var a = [];
+			var a = []
 			for (var vi in this._vertices.slice()) {
-				a.push([this._vertices[vi][0] + 0, this._vertices[vi][1] + 0]);
+				a.push([this._vertices[vi][0] + 0, this._vertices[vi][1] + 0])
 			}
 			var b = block._vertices.slice()
 
 			// apply delta of shapes positions
 			for (var i = 0; i < a.length; i++) {
-				var vertex = a[i];
-				vertex[0] += dx;
-				vertex[1] += dy;
+				var vertex = a[i]
+				vertex[0] += dx
+				vertex[1] += dy
 			}
 
 			var rectangles = [a, b];
@@ -216,10 +204,12 @@ $(document).ready(function () {
 			return true;
 		}
 
-	};
+	}
 
-	this.pento_create_block = function (x, y, block_size, color) {
-		return new this.Block(x, y, block_size, block_size, color)
-	};
+	document.Block = Block
+
+	document.pento_create_block = function (x, y, block_size, color) {
+		return new Block(x, y, block_size, block_size, color)
+	}
 })
 
