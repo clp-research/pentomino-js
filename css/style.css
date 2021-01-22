@@ -1,5 +1,7 @@
 .container{
     max-width: 1600px;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 a{
@@ -113,4 +115,44 @@ button{
 
 .complexity-container button{
     float: right;
+}
+
+dialog::backdrop{
+	background: rgba(255, 255, 255, .85);
+}
+
+#questionnaire::backdrop{
+	background: rgba(255, 255, 255, .25);
+}
+
+#questionnaire{
+	position:absolute;
+	left: 600px;
+	right: 0;
+}
+
+#progress_bg{
+	width:100%;
+	background-color:gainsboro;
+}
+
+#progress_bar{
+	width:0%;
+	background-color:darkgrey;
+	text-align: center;
+	line-height: 30px;
+	color:white;
+}
+
+
+#timer{
+	padding-right: 10px;
+	padding-left: 10px;
+	float:right;
+}
+
+#correct_counter{
+	padding-right: 10px;
+	padding-left: 10px;
+	float:right;
 }

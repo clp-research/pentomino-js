@@ -4,8 +4,10 @@
 
 <head>
 	<meta charset="utf-8">
+	
+	<link rel="icon" href="resources/img/favicon.ico">
 
-	<title>A pentomino framework</title>
+	<title>Task creator with steps</title>
 	<meta name="description" content="Pentomino Framework">
 	<meta name="author" content="clpresearch">
 
@@ -85,7 +87,7 @@
 						<input id="shapes" type="checkbox" />
 
 						<br>
-						<label class="config">Editable</label>
+						<label class="config">Read-only</label>
 						<input id="readonly" type="checkbox" />
 
 						<br>
@@ -114,19 +116,19 @@
 	<!--External Dependencies-->
 	<!--Version 3.3.1-->
 	<script src="./js/jquery.min.js"></script>
-	<script src="./js/jcanvas.js"></script>
+	<script src="./js/jcanvas.min.js"></script>
 	<script src='./js/FileSaver.js'></script>
 
 	<!--Pento Framework-->
-	<script src='./js/pento_config.js'></script>
-	<script src='./js/pento_block.js'></script>
-	<script src='./js/pento_shape.js'></script>
-	<script src='./js/pento_render.js'></script>
-	<script src='./js/pento_board.js'></script>
-	<script src='./js/pento_generator.js'></script>
+	<script src='./js/pento/pento_config.js'></script>
+	<script src='./js/pento/pento_block.js'></script>
+	<script src='./js/pento/pento_shape.js'></script>
+	<script src='./js/pento/pento_render.js'></script>
+	<script src='./js/pento/pento_board.js'></script>
+	<script src='./js/pento/pento_generator.js'></script>
 
 	<!--Editor specific file-->
-	<script src='./js/index.js'></script>
+	<script src='./js/task_creator_steps.js'></script>
 </body>
 
 </html>
