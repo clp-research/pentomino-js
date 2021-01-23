@@ -9,8 +9,8 @@ $(document).ready(function () {
     var collision2 = block3.hits(block2)
     console.log("Block Collision Test: " + (collision2 == collision))
 
-    var shape1 = this.pento_create_shape(0, 10, 10, 'I', 'blue', false, 0)
-    var shape2 = this.pento_create_shape(1, 30, 91, 'I', 'red', false, 0)
+    var shape1 = this.pento_create_shape(0, 10, 10, 'I', 'blue', false, 0, 20)
+    var shape2 = this.pento_create_shape(1, 30, 91, 'I', 'red', false, 0, 20)
     console.log("Shape Collision Test: " + (shape1.hits(shape2) == shape2.hits(shape1)))
 
     //--- Define variables
@@ -124,10 +124,9 @@ $(document).ready(function () {
 
     //--- export and import boards
 
-    this.export_all = function () {
+    this.export_as_png = function () {
         var rand_prefix = generator.get_prefix()
         this.save_boards_as_image(rand_prefix)
-        this.export_as_json(rand_prefix)
     }
 
     /**
