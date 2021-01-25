@@ -15,6 +15,8 @@ For generation, there are the options *monocolor* and *monoshape*, a grid can be
 shapes can be selected to be excluded individually.
 By switching off *read-only*, the pieces can be moved and rotated manually.
 
+NOTE: The option *number of connections* is not implemented, *number of rotations* and *number of flips* are not fully implemented and can cause unwanted behaviour.
+
 ### task_creator_study1.html
 
 This interface allows to generate a random pentomino constellation, which is first applied to an initial and a target board. 

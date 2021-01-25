@@ -16,6 +16,7 @@ $(document).ready(function () {
     //--- Define variables
     // fields the user can edit
     // insert new fields by tuple [id_of_html_element_without, default_value, is_bool?]
+    // WARNING: nrotations, nflips and nconnections are not yet fully implemented
     var form_fields = [
         ["nshapes", 1],
         ["nrotations", 0],

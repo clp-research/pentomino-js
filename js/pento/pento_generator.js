@@ -49,7 +49,10 @@ $(document).ready(function () {
 		get_prefix() {
 			return this.prefix_log[this.prefix_log.length-1];
 		}
-
+		
+		/**
+		 * Updates the properties 'readonly' and 'showgrid' for both boards.
+		 */
 		update() {
 			this.pento_board_target.set('readonly', this.config['readonly']);
 			this.pento_board_target.set('showgrid', this.config['showgrid']);
