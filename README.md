@@ -1,18 +1,36 @@
-# PentominoJS Templates for Crowdsourcing
+# PentominoJS Interfaces and Templates for Crowdsourcing
 
 A pentomino framework built with jQuery, jCanvas and HTML5 canvas.
 
 ## User Interfaces
 
-There are three interfaces provided in this repository: 
+There are two interfaces provided in this repository: 
 
-### index.html
+### task_creator_steps.html
 
-This UI is made to generate and edit groups of shapes that can make bigger shapes.
+In this interface, you can randomly generate and place a number of pentomino pieces on a board. 
+An initial and target board will be created that differ by some pentomino actions (moving or rotating pieces). 
+Additionally, the interface displays snapshots, showing the transition from initial to target board step by step.
+For generation, there are the options *monocolor* and *monoshape*, a grid can be shown in the  background and the piece 
+shapes can be selected to be excluded individually.
+By switching off *read-only*, the pieces can be moved and rotated manually.
+
+NOTE: The option *number of connections* is not implemented, *number of rotations* and *number of flips* are not fully implemented and can cause unwanted behaviour.
+
+### task_creator_study1.html
+
+This interface allows to generate a random pentomino constellation, which is first applied to an initial and a target board. 
+Both boards can be modified by moving, rotating and removing (by right-clicking) pieces. In addition to the options provided in 
+```task_creator_steps.html```, *all selected types once* allows to generate exactly one piece of each 
+shape that is currently selected. 
+
+---
+
+Furthermore, two interface templates are provided:
 
 ### interactive_ifollower_ui.html
 
-Interactive UI for actions in the pentomino domain.
+Prototype interactive UI for actions in the pentomino domain.
 
 ### simple_igiver_ui.html
 
