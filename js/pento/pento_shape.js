@@ -543,8 +543,7 @@ $(document).ready(function () {
 	this.pento_F = function (shape) {
 		// Draw blocks
 		for (var i = 0; i < 3; i++) {
-			var block = document.pento_create_block(0, + i * shape.block_size, shape.block_size, shape.color);
-			shape.add_block(block);
+			shape.add_block(this.pento_create_block(0, + i * shape.block_size, shape.block_size, shape.color));
 		}
 
 		if (shape.is_mirrored) {
