@@ -4,7 +4,33 @@ A pentomino framework built with jQuery, jCanvas and HTML5 canvas.
 
 ## User Interfaces
 
-There are two interfaces provided in this repository: 
+The following interfaces provided in this repository: 
+
+### study1.html
+
+**REQUIRES SERVER SETUP.** Using [MAMP (Mac/Windows)](https://www.mamp.info/de/mac/): Once you have MAMP installed, create a server using the pentomino-js directory.
+(Preferences > Server > select pentomino-js directory as root). Start the server and visit [http://localhost:8888/study1/p1.html](http://localhost:8888/study1/p1.html) for P1 participant.
+
+An interface to study the effect of different instruction giving strategies.
+Includes a board showing different pentomino pieces to select from, a task board (which can't be manipulated be the user) and an image of the
+classic pentomino elephant which is build piece by piece as the user progresses through the game.
+
+In the task, the user is prompted by a voiceover to select a specific piece. At completion of each selection as well as
+at the start and end of the task, a questionnaire appears.
+
+During the task, the mouse is tracked and the user's decisions and answers to the questionnaire are collected. Finally, all data is 
+saved to a server-side file in ```resources/data_collection```. As an example for the collected data, 
+```resources/data_collection/example.json``` is provided
+
+Tasks are hard-coded into ```study1.js```, new tasks can be generated using ```task_creator.html``` (examples can be found in the ```tasks``` folder). 
+
+In this repository, *only files for one participant (p1) are included*. To play the game with a different participant 
+number, a matching *html* file in the ```study1``` directory is needed (which becomes the new entry site to the interface) as well as a folder with audio files
+as given in ```resources/audio/p/1```.
+
+**Please note: for spoken instructions, make sure your browser does not block automatically playing audio.**
+
+'Dialog' popups are not fully supported in all browsers. [dialog-polyfill](https://github.com/GoogleChrome/dialog-polyfill) is used to help with this issue. If the interface does not seem to work, you might want to change your browser to a [supported one](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog#Browser_compatibility).
 
 ### task_creator_steps.html
 
